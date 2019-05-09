@@ -165,6 +165,7 @@
             this.checkBoxM2.Size = new System.Drawing.Size(18, 17);
             this.checkBoxM2.TabIndex = 7;
             this.checkBoxM2.UseVisualStyleBackColor = true;
+            this.checkBoxM2.CheckedChanged += new System.EventHandler(this.checkBoxM2_CheckedChanged);
             // 
             // checkBoxM3
             // 
@@ -462,6 +463,7 @@
             this.btn_OK.TabIndex = 40;
             this.btn_OK.Text = "OK";
             this.btn_OK.UseVisualStyleBackColor = true;
+            this.btn_OK.Click += new System.EventHandler(this.btn_OK_Click);
             // 
             // buttonEmpty
             // 
@@ -471,6 +473,7 @@
             this.buttonEmpty.TabIndex = 41;
             this.buttonEmpty.Text = "Empty";
             this.buttonEmpty.UseVisualStyleBackColor = true;
+            this.buttonEmpty.Click += new System.EventHandler(this.buttonEmpty_Click);
             // 
             // buttonUnknown
             // 
@@ -480,6 +483,7 @@
             this.buttonUnknown.TabIndex = 42;
             this.buttonUnknown.Text = "Unknown";
             this.buttonUnknown.UseVisualStyleBackColor = true;
+            this.buttonUnknown.Click += new System.EventHandler(this.buttonUnknown_Click);
             // 
             // CardSelector
             // 

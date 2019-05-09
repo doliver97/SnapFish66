@@ -12,9 +12,279 @@ namespace SnapFish66
 {
     public partial class CardSelector : Form
     {
+        private List<string> selectedCards;
         public CardSelector()
         {
             InitializeComponent();
+            selectedCards = new List<string>();
+        }
+
+        internal List<string> SelectedCards { get => selectedCards; set => selectedCards = value; }
+
+        private void checkBoxM2_CheckedChanged(object sender, EventArgs e)
+        {
+            if(checkBoxM2.Checked)
+            {
+                selectedCards.Add("M2");
+            }
+            else
+            {
+                selectedCards.Remove("M2");
+            }
+        }
+
+        private void checkBoxM3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxM3.Checked)
+            {
+                selectedCards.Add("M3");
+            }
+            else
+            {
+                selectedCards.Remove("M3");
+            }
+        }
+
+        private void checkBoxM4_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxM4.Checked)
+            {
+                selectedCards.Add("M4");
+            }
+            else
+            {
+                selectedCards.Remove("M4");
+            }
+        }
+
+        private void checkBoxM10_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxM10.Checked)
+            {
+                selectedCards.Add("M10");
+            }
+            else
+            {
+                selectedCards.Remove("M10");
+            }
+        }
+
+        private void checkBoxM11_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxM11.Checked)
+            {
+                selectedCards.Add("M11");
+            }
+            else
+            {
+                selectedCards.Remove("M11");
+            }
+        }
+
+
+        private void checkBoxP2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxP2.Checked)
+            {
+                selectedCards.Add("P2");
+            }
+            else
+            {
+                selectedCards.Remove("P2");
+            }
+        }
+
+        private void checkBoxP3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxP3.Checked)
+            {
+                selectedCards.Add("P3");
+            }
+            else
+            {
+                selectedCards.Remove("P3");
+            }
+        }
+
+        private void checkBoxP4_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxP4.Checked)
+            {
+                selectedCards.Add("P4");
+            }
+            else
+            {
+                selectedCards.Remove("P4");
+            }
+        }
+
+        private void checkBoxP10_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxM10.Checked)
+            {
+                selectedCards.Add("P10");
+            }
+            else
+            {
+                selectedCards.Remove("P10");
+            }
+        }
+
+        private void checkBoxP11_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxP11.Checked)
+            {
+                selectedCards.Add("P11");
+            }
+            else
+            {
+                selectedCards.Remove("P11");
+            }
+        }
+
+
+        private void checkBoxT2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxT2.Checked)
+            {
+                selectedCards.Add("T2");
+            }
+            else
+            {
+                selectedCards.Remove("T2");
+            }
+        }
+
+        private void checkBoxT3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxT3.Checked)
+            {
+                selectedCards.Add("T3");
+            }
+            else
+            {
+                selectedCards.Remove("T3");
+            }
+        }
+
+        private void checkBoxT4_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxT4.Checked)
+            {
+                selectedCards.Add("T4");
+            }
+            else
+            {
+                selectedCards.Remove("T4");
+            }
+        }
+
+        private void checkBoxT10_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxT10.Checked)
+            {
+                selectedCards.Add("T10");
+            }
+            else
+            {
+                selectedCards.Remove("T10");
+            }
+        }
+
+        private void checkBoxT11_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxT11.Checked)
+            {
+                selectedCards.Add("T11");
+            }
+            else
+            {
+                selectedCards.Remove("T11");
+            }
+        }
+
+
+        private void checkBoxZ2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxZ2.Checked)
+            {
+                selectedCards.Add("Z2");
+            }
+            else
+            {
+                selectedCards.Remove("Z2");
+            }
+        }
+
+        private void checkBoxZ3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxZ3.Checked)
+            {
+                selectedCards.Add("Z3");
+            }
+            else
+            {
+                selectedCards.Remove("Z3");
+            }
+        }
+
+        private void checkBoxZ4_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxZ4.Checked)
+            {
+                selectedCards.Add("Z4");
+            }
+            else
+            {
+                selectedCards.Remove("Z4");
+            }
+        }
+
+        private void checkBoxZ10_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxZ10.Checked)
+            {
+                selectedCards.Add("Z10");
+            }
+            else
+            {
+                selectedCards.Remove("Z10");
+            }
+        }
+
+        private void checkBoxZ11_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxZ11.Checked)
+            {
+                selectedCards.Add("Z11");
+            }
+            else
+            {
+                selectedCards.Remove("Z11");
+            }
+        }
+
+        private void buttonEmpty_Click(object sender, EventArgs e)
+        {
+            selectedCards = new List<string>();
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private void buttonUnknown_Click(object sender, EventArgs e)
+        {
+            selectedCards = new List<string>
+            {
+                "unknown"
+            };
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private void btn_OK_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }
