@@ -8,22 +8,22 @@ namespace SnapFish66
 {
     public class State
     {
-        public List<Card> deck;
-        public List<Card> dbottom;
-        public List<Card> a1;
-        public List<Card> a2;
-        public List<Card> a3;
-        public List<Card> a4;
-        public List<Card> a5;
-        public List<Card> b1;
-        public List<Card> b2;
-        public List<Card> b3;
-        public List<Card> b4;
-        public List<Card> b5;
-        public List<Card> atook;
-        public List<Card> btook;
-        public List<Card> adown;
-        public List<Card> bdown;
+        public List<Card> deck = new List<Card>();
+        public List<Card> dbottom = new List<Card>();
+        public List<Card> a1 = new List<Card>();
+        public List<Card> a2 = new List<Card>();
+        public List<Card> a3 = new List<Card>();
+        public List<Card> a4 = new List<Card>();
+        public List<Card> a5 = new List<Card>();
+        public List<Card> b1 = new List<Card>();
+        public List<Card> b2 = new List<Card>();
+        public List<Card> b3 = new List<Card>();
+        public List<Card> b4 = new List<Card>();
+        public List<Card> b5 = new List<Card>();
+        public List<Card> atook = new List<Card>();
+        public List<Card> btook = new List<Card>();
+        public List<Card> adown = new List<Card>();
+        public List<Card> bdown = new List<Card>();
 
         public bool AM20;
         public bool AP20;
@@ -34,15 +34,19 @@ namespace SnapFish66
         public bool BT20;
         public bool BZ20;
 
+        public bool covered = false;
+
         public string ErrorMessage = "OK";
+
+        public string Next = "";
 
         List<string> IDs = new List<string> { "M2", "M3", "M4", "M10", "M11", "P2", "P3", "P4", "P10", "P11", "T2", "T3", "T4", "T10", "T11", "Z2", "Z3", "Z4", "Z10", "Z11" };
 
         public string trump = "";
 
         //Collect 66
-        private int Ascore = 0;
-        private int Bscore = 0;
+        public int Ascore = 0;
+        public int Bscore = 0;
 
         //Points: {0-3}
         public int Apoints = 0;
@@ -118,19 +122,19 @@ namespace SnapFish66
             return "-";
         }
 
-        public bool Check()
+        public string Check()
         {
             if(!Check2040())
             {
                 ErrorMessage = "Hiba: 20/40";
-                return false;
+                return ErrorMessage;
             }
 
             string cimp = CardInMorePlaces();
             if (cimp!="-")
             {
                 ErrorMessage = "Hiba: " + cimp + " több helyen!";
-                return false;
+                return ErrorMessage;
             }
 
             string mcsp = MoreCardInSinglePlace();
@@ -138,17 +142,17 @@ namespace SnapFish66
                 if(mcsp!="-")
                 {
                     ErrorMessage = "Hiba: több lap " + mcsp;
-                    return false;
+                    return ErrorMessage;
                 }
             }
-            return true;
+            return "OK";
         }
 
         private void CountScores()
         {
             
-            Ascore += atook.Sum(x => x.GetValue());
-            Bscore += btook.Sum(x => x.GetValue());
+            Ascore = atook.Sum(x => x.GetValue());
+            Bscore = btook.Sum(x => x.GetValue());
 
             if(Ascore!=0)
             {

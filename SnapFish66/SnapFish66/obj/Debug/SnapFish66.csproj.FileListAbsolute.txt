@@ -1,0 +1,11 @@
+C:\Users\doliv\Desktop\SnapFish66\SnapFish66\SnapFish66\bin\Debug\SnapFish66.exe.config
+C:\Users\doliv\Desktop\SnapFish66\SnapFish66\SnapFish66\bin\Debug\SnapFish66.exe
+C:\Users\doliv\Desktop\SnapFish66\SnapFish66\SnapFish66\bin\Debug\SnapFish66.pdb
+C:\Users\doliv\Desktop\SnapFish66\SnapFish66\SnapFish66\obj\Debug\SnapFish66.csprojAssemblyReference.cache
+C:\Users\doliv\Desktop\SnapFish66\SnapFish66\SnapFish66\obj\Debug\SnapFish66.CardSelector.resources
+C:\Users\doliv\Desktop\SnapFish66\SnapFish66\SnapFish66\obj\Debug\SnapFish66.Main.resources
+C:\Users\doliv\Desktop\SnapFish66\SnapFish66\SnapFish66\obj\Debug\SnapFish66.Properties.Resources.resources
+C:\Users\doliv\Desktop\SnapFish66\SnapFish66\SnapFish66\obj\Debug\SnapFish66.csproj.GenerateResource.cache
+C:\Users\doliv\Desktop\SnapFish66\SnapFish66\SnapFish66\obj\Debug\SnapFish66.csproj.CoreCompileInputs.cache
+C:\Users\doliv\Desktop\SnapFish66\SnapFish66\SnapFish66\obj\Debug\SnapFish66.exe
+C:\Users\doliv\Desktop\SnapFish66\SnapFish66\SnapFish66\obj\Debug\SnapFish66.pdb

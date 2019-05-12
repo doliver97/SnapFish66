@@ -16,12 +16,37 @@ namespace SnapFish66
 
         public State state;
 
+        public Card emptyCard = new Card("empty", Properties.Resources.Empty);
+
 
         public Main()
         {
             InitializeComponent();
+            cards = new List<Card>();
             InitCards();
             state = new State();
+            InitCardPlaces();
+        }
+
+        private void InitCardPlaces()
+        {
+
+            A1_pb.Image = Properties.Resources.Empty;
+            A2_pb.Image = Properties.Resources.Empty;
+            A3_pb.Image = Properties.Resources.Empty;
+            A4_pb.Image = Properties.Resources.Empty;
+            A5_pb.Image = Properties.Resources.Empty;
+            B1_pb.Image = Properties.Resources.Empty;
+            B2_pb.Image = Properties.Resources.Empty;
+            B3_pb.Image = Properties.Resources.Empty;
+            B4_pb.Image = Properties.Resources.Empty;
+            B5_pb.Image = Properties.Resources.Empty;
+            Deck_pb.Image = Properties.Resources.Empty;
+            Dbottom_pb.Image = Properties.Resources.Empty;
+            Atook_pb.Image = Properties.Resources.Empty;
+            Btook_pb.Image = Properties.Resources.Empty;
+            Adown_pb.Image = Properties.Resources.Empty;
+            Bdown_pb.Image = Properties.Resources.Empty;
         }
 
         private void InitCards()
@@ -34,17 +59,366 @@ namespace SnapFish66
                 cards.Add(new Card(IDs[i],images[i]));
             }
         }
+
+        private void AddCards(List<Card> target)
+        {
+            target.Clear();
+            CardSelector cs = new CardSelector();
+            cs.ShowDialog();
+            List<string> selected = cs.GetSelectedCards();
+
+            if(selected.Count>0 && selected[0]=="unknown")
+            {
+                Card u = new Card("unknown",Properties.Resources.back);
+                target.Add(u);
+                return;
+            }
+
+            foreach (string id in selected)
+            {
+                target.Add(cards.Find(x => x.ID == id));
+            }
+        }
         
 
-        private void Dbottom_pb_Click(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void Main_Load(object sender, EventArgs e)
         {
 
         }
+
+        private void M_rb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (M_rb.Checked)
+            {
+                P_rb.Checked = false;
+                T_rb.Checked = false;
+                Z_rb.Checked = false;
+
+                state.trump = "M";
+            }
+        }
+
+        private void P_rb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (P_rb.Checked)
+            {
+                M_rb.Checked = false;
+                T_rb.Checked = false;
+                Z_rb.Checked = false;
+
+                state.trump = "P";
+            }
+        }
+
+        private void T_rb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (T_rb.Checked)
+            {
+                M_rb.Checked = false;
+                P_rb.Checked = false;
+                Z_rb.Checked = false;
+
+                state.trump = "T";
+            }
+        }
+
+        private void Z_rb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Z_rb.Checked)
+            {
+                M_rb.Checked = false;
+                P_rb.Checked = false;
+                T_rb.Checked = false;
+
+                state.trump = "Z";
+            }
+        }
+
+        private void Check_btn_Click(object sender, EventArgs e)
+        {
+            string message = state.Check();
+            state.CalculatePoints();
+            Ascore_l.Text = state.Ascore.ToString();
+            Bscore_l.Text = state.Bscore.ToString();
+
+            OK_l.Text = message;
+        }
+
+        private void B_rb_CheckedChanged(object sender, EventArgs e)
+        {
+            if(B_rb.Checked)
+            {
+                A_rb.Checked = false;
+                state.Next = "B";
+            }
+        }
+
+        private void A_rb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (A_rb.Checked)
+            {
+                B_rb.Checked = false;
+                state.Next = "A";
+            }
+        }
+
+        private void BM20_cb_CheckedChanged(object sender, EventArgs e)
+        {
+            state.BM20 = BM20_cb.Checked;
+        }
+
+        private void BP20_cb_CheckedChanged(object sender, EventArgs e)
+        {
+            state.BP20 = BP20_cb.Checked;
+        }
+
+        private void BT20_cb_CheckedChanged(object sender, EventArgs e)
+        {
+            state.BT20 = BT20_cb.Checked;
+        }
+
+        private void BZ20_cb_CheckedChanged(object sender, EventArgs e)
+        {
+            state.BZ20 = BZ20_cb.Checked;
+        }
+
+        private void AM20_cb_CheckedChanged(object sender, EventArgs e)
+        {
+            state.AM20 = AM20_cb.Checked;
+        }
+
+        private void AP20_cb_CheckedChanged(object sender, EventArgs e)
+        {
+            state.AP20 = AP20_cb.Checked;
+        }
+
+        private void AT20_cb_CheckedChanged(object sender, EventArgs e)
+        {
+            state.AT20 = AT20_cb.Checked;
+        }
+
+        private void AZ20_cb_CheckedChanged(object sender, EventArgs e)
+        {
+            state.AZ20 = AZ20_cb.Checked;
+        }
+
         
+
+        private void Deck_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.deck);
+            if (state.deck.Count > 0)
+            {
+                Deck_pb.Image = state.deck[0].image;
+            }
+            else
+            {
+                Deck_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void B1_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.b1);
+            if (state.b1.Count > 0)
+            {
+                B1_pb.Image = state.b1[0].image;
+            }
+            else
+            {
+                B1_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void B2_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.b2);
+            if (state.b2.Count > 0)
+            {
+                B2_pb.Image = state.b2[0].image;
+            }
+            else
+            {
+                B2_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void B3_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.b3);
+            if (state.b3.Count > 0)
+            {
+                B3_pb.Image = state.b3[0].image;
+            }
+            else
+            {
+                B3_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void B4_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.b4);
+            if (state.b4.Count > 0)
+            {
+                B4_pb.Image = state.b4[0].image;
+            }
+            else
+            {
+                B4_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void B5_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.b5);
+            if (state.b5.Count > 0)
+            {
+                B5_pb.Image = state.b5[0].image;
+            }
+            else
+            {
+                B5_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void Btook_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.btook);
+            if (state.btook.Count > 0)
+            {
+                Btook_pb.Image = state.btook[0].image;
+            }
+            else
+            {
+                Btook_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void Bdown_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.bdown);
+            if (state.bdown.Count > 0)
+            {
+                Bdown_pb.Image = state.bdown[0].image;
+            }
+            else
+            {
+                Bdown_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void Adown_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.adown);
+            if (state.adown.Count > 0)
+            {
+                Adown_pb.Image = state.adown[0].image;
+            }
+            else
+            {
+                Adown_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void A1_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.a1);
+            if (state.a1.Count > 0)
+            {
+                A1_pb.Image = state.a1[0].image;
+            }
+            else
+            {
+                A1_pb.Image = Properties.Resources.Empty;
+            }
+
+
+        }
+
+        private void A2_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.a2);
+            if (state.a2.Count > 0)
+            {
+                A2_pb.Image = state.a2[0].image;
+            }
+            else
+            {
+                A2_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void A3_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.a3);
+            if (state.a3.Count > 0)
+            {
+                A3_pb.Image = state.a3[0].image;
+            }
+            else
+            {
+                A3_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void A4_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.a4);
+            if (state.a4.Count > 0)
+            {
+                A4_pb.Image = state.a4[0].image;
+            }
+            else
+            {
+                A4_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void A5_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.a5);
+            if (state.a5.Count > 0)
+            {
+                A5_pb.Image = state.a5[0].image;
+            }
+            else
+            {
+                A5_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void Atook_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.atook);
+            if (state.atook.Count > 0)
+            {
+                Atook_pb.Image = state.atook[0].image;
+            }
+            else
+            {
+                Atook_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void Dbottom_pb_Click(object sender, EventArgs e)
+        {
+            AddCards(state.dbottom);
+            if (state.dbottom.Count > 0)
+            {
+                Dbottom_pb.Image = state.dbottom[0].image;
+            }
+            else
+            {
+                Dbottom_pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        private void covered_cb_CheckedChanged(object sender, EventArgs e)
+        {
+            state.covered = covered_cb.Checked;
+        }
     }
 }

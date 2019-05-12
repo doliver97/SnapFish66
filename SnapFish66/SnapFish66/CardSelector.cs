@@ -18,8 +18,11 @@ namespace SnapFish66
             InitializeComponent();
             selectedCards = new List<string>();
         }
-
-        internal List<string> SelectedCards { get => selectedCards; set => selectedCards = value; }
+        
+        public List<string> GetSelectedCards()
+        {
+            return selectedCards;
+        }
 
         private void checkBoxM2_CheckedChanged(object sender, EventArgs e)
         {
@@ -120,7 +123,7 @@ namespace SnapFish66
 
         private void checkBoxP10_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxM10.Checked)
+            if (checkBoxP10.Checked)
             {
                 selectedCards.Add("P10");
             }
