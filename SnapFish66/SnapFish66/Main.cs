@@ -12,7 +12,7 @@ namespace SnapFish66
 {
     public partial class Main : Form
     {
-        public List<Card> cards;
+        public static List<Card> cards;
 
         public State state;
 
@@ -41,7 +41,7 @@ namespace SnapFish66
             B3_pb.Image = Properties.Resources.Empty;
             B4_pb.Image = Properties.Resources.Empty;
             B5_pb.Image = Properties.Resources.Empty;
-            Deck_pb.Image = Properties.Resources.Empty;
+            Deck_pb.Image = Properties.Resources.back;
             Dbottom_pb.Image = Properties.Resources.Empty;
             Atook_pb.Image = Properties.Resources.Empty;
             Btook_pb.Image = Properties.Resources.Empty;
@@ -51,6 +51,8 @@ namespace SnapFish66
 
         private void InitCards()
         {
+            cards = new List<Card>();
+
             List<string> IDs = new List<string> { "M2", "M3", "M4", "M10", "M11", "P2", "P3", "P4", "P10", "P11", "T2", "T3", "T4", "T10", "T11", "Z2", "Z3", "Z4", "Z10", "Z11"};
             List<Bitmap> images = new List<Bitmap> { Properties.Resources.M2, Properties.Resources.M3, Properties.Resources.M4, Properties.Resources.M10,Properties.Resources.M11, Properties.Resources.P2, Properties.Resources.P3, Properties.Resources.P4, Properties.Resources.P10, Properties.Resources.P11, Properties.Resources.T2, Properties.Resources.T3, Properties.Resources.T4, Properties.Resources.T10, Properties.Resources.T11, Properties.Resources.Z2, Properties.Resources.Z3, Properties.Resources.Z4, Properties.Resources.Z10, Properties.Resources.Z11 };
 
@@ -151,7 +153,7 @@ namespace SnapFish66
             if(B_rb.Checked)
             {
                 A_rb.Checked = false;
-                state.Next = "B";
+                state.next = "B";
             }
         }
 
@@ -160,7 +162,7 @@ namespace SnapFish66
             if (A_rb.Checked)
             {
                 B_rb.Checked = false;
-                state.Next = "A";
+                state.next = "A";
             }
         }
 
@@ -211,7 +213,8 @@ namespace SnapFish66
             AddCards(state.deck);
             if (state.deck.Count > 0)
             {
-                Deck_pb.Image = state.deck[0].image;
+                //Deck_pb.Image = state.deck[0].image;
+                Deck_pb.Image = Properties.Resources.back;
             }
             else
             {

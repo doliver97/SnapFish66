@@ -38,7 +38,7 @@ namespace SnapFish66
 
         public string ErrorMessage = "OK";
 
-        public string Next = "";
+        public string next = "";
 
         List<string> IDs = new List<string> { "M2", "M3", "M4", "M10", "M11", "P2", "P3", "P4", "P10", "P11", "T2", "T3", "T4", "T10", "T11", "Z2", "Z3", "Z4", "Z10", "Z11" };
 
@@ -51,6 +51,81 @@ namespace SnapFish66
         //Points: {0-3}
         public int Apoints = 0;
         public int Bpoints = 0;
+
+
+        private List<Card> knownCards()
+        {
+            List<Card> cards = new List<Card>();
+            foreach (var c in Main.cards)
+            {
+                cards.Add(c);
+            }
+
+            foreach(var c in Main.cards)
+            {
+                List<Card>[] cardPlaces = new List<Card>[] { dbottom, adown, bdown, a1, a2, a3, a4, a5, b1, b2, b3, b4, b5};
+
+                for (int i = 0; i < cardPlaces.Length; i++)
+                {
+                    if(CardInList(cardPlaces[i],c.ID)>0)
+                    {
+                        cards.RemoveAll(x => x.ID == c.ID);
+                    }
+                }
+            }
+
+            return cards;
+        }
+
+        //Makes a new valid state by giving value to unkonwn cards
+        public State GenerateRandom()
+        {
+            State newstate = new State();
+            
+            //Copy values to new state
+            foreach (Card c in atook)
+            {
+                newstate.atook.Add(c);
+            }
+            foreach (Card c in btook)
+            {
+                newstate.btook.Add(c);
+            }
+            newstate.AM20 = AM20;
+            newstate.AP20 = AP20;
+            newstate.AT20 = AT20;
+            newstate.AZ20 = AZ20;
+            newstate.BM20 = BM20;
+            newstate.BP20 = BP20;
+            newstate.BT20 = BT20;
+            newstate.BZ20 = BZ20;
+            newstate.covered = covered;
+            newstate.next = next;
+            newstate.trump = trump;
+            
+            List<Card> remaining = knownCards();
+
+            List<Card>[] singlePlaces = new List<Card>[] { dbottom, adown, bdown, a1, a2, a3, a4, a5, b1, b2, b3, b4, b5 };
+            List<Card>[] newSinglePlaces = new List<Card>[] { newstate.dbottom, newstate.adown, newstate.bdown, newstate.a1, newstate.a2, newstate.a3, newstate.a4, newstate.a5, newstate.b1, newstate.b2, newstate.b3, newstate.b4, newstate.b5 };
+
+            Random rand = new Random();
+            for (int i = 0; i < singlePlaces.Length; i++)
+            {
+                if(singlePlaces[i].Count == 1 && singlePlaces[i][0].ID=="unknown")
+                {
+                    int r = rand.Next(remaining.Count);
+                    newSinglePlaces[i].Add(remaining[r]);
+                    remaining.RemoveAt(r);
+                }
+            }
+
+            foreach (Card c in remaining)
+            {
+                newstate.deck.Add(c);
+            }
+
+            return newstate;
+        }
 
         private bool Check2040()
         {
