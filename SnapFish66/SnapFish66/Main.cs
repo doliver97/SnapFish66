@@ -412,6 +412,24 @@ namespace SnapFish66
             if (state.dbottom.Count > 0)
             {
                 Dbottom_pb.Image = state.dbottom[0].image;
+
+                //Set trump radiobutton automatically
+                if (state.dbottom[0].ID[0] == 'M')
+                {
+                    M_rb.Checked = true;
+                }
+                if (state.dbottom[0].ID[0] == 'P')
+                {
+                    P_rb.Checked = true;
+                }
+                if (state.dbottom[0].ID[0] == 'T')
+                {
+                    T_rb.Checked = true;
+                }
+                if (state.dbottom[0].ID[0] == 'Z')
+                {
+                    Z_rb.Checked = true;
+                }
             }
             else
             {
