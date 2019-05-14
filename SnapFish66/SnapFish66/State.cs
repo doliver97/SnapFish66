@@ -364,5 +364,11 @@ namespace SnapFish66
                 }
             }
         }
+
+        public bool Step(State st,string action)
+        {
+            Step step = new Step();
+            return step.Do(st, action);
+        }
     }
 }

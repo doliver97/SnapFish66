@@ -12,17 +12,20 @@ namespace SnapFish66
     {
         public Image image;
         public string ID;
+        public string color;
 
         public Card()
         {
             image = new Bitmap(Properties.Resources.Empty);
             ID = "empty";
+            color = "";
         }
 
         public Card(string id, Image img)
         {
             ID = id;
             image = img;
+            color = id.Substring(0, 1);
         }
 
         public bool IsTheSame(Card other)

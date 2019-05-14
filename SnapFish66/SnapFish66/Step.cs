@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace SnapFish66
 {
-    //BUG: if a slot has an "empty" card, it conunts as card -> remove empties before calculating states
     class Step
     {
         //Whether the player has the card in hand
@@ -117,7 +116,37 @@ namespace SnapFish66
         //Compares the two cards down, moves them to Atook or Btook, and sets next
         private void HitAndTake(State state)
         {
-            //TODO
+            bool awon = false;
+
+            if(state.adown[0].color==state.trump && state.bdown[0].color!=state.trump)
+            {
+                awon = true;
+            }
+            else if(state.adown[0].color==state.trump && state.bdown[0].color==state.trump && state.adown[0].GetValue()>state.bdown[0].GetValue())
+            {
+                awon = true;
+            }
+            else if (state.adown[0].color != state.trump && state.bdown[0].color != state.trump && state.adown[0].GetValue() > state.bdown[0].GetValue())
+            {
+                awon = true;
+            }
+
+
+            if(awon)
+            {
+                state.atook.Add(state.adown[0]);
+                state.atook.Add(state.bdown[0]);
+                state.next = "A";
+            }
+            else
+            {
+                state.btook.Add(state.adown[0]);
+                state.btook.Add(state.bdown[0]);
+                state.next = "B";
+            }
+
+            state.adown.Clear();
+            state.bdown.Clear();
         }
 
         //Perform a step (excluding covering)
