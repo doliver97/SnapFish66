@@ -377,11 +377,50 @@ namespace SnapFish66
             return step.Do(st, action);
         }
 
+        private List<Card> CopyCardList(List<Card> list)
+        {
+            List<Card> copy = new List<Card>();
+            foreach (var item in list)
+            {
+                copy.Add(item);
+            }
+
+            return copy;
+        }
+
         public State Copy()
         {
             State copy = new State();
 
-            //TODO
+            copy.deck = CopyCardList(deck);
+            copy.dbottom = CopyCardList(dbottom);
+            copy.a1 = CopyCardList(a1);
+            copy.a2 = CopyCardList(a2);
+            copy.a3 = CopyCardList(a3);
+            copy.a4 = CopyCardList(a4);
+            copy.a5 = CopyCardList(a5);
+            copy.b1 = CopyCardList(b1);
+            copy.b2 = CopyCardList(b2);
+            copy.b3 = CopyCardList(b3);
+            copy.b4 = CopyCardList(b4);
+            copy.b5 = CopyCardList(b5);
+            copy.atook = CopyCardList(atook);
+            copy.btook = CopyCardList(btook);
+            copy.adown = CopyCardList(adown);
+            copy.bdown = CopyCardList(bdown);
+
+            copy.AM20 = AM20;
+            copy.AM20 = AP20;
+            copy.AM20 = AT20;
+            copy.AM20 = AZ20;
+            copy.BM20 = BM20;
+            copy.BM20 = BP20;
+            copy.BM20 = BT20;
+            copy.BM20 = BZ20;
+
+            copy.covered = covered;
+            copy.next = next;
+            copy.trump = trump;
 
             return copy;
         }
