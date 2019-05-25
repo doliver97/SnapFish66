@@ -3,4 +3,4 @@ A1-A5,Adown / B... kártyák összege helytelen
 Adown, Bdown összege több mint 1
 Atook, Btook páratlan
 Dbottom > 1
-Egy kárty több helyen is van
+Egy kártya több helyen is van
