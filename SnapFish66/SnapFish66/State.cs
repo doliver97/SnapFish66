@@ -77,6 +77,11 @@ namespace SnapFish66
             return cards;
         }
 
+        public State()
+        {
+            CalculatePoints();
+        }
+
         //Makes a new valid state by giving value to unkonwn cards
         public State GenerateRandom()
         {
@@ -367,8 +372,19 @@ namespace SnapFish66
 
         public bool Step(State st,string action)
         {
+
             Step step = new Step();
             return step.Do(st, action);
         }
+
+        public State Copy()
+        {
+            State copy = new State();
+
+            //TODO
+
+            return copy;
+        }
+
     }
 }
