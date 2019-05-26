@@ -85,28 +85,7 @@ namespace SnapFish66
         //Makes a new valid state by giving value to unkonwn cards
         public State GenerateRandom()
         {
-            State newstate = new State();
-            
-            //Copy values to new state
-            foreach (Card c in atook)
-            {
-                newstate.atook.Add(c);
-            }
-            foreach (Card c in btook)
-            {
-                newstate.btook.Add(c);
-            }
-            newstate.AM20 = AM20;
-            newstate.AP20 = AP20;
-            newstate.AT20 = AT20;
-            newstate.AZ20 = AZ20;
-            newstate.BM20 = BM20;
-            newstate.BP20 = BP20;
-            newstate.BT20 = BT20;
-            newstate.BZ20 = BZ20;
-            newstate.covered = covered;
-            newstate.next = next;
-            newstate.trump = trump;
+            State newstate = Copy();
             
             List<Card> remaining = knownCards();
 
@@ -119,6 +98,7 @@ namespace SnapFish66
                 if(singlePlaces[i].Count == 1 && singlePlaces[i][0].ID=="unknown")
                 {
                     int r = rand.Next(remaining.Count);
+                    newSinglePlaces[i].Clear();
                     newSinglePlaces[i].Add(remaining[r]);
                     remaining.RemoveAt(r);
                 }

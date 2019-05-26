@@ -54,7 +54,7 @@ namespace SnapFish66
 
         public void Calculate()
         {
-            while (!Main.running)
+            while (Main.running)
             {
                 CalcOneRound();
             }

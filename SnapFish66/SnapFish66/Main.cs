@@ -456,6 +456,7 @@ namespace SnapFish66
                 Start_btn.Text = "STOP";
                 running = true;
                 GameTree tree = new GameTree(state);
+                tree.Calculate();
             }
         }
 
@@ -484,6 +485,30 @@ namespace SnapFish66
             B4_pb.Image = state.b4[0].image;
             B5_pb.Image = state.b5[0].image;
             Dbottom_pb.Image = state.dbottom[0].image;
+
+            if (state.dbottom.Count > 0)
+            {
+                Dbottom_pb.Image = state.dbottom[0].image;
+
+                //Set trump radiobutton automatically
+                if (state.dbottom[0].ID[0] == 'M')
+                {
+                    M_rb.Checked = true;
+                }
+                if (state.dbottom[0].ID[0] == 'P')
+                {
+                    P_rb.Checked = true;
+                }
+                if (state.dbottom[0].ID[0] == 'T')
+                {
+                    T_rb.Checked = true;
+                }
+                if (state.dbottom[0].ID[0] == 'Z')
+                {
+                    Z_rb.Checked = true;
+                }
+            }
+
         }
     }
 }
