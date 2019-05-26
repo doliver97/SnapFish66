@@ -18,6 +18,8 @@ namespace SnapFish66
 
         public Card emptyCard = new Card("empty", Properties.Resources.Empty);
 
+        public static bool running = false;
+
 
         public Main()
         {
@@ -440,6 +442,21 @@ namespace SnapFish66
         private void covered_cb_CheckedChanged(object sender, EventArgs e)
         {
             state.covered = covered_cb.Checked;
+        }
+
+        private void Start_btn_Click(object sender, EventArgs e)
+        {
+            if(running)
+            {
+                Start_btn.Text = "START";
+                running = false;
+            }
+            else
+            {
+                Start_btn.Text = "STOP";
+                running = true;
+                GameTree tree = new GameTree(state);
+            }
         }
     }
 }

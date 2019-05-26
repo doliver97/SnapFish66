@@ -22,8 +22,7 @@ namespace SnapFish66
         public double b4;
         public double b5;
         public double cover;
-
-        private bool stop = false;
+        
 
         public GameTree(State s)
         {
@@ -53,19 +52,12 @@ namespace SnapFish66
             cover = EstVal("cover");
         }
 
-        public void Stop()
-        {
-            stop = true;
-        }
-
         public void Calculate()
         {
-            while (!stop)
+            while (!Main.running)
             {
                 CalcOneRound();
             }
-
-            stop = false;
         }
 
         private void CalcOneRound()
