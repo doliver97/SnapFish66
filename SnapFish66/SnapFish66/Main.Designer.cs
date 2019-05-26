@@ -90,6 +90,7 @@
             this.next_gb = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
             this.covered_cb = new System.Windows.Forms.CheckBox();
+            this.Test_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Deck_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Dbottom_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.B3_pb)).BeginInit();
@@ -762,11 +763,22 @@
             this.covered_cb.UseVisualStyleBackColor = true;
             this.covered_cb.CheckedChanged += new System.EventHandler(this.covered_cb_CheckedChanged);
             // 
+            // Test_btn
+            // 
+            this.Test_btn.Location = new System.Drawing.Point(868, 676);
+            this.Test_btn.Name = "Test_btn";
+            this.Test_btn.Size = new System.Drawing.Size(75, 23);
+            this.Test_btn.TabIndex = 62;
+            this.Test_btn.Text = "TEST";
+            this.Test_btn.UseVisualStyleBackColor = true;
+            this.Test_btn.Click += new System.EventHandler(this.Test_btn_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1277, 761);
+            this.Controls.Add(this.Test_btn);
             this.Controls.Add(this.covered_cb);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.next_gb);
@@ -916,6 +928,7 @@
         private System.Windows.Forms.GroupBox next_gb;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.CheckBox covered_cb;
+        private System.Windows.Forms.Button Test_btn;
     }
 }
 

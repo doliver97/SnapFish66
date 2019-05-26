@@ -458,5 +458,32 @@ namespace SnapFish66
                 GameTree tree = new GameTree(state);
             }
         }
+
+        private void Test_btn_Click(object sender, EventArgs e)
+        {
+            state.a1 = new List<Card> { cards[0] };
+            state.a2 = new List<Card> { cards[4] };
+            state.a3 = new List<Card> { cards[7] };
+            state.a4 = new List<Card> { cards[13] };
+            state.a5 = new List<Card> { cards[17] };
+            state.b1 = new List<Card> { new Card("unknown", Properties.Resources.back) };
+            state.b2 = new List<Card> { new Card("unknown", Properties.Resources.back) };
+            state.b3 = new List<Card> { new Card("unknown", Properties.Resources.back) };
+            state.b4 = new List<Card> { new Card("unknown", Properties.Resources.back) };
+            state.b5 = new List<Card> { new Card("unknown", Properties.Resources.back) };
+            state.dbottom = new List<Card> { cards[11] };
+
+            A1_pb.Image = state.a1[0].image;
+            A2_pb.Image = state.a2[0].image;
+            A3_pb.Image = state.a3[0].image;
+            A4_pb.Image = state.a4[0].image;
+            A5_pb.Image = state.a5[0].image;
+            B1_pb.Image = state.b1[0].image;
+            B2_pb.Image = state.b2[0].image;
+            B3_pb.Image = state.b3[0].image;
+            B4_pb.Image = state.b4[0].image;
+            B5_pb.Image = state.b5[0].image;
+            Dbottom_pb.Image = state.dbottom[0].image;
+        }
     }
 }
