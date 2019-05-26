@@ -27,6 +27,7 @@ namespace SnapFish66
             cards = new List<Card>();
             InitCards();
             state = new State();
+            state.next = "A";
             InitCardPlaces();
         }
 

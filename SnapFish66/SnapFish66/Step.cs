@@ -89,12 +89,14 @@ namespace SnapFish66
         //Puts down a card, and pulls if possible
         private void PutDownCard(State state, List<Card> from, List<Card> to, string who)
         {
-            to = new List<Card>();
+            //Put down
+            to.Clear();
             to.Add(from[0]);
 
             //Before pulling
             Saying20(state, who); 
 
+            //Pull
             if (state.deck.Count > 0)
             {
                 from[0] = state.deck[0];
@@ -113,20 +115,68 @@ namespace SnapFish66
             
         }
 
+        //Calculates who takes the 2 cards
+        private string Winner(State state, string first)
+        {
+            if(first == "A")
+            {
+                // B neither put the same color, nor trump
+                if(state.adown[0].color!=state.bdown[0].color && state.bdown[0].color!=state.trump)
+                {
+                    return "A";
+                }
+                // They have the same color, bigger value wins
+                else if(state.adown[0].color==state.bdown[0].color)
+                {
+                    if(state.adown[0].GetValue()>state.bdown[0].GetValue())
+                    {
+                        return "A";
+                    }
+                    else
+                    {
+                        return "B";
+                    }
+                }
+                //B put trump, A did not
+                else
+                {
+                    return "B";
+                }
+            }
+            //B came first
+            else
+            {
+                // A neither put the same color, nor trump
+                if (state.adown[0].color != state.bdown[0].color && state.adown[0].color != state.trump)
+                {
+                    return "B";
+                }
+                // They have the same color, bigger value wins
+                else if (state.adown[0].color == state.bdown[0].color)
+                {
+                    if (state.adown[0].GetValue() > state.bdown[0].GetValue())
+                    {
+                        return "A";
+                    }
+                    else
+                    {
+                        return "B";
+                    }
+                }
+                //A put trump, B did not
+                else
+                {
+                    return "A";
+                }
+            }
+        }
+
         //Compares the two cards down, moves them to Atook or Btook, and sets next
-        private void HitAndTake(State state)
+        private void HitAndTake(State state, string first)
         {
             bool awon = false;
 
-            if(state.adown[0].color==state.trump && state.bdown[0].color!=state.trump)
-            {
-                awon = true;
-            }
-            else if(state.adown[0].color==state.trump && state.bdown[0].color==state.trump && state.adown[0].GetValue()>state.bdown[0].GetValue())
-            {
-                awon = true;
-            }
-            else if (state.adown[0].color != state.trump && state.bdown[0].color != state.trump && state.adown[0].GetValue() > state.bdown[0].GetValue())
+            if(Winner(state,first)=="A")
             {
                 awon = true;
             }
@@ -152,19 +202,18 @@ namespace SnapFish66
         //Perform a step (excluding covering)
         private bool PerformStep(State state, List<Card> from)
         {
+            if(from.Count==0)
+            {
+                return false;
+            }
+
             if (state.next == "A")
             {
-                //A has no card in that slot
-                if (state.adown.Count == 0)
-                {
-                    return false;
-                }
-
                 //B put down a card, a "answers" it
                 if (state.bdown.Count > 0)
                 {
                     PutDownCard(state, from, state.adown, "A");
-                    HitAndTake(state);
+                    HitAndTake(state,"B");
 
                 }
                 //A starts the round
@@ -172,20 +221,16 @@ namespace SnapFish66
                 {
                     PutDownCard(state, from, state.adown, "A");
                 }
+
+                state.next = "B";
             }
             else
             {
-                //B has no card in that slot
-                if (state.bdown.Count == 0)
-                {
-                    return false;
-                }
-
                 //A put down a card, b "answers" it
                 if (state.adown.Count > 0)
                 {
                     PutDownCard(state, from, state.bdown, "B");
-                    HitAndTake(state);
+                    HitAndTake(state,"A");
 
                 }
                 //B starts the round
@@ -193,13 +238,15 @@ namespace SnapFish66
                 {
                     PutDownCard(state, from, state.bdown, "B");
                 }
+
+                state.next = "B";
             }
 
             return true;
         }
 
         //Modifies the given state by the given action, returns wheteher the step is valid
-        public bool Do(State state, string action) //1,2,3,4,5,cover
+        public bool Do(State state, string action)
         {
             if (action == "A1")
             {

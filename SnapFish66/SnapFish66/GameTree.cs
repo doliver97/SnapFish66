@@ -26,8 +26,10 @@ namespace SnapFish66
 
         public GameTree(State s)
         {
-            root = new Node(null);
-            root.state = s;
+            root = new Node(null)
+            {
+                state = s
+            };
         }
 
 

@@ -50,7 +50,7 @@ namespace SnapFish66
 
             if (isRoot)
             {
-                child.state.GenerateRandom();
+                child.state = child.state.GenerateRandom();
             }
 
             //Do not try to generate child in end state
@@ -63,13 +63,18 @@ namespace SnapFish66
 
             while(!success)
             {
-                child.state = state.Copy(); //reset the wrong steps effect
-                
+                //reset the wrong steps effect
+                child.state = state.Copy(); 
+                if (isRoot)
+                {
+                    child.state = child.state.GenerateRandom();
+                }
+
                 ranVal = random.Next(PossibleSteps.Count);
                 success = child.state.Step(child.state,PossibleSteps[ranVal]);
             }
 
-            if(children[PossibleSteps[ranVal]] == null)
+            if(!children.ContainsKey(PossibleSteps[ranVal]))
             {
                 children[PossibleSteps[ranVal]] = new List<Node>();
             }
