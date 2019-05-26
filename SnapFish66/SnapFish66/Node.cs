@@ -33,12 +33,12 @@ namespace SnapFish66
             }
         }
 
-        public bool isEnd()
+        public bool IsEnd()
         {
             return children.Count == 0;
         }
 
-        public void AddRandomChild()
+        public Node AddRandomChild()
         {
             int ranVal = 0;
 
@@ -50,6 +50,12 @@ namespace SnapFish66
             if (isRoot)
             {
                 child.state.GenerateRandom();
+            }
+
+            //Do not try to generate child in end state
+            if(IsEnd())
+            {
+                return null;
             }
 
             bool success = false;
@@ -68,12 +74,14 @@ namespace SnapFish66
             }
 
             children[PossibleSteps[ranVal]].Add(child);
+
+            return child;
         }
 
-        public void calcEstimatedValue()
+        public void CalcEstimatedValue()
         {
             //Trivial case
-            if(isEnd())
+            if(IsEnd())
             {
                 if(state.Apoints>0)
                 {
@@ -101,7 +109,7 @@ namespace SnapFish66
             //Propagate value up the tree
             if (parent != null)
             {
-                parent.calcEstimatedValue();
+                parent.CalcEstimatedValue();
             }
         }
 
@@ -131,6 +139,11 @@ namespace SnapFish66
             }
 
             return min;
+        }
+
+        public List<Node> GetChildrenOfAction(string action)
+        {
+            return children[action];
         }
     }
 }
