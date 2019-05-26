@@ -33,9 +33,10 @@ namespace SnapFish66
             }
         }
 
-        public bool IsEnd()
+        public bool IsEnd(State s)
         {
-            return children.Count == 0;
+            s.CalculatePoints();
+            return (s.Apoints!=0 || s.Bpoints!=0);
         }
 
         public Node AddRandomChild()
@@ -53,7 +54,7 @@ namespace SnapFish66
             }
 
             //Do not try to generate child in end state
-            if(IsEnd())
+            if(IsEnd(state))
             {
                 return null;
             }
@@ -81,7 +82,7 @@ namespace SnapFish66
         public void CalcEstimatedValue()
         {
             //Trivial case
-            if(IsEnd())
+            if(IsEnd(state))
             {
                 if(state.Apoints>0)
                 {

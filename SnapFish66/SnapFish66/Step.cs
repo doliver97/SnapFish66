@@ -201,18 +201,18 @@ namespace SnapFish66
         //Modifies the given state by the given action, returns wheteher the step is valid
         public bool Do(State state, string action) //1,2,3,4,5,cover
         {
-            if(action == "1")
+            if (action == "A1")
             {
-                if(state.next=="A")
+                if (state.next == "A")
                 {
                     return PerformStep(state, state.a1);
                 }
                 else
                 {
-                    return PerformStep(state, state.b1);
+                    return false;
                 }
             }
-            if (action == "2")
+            if (action == "A2")
             {
                 if (state.next == "A")
                 {
@@ -220,10 +220,10 @@ namespace SnapFish66
                 }
                 else
                 {
-                    return PerformStep(state, state.b2);
+                    return false;
                 }
             }
-            if (action == "3")
+            if (action == "A3")
             {
                 if (state.next == "A")
                 {
@@ -231,10 +231,10 @@ namespace SnapFish66
                 }
                 else
                 {
-                    return PerformStep(state, state.b3);
+                    return false;
                 }
             }
-            if (action == "4")
+            if (action == "A4")
             {
                 if (state.next == "A")
                 {
@@ -242,14 +242,69 @@ namespace SnapFish66
                 }
                 else
                 {
-                    return PerformStep(state, state.b4);
+                    return false;
                 }
             }
-            if (action == "5")
+            if (action == "A5")
             {
                 if (state.next == "A")
                 {
                     return PerformStep(state, state.a5);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            if (action == "B1")
+            {
+                if(state.next=="A")
+                {
+                    return false;
+                }
+                else
+                {
+                    return PerformStep(state, state.b1);
+                }
+            }
+            if (action == "B2")
+            {
+                if (state.next == "A")
+                {
+                    return false;
+                }
+                else
+                {
+                    return PerformStep(state, state.b2);
+                }
+            }
+            if (action == "B3")
+            {
+                if (state.next == "A")
+                {
+                    return false;
+                }
+                else
+                {
+                    return PerformStep(state, state.b3);
+                }
+            }
+            if (action == "B4")
+            {
+                if (state.next == "A")
+                {
+                    return false;
+                }
+                else
+                {
+                    return PerformStep(state, state.b4);
+                }
+            }
+            if (action == "B5")
+            {
+                if (state.next == "A")
+                {
+                    return false;
                 }
                 else
                 {
