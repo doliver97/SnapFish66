@@ -332,8 +332,7 @@ namespace SnapFish66
                     Apoints = 1;
                 }
             }
-
-            if (Bscore >= 66)
+            else if (Bscore >= 66)
             {
                 if (Ascore == 0)
                 {
@@ -342,6 +341,18 @@ namespace SnapFish66
                 else if (Ascore < 33)
                 {
                     Bpoints = 2;
+                }
+                else
+                {
+                    Bpoints = 1;
+                }
+            }
+            //No more cards in play, the player who won the last cards (and would come next) won
+            else if(atook.Count+btook.Count==20)
+            {
+                if(next == "A")
+                {
+                    Apoints = 1;
                 }
                 else
                 {
