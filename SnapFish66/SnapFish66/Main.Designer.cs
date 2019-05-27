@@ -91,6 +91,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.covered_cb = new System.Windows.Forms.CheckBox();
             this.Test_btn = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.Deck_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Dbottom_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.B3_pb)).BeginInit();
@@ -724,9 +725,9 @@
             this.trump_gb.Controls.Add(this.P_rb);
             this.trump_gb.Controls.Add(this.T_rb);
             this.trump_gb.Location = new System.Drawing.Point(217, 342);
-            this.trump_gb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.trump_gb.Margin = new System.Windows.Forms.Padding(4);
             this.trump_gb.Name = "trump_gb";
-            this.trump_gb.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.trump_gb.Padding = new System.Windows.Forms.Padding(4);
             this.trump_gb.Size = new System.Drawing.Size(28, 101);
             this.trump_gb.TabIndex = 58;
             this.trump_gb.TabStop = false;
@@ -736,9 +737,9 @@
             this.next_gb.Controls.Add(this.B_rb);
             this.next_gb.Controls.Add(this.A_rb);
             this.next_gb.Location = new System.Drawing.Point(377, 327);
-            this.next_gb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.next_gb.Margin = new System.Windows.Forms.Padding(4);
             this.next_gb.Name = "next_gb";
-            this.next_gb.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.next_gb.Padding = new System.Windows.Forms.Padding(4);
             this.next_gb.Size = new System.Drawing.Size(33, 103);
             this.next_gb.TabIndex = 59;
             this.next_gb.TabStop = false;
@@ -773,11 +774,19 @@
             this.Test_btn.UseVisualStyleBackColor = true;
             this.Test_btn.Click += new System.EventHandler(this.Test_btn_Click);
             // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(868, 76);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(398, 23);
+            this.progressBar.TabIndex = 63;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1277, 761);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.Test_btn);
             this.Controls.Add(this.covered_cb);
             this.Controls.Add(this.label13);
@@ -929,6 +938,7 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.CheckBox covered_cb;
         private System.Windows.Forms.Button Test_btn;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
 

@@ -23,14 +23,18 @@ namespace SnapFish66
         public double b4;
         public double b5;
         public double cover;
+
+        private ProgressBar progressBar;
         
 
-        public GameTree(State s)
+        public GameTree(State s, ProgressBar nprogressBar)
         {
             root = new Node(null)
             {
                 state = s
             };
+
+            progressBar = nprogressBar;
         }
 
         //Estimated value of action, or NaN if no such action yet
@@ -63,10 +67,16 @@ namespace SnapFish66
 
         public void Calculate(List<Label> labels)
         {
+            int rounds = 10000;
+
+            progressBar.Value = 0;
+            progressBar.Maximum = rounds;
+
             //while (Main.running)
-            for(int i=0; i<10000;i++)
+            for(int i=0; i<rounds;i++)
             {
                 CalcOneRound();
+                progressBar.Increment(1);
             }
             SetLabels(labels);
         }

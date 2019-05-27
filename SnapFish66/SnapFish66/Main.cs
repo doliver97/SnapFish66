@@ -473,7 +473,7 @@ namespace SnapFish66
             {
                 Start_btn.Text = "STOP";
                 running = true;
-                GameTree tree = new GameTree(state);
+                GameTree tree = new GameTree(state, progressBar);
                 tree.Calculate(labels);
             }
         }

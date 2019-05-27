@@ -104,8 +104,6 @@ namespace SnapFish66
             else if(state.next=="A")
             {
                 EstimatedValue = HighestInDict();
-                
-
             }
             //Find best step, with lowest average points
             else if(state.next=="B")
