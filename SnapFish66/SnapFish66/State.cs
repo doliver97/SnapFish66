@@ -401,13 +401,13 @@ namespace SnapFish66
             copy.bdown = CopyCardList(bdown);
 
             copy.AM20 = AM20;
-            copy.AM20 = AP20;
-            copy.AM20 = AT20;
-            copy.AM20 = AZ20;
+            copy.AP20 = AP20;
+            copy.AT20 = AT20;
+            copy.AZ20 = AZ20;
             copy.BM20 = BM20;
-            copy.BM20 = BP20;
-            copy.BM20 = BT20;
-            copy.BM20 = BZ20;
+            copy.BP20 = BP20;
+            copy.BT20 = BT20;
+            copy.BZ20 = BZ20;
 
             copy.covered = covered;
             copy.next = next;

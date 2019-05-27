@@ -67,8 +67,8 @@ namespace SnapFish66
             for(int i=0; i<10;i++)
             {
                 CalcOneRound();
-                SetLabels(labels);
             }
+            SetLabels(labels);
         }
 
         private void CalcOneRound()
@@ -105,7 +105,7 @@ namespace SnapFish66
             {
                 if(values[i]!=Double.NaN)
                 {
-                    labels[i].Text = Convert.ToString(values[i]);
+                    labels[i].Text = Convert.ToString(Math.Round(values[i],2));
                 }
                 else
                 {

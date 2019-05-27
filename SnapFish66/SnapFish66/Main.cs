@@ -480,17 +480,17 @@ namespace SnapFish66
 
         private void Test_btn_Click(object sender, EventArgs e)
         {
-            state.a1 = new List<Card> { cards[0] };
-            state.a2 = new List<Card> { cards[4] };
-            state.a3 = new List<Card> { cards[7] };
-            state.a4 = new List<Card> { cards[13] };
-            state.a5 = new List<Card> { cards[17] };
+            state.a1 = new List<Card> { cards[1] };
+            state.a2 = new List<Card> { cards[2] };
+            state.a3 = new List<Card> { cards[3] };
+            state.a4 = new List<Card> { cards[4] };
+            state.a5 = new List<Card> { cards[9] };
             state.b1 = new List<Card> { new Card("unknown", Properties.Resources.back) };
             state.b2 = new List<Card> { new Card("unknown", Properties.Resources.back) };
             state.b3 = new List<Card> { new Card("unknown", Properties.Resources.back) };
             state.b4 = new List<Card> { new Card("unknown", Properties.Resources.back) };
             state.b5 = new List<Card> { new Card("unknown", Properties.Resources.back) };
-            state.dbottom = new List<Card> { cards[11] };
+            state.dbottom = new List<Card> { cards[0] };
 
             A1_pb.Image = state.a1[0].image;
             A2_pb.Image = state.a2[0].image;
