@@ -33,31 +33,38 @@ namespace SnapFish66
             };
         }
 
-
+        //Estimated value of action, or NaN if no such action yet
         private double EstVal(string s)
         {
             List<Node> nodes = root.GetChildrenOfAction(s);
+
+            if(nodes.Count==0)
+            {
+                return Double.NaN;
+            }
+
             return nodes.Average(x => x.EstimatedValue);
         }
 
-        public void SetEstimatedValues()
+        private void SetEstimatedValues()
         {
-            a1 = EstVal("a1");
-            a2 = EstVal("a2");
-            a3 = EstVal("a3");
-            a4 = EstVal("a4");
-            a5 = EstVal("a5");
-            b1 = EstVal("b1");
-            b2 = EstVal("b2");
-            b3 = EstVal("b3");
-            b4 = EstVal("b4");
-            b5 = EstVal("b5");
+            a1 = EstVal("A1");
+            a2 = EstVal("A2");
+            a3 = EstVal("A3");
+            a4 = EstVal("A4");
+            a5 = EstVal("A5");
+            b1 = EstVal("B1");
+            b2 = EstVal("B2");
+            b3 = EstVal("B3");
+            b4 = EstVal("B4");
+            b5 = EstVal("B5");
             cover = EstVal("cover");
         }
 
         public void Calculate(List<Label> labels)
         {
-            while (Main.running)
+            //while (Main.running)
+            for(int i=0; i<10;i++)
             {
                 CalcOneRound();
                 SetLabels(labels);
@@ -67,17 +74,18 @@ namespace SnapFish66
         private void CalcOneRound()
         {
             Node actual = root;
-
+            
             while(actual!=null)
             {
                 actual = actual.AddRandomChild();
             }
-
-            
         }
 
+        //Calculates estimated values and sets the labels
         private void SetLabels(List<Label> labels)
         {
+            SetEstimatedValues();
+
             List<double> values = new List<double>
             {
                 a1,
@@ -95,7 +103,14 @@ namespace SnapFish66
 
             for (int i = 0; i < labels.Count; i++)
             {
-                labels[i].Text = Convert.ToString(values[i]);
+                if(values[i]!=Double.NaN)
+                {
+                    labels[i].Text = Convert.ToString(values[i]);
+                }
+                else
+                {
+                    labels[i].Text = "N/A";
+                }
             }
         }
     }

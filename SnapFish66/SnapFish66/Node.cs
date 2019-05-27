@@ -53,9 +53,10 @@ namespace SnapFish66
                 child.state = child.state.GenerateRandom();
             }
 
-            //Do not try to generate child in end state
+            //Do not try to generate child in end state, rather calculate the value of the state (and propagate up)
             if(IsEnd(state))
             {
+                CalcEstimatedValue();
                 return null;
             }
 
@@ -149,7 +150,14 @@ namespace SnapFish66
 
         public List<Node> GetChildrenOfAction(string action)
         {
-            return children[action];
+            if(children.ContainsKey(action))
+            {
+                return children[action];
+            }
+            else
+            {
+                return new List<Node>();
+            }
         }
     }
 }
