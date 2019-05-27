@@ -512,18 +512,22 @@ namespace SnapFish66
                 if (state.dbottom[0].ID[0] == 'M')
                 {
                     M_rb.Checked = true;
+                    state.trump = "M";
                 }
                 if (state.dbottom[0].ID[0] == 'P')
                 {
                     P_rb.Checked = true;
+                    state.trump = "P";
                 }
                 if (state.dbottom[0].ID[0] == 'T')
                 {
                     T_rb.Checked = true;
+                    state.trump = "T";
                 }
                 if (state.dbottom[0].ID[0] == 'Z')
                 {
                     Z_rb.Checked = true;
+                    state.trump = "Z";
                 }
             }
 

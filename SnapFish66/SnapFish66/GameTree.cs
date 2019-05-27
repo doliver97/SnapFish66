@@ -64,7 +64,7 @@ namespace SnapFish66
         public void Calculate(List<Label> labels)
         {
             //while (Main.running)
-            for(int i=0; i<10;i++)
+            for(int i=0; i<10000;i++)
             {
                 CalcOneRound();
             }
