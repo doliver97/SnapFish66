@@ -87,14 +87,17 @@ namespace SnapFish66
         }
 
         //Puts down a card, and pulls if possible
-        private void PutDownCard(State state, List<Card> from, List<Card> to, string who)
+        private void PutDownCard(State state, List<Card> from, List<Card> to, string who, bool first)
         {
             //Put down
             to.Clear();
             to.Add(from[0]);
 
             //Before pulling
-            Saying20(state, who); 
+            if (first)
+            { 
+                Saying20(state, who);
+            }
 
             //Pull
             if (state.deck.Count > 0)
@@ -212,14 +215,14 @@ namespace SnapFish66
                 //B put down a card, a "answers" it
                 if (state.bdown.Count > 0)
                 {
-                    PutDownCard(state, from, state.adown, "A");
+                    PutDownCard(state, from, state.adown, "A",false);
                     HitAndTake(state,"B");
 
                 }
                 //A starts the round
                 else
                 {
-                    PutDownCard(state, from, state.adown, "A");
+                    PutDownCard(state, from, state.adown, "A",true);
                     state.next = "B";
                 }
             }
@@ -228,14 +231,14 @@ namespace SnapFish66
                 //A put down a card, b "answers" it
                 if (state.adown.Count > 0)
                 {
-                    PutDownCard(state, from, state.bdown, "B");
+                    PutDownCard(state, from, state.bdown, "B",false);
                     HitAndTake(state,"A");
 
                 }
                 //B starts the round
                 else
                 {
-                    PutDownCard(state, from, state.bdown, "B");
+                    PutDownCard(state, from, state.bdown, "B",true);
                     state.next = "A";
                 }
             }

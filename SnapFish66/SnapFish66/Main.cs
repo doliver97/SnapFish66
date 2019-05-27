@@ -480,7 +480,7 @@ namespace SnapFish66
 
         private void Test_btn_Click(object sender, EventArgs e)
         {
-            state.a1 = new List<Card> { cards[18] };
+            state.a1 = new List<Card> { cards[15] };
             state.a2 = new List<Card> { cards[19] };
             state.a3 = new List<Card> { cards[4] };
             state.a4 = new List<Card> { cards[13] };
@@ -503,7 +503,7 @@ namespace SnapFish66
                 cards[10],
                 cards[11],
                 cards[12],
-                cards[15]
+                cards[18]
 
             };
 

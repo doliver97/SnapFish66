@@ -67,7 +67,7 @@ namespace SnapFish66
 
         public void Calculate(List<Label> labels)
         {
-            int rounds = 100;
+            int rounds = 1000;
 
             progressBar.Value = 0;
             progressBar.Maximum = rounds;
