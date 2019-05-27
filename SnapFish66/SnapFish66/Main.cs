@@ -480,17 +480,32 @@ namespace SnapFish66
 
         private void Test_btn_Click(object sender, EventArgs e)
         {
-            state.a1 = new List<Card> { cards[1] };
-            state.a2 = new List<Card> { cards[2] };
-            state.a3 = new List<Card> { cards[3] };
-            state.a4 = new List<Card> { cards[4] };
-            state.a5 = new List<Card> { cards[9] };
+            state.a1 = new List<Card> { cards[18] };
+            state.a2 = new List<Card> { cards[19] };
+            state.a3 = new List<Card> { cards[4] };
+            state.a4 = new List<Card> { cards[13] };
+            state.a5 = new List<Card> { cards[14] };
             state.b1 = new List<Card> { new Card("unknown", Properties.Resources.back) };
             state.b2 = new List<Card> { new Card("unknown", Properties.Resources.back) };
             state.b3 = new List<Card> { new Card("unknown", Properties.Resources.back) };
             state.b4 = new List<Card> { new Card("unknown", Properties.Resources.back) };
             state.b5 = new List<Card> { new Card("unknown", Properties.Resources.back) };
-            state.dbottom = new List<Card> { cards[0] };
+            state.dbottom = new List<Card>();
+            state.trump = "T";
+            state.atook = new List<Card>
+            {
+                cards[0],
+                cards[1],
+                cards[2],
+                cards[5],
+                cards[6],
+                cards[7],
+                cards[10],
+                cards[11],
+                cards[12],
+                cards[15]
+
+            };
 
             A1_pb.Image = state.a1[0].image;
             A2_pb.Image = state.a2[0].image;
@@ -502,7 +517,7 @@ namespace SnapFish66
             B3_pb.Image = state.b3[0].image;
             B4_pb.Image = state.b4[0].image;
             B5_pb.Image = state.b5[0].image;
-            Dbottom_pb.Image = state.dbottom[0].image;
+            Atook_pb.Image = Properties.Resources.back;
 
             if (state.dbottom.Count > 0)
             {

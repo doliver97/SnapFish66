@@ -43,10 +43,8 @@ namespace SnapFish66
         {
             int ranVal = 0;
 
-            Node child = new Node(this)
-            {
-                state = state.Copy()
-            };
+            Node child = new Node(this);
+            child.state = this.state.Copy();
 
             if (isRoot)
             {

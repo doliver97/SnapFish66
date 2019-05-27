@@ -53,7 +53,7 @@ namespace SnapFish66
         public int Bpoints = 0;
 
 
-        private List<Card> knownCards()
+        private List<Card> KnownCards()
         {
             List<Card> cards = new List<Card>();
             foreach (var c in Main.cards)
@@ -63,7 +63,7 @@ namespace SnapFish66
 
             foreach(var c in Main.cards)
             {
-                List<Card>[] cardPlaces = new List<Card>[] { dbottom, adown, bdown, a1, a2, a3, a4, a5, b1, b2, b3, b4, b5};
+                List<Card>[] cardPlaces = new List<Card>[] { dbottom, adown, bdown, a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, atook, btook};
 
                 for (int i = 0; i < cardPlaces.Length; i++)
                 {
@@ -87,7 +87,7 @@ namespace SnapFish66
         {
             State newstate = Copy();
             
-            List<Card> remaining = knownCards();
+            List<Card> remaining = KnownCards();
 
             List<Card>[] singlePlaces = new List<Card>[] { dbottom, adown, bdown, a1, a2, a3, a4, a5, b1, b2, b3, b4, b5 };
             List<Card>[] newSinglePlaces = new List<Card>[] { newstate.dbottom, newstate.adown, newstate.bdown, newstate.a1, newstate.a2, newstate.a3, newstate.a4, newstate.a5, newstate.b1, newstate.b2, newstate.b3, newstate.b4, newstate.b5 };
