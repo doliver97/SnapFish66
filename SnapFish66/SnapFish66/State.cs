@@ -416,5 +416,117 @@ namespace SnapFish66
             return copy;
         }
 
+        //Order does matter
+        private bool IsSameDeck(List<Card> one, List<Card> other)
+        {
+            for (int i = 0; i < one.Count; i++)
+            {
+                if(!one[i].IsSame(other[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        //Order does not matter
+        private bool IsSameCardSet(List<Card> one, List<Card> other)
+        {
+            if(one.Count!=other.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < one.Count; i++)
+            {
+                bool found = false;
+
+                for (int j = 0; j < other.Count; j++)
+                {
+                    if(one[i].IsSame(other[j]))
+                    {
+                        found = true;
+                    }
+                }
+
+                if(!found)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public bool IsSame(State other)
+        {
+            List<Card> aHand = new List<Card>();
+            aHand.AddRange(a1);
+            aHand.AddRange(a2);
+            aHand.AddRange(a3);
+            aHand.AddRange(a4);
+            aHand.AddRange(a5);
+
+            List<Card> bHand = new List<Card>();
+            bHand.AddRange(b1);
+            bHand.AddRange(b2);
+            bHand.AddRange(b3);
+            bHand.AddRange(b4);
+            bHand.AddRange(b5);
+
+            List<Card> oaHand = new List<Card>();
+            oaHand.AddRange(other.a1);
+            oaHand.AddRange(other.a2);
+            oaHand.AddRange(other.a3);
+            oaHand.AddRange(other.a4);
+            oaHand.AddRange(other.a5);
+
+            List<Card> obHand = new List<Card>();
+            obHand.AddRange(other.b1);
+            obHand.AddRange(other.b2);
+            obHand.AddRange(other.b3);
+            obHand.AddRange(other.b4);
+            obHand.AddRange(other.b5);
+
+            List<List<Card>> places = new List<List<Card>> { aHand, bHand, dbottom, atook, btook, adown, bdown };
+            List<List<Card>> otherPlaces = new List<List<Card>> { oaHand, obHand, other.dbottom, other.atook, other.btook, other.adown, other.bdown };
+
+            for (int i = 0; i < places.Count; i++)
+            {
+                if(!IsSameCardSet(places[i],otherPlaces[i]))
+                {
+                    return false;
+                }
+            }
+
+            if(!IsSameDeck(deck,other.deck))
+            {
+                return false;
+            }
+
+            if(next!=other.next)
+            {
+                return false;
+            }
+
+            if(trump!=other.trump)
+            {
+                return false;
+            }
+
+            if(AM20!=other.AM20 || AP20!=other.AP20 || AT20!=other.AT20 || AZ20!=other.AZ20 || BM20!=other.BM20 || BP20!=other.BP20 || BT20!=other.BT20 || BZ20!=other.BZ20)
+            {
+                return false;
+            }
+
+            if(covered!=other.covered)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }

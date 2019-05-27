@@ -28,7 +28,7 @@ namespace SnapFish66
             color = id.Substring(0, 1);
         }
 
-        public bool IsTheSame(Card other)
+        public bool IsSame(Card other)
         {
             return this.ID == other.ID;
         }

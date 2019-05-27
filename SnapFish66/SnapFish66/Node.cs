@@ -78,7 +78,21 @@ namespace SnapFish66
                 children[PossibleSteps[ranVal]] = new List<Node>();
             }
 
-            children[PossibleSteps[ranVal]].Add(child);
+            //Check if this state has already been added. If yes, return the old one.
+            bool found = false;
+            foreach (Node old in children[PossibleSteps[ranVal]])
+            {
+                if(child.state.IsSame(old.state))
+                {
+                    found = true;
+                    child = old;
+                }
+            }
+
+            if (!found)
+            {
+                children[PossibleSteps[ranVal]].Add(child);
+            }
 
             return child;
         }
