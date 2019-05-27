@@ -20,6 +20,8 @@ namespace SnapFish66
 
         public static bool running = false;
 
+        public List<Label> labels;
+
 
         public Main()
         {
@@ -29,6 +31,21 @@ namespace SnapFish66
             state = new State();
             state.next = "A";
             InitCardPlaces();
+
+            labels = new List<Label>
+            {
+                A1_l,
+                A2_l,
+                A3_l,
+                A4_l,
+                A5_l,
+                B1_l,
+                B2_l,
+                B3_l,
+                B4_l,
+                B5_l,
+                cover_l
+            };
         }
 
         private void InitCardPlaces()
@@ -457,7 +474,7 @@ namespace SnapFish66
                 Start_btn.Text = "STOP";
                 running = true;
                 GameTree tree = new GameTree(state);
-                tree.Calculate();
+                tree.Calculate(labels);
             }
         }
 
@@ -511,5 +528,6 @@ namespace SnapFish66
             }
 
         }
+
     }
 }

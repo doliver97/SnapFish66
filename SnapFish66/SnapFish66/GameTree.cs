@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SnapFish66
 {
@@ -54,11 +55,12 @@ namespace SnapFish66
             cover = EstVal("cover");
         }
 
-        public void Calculate()
+        public void Calculate(List<Label> labels)
         {
             while (Main.running)
             {
                 CalcOneRound();
+                SetLabels(labels);
             }
         }
 
@@ -69,6 +71,31 @@ namespace SnapFish66
             while(actual!=null)
             {
                 actual = actual.AddRandomChild();
+            }
+
+            
+        }
+
+        private void SetLabels(List<Label> labels)
+        {
+            List<double> values = new List<double>
+            {
+                a1,
+                a2,
+                a3,
+                a4,
+                a5,
+                b1,
+                b2,
+                b3,
+                b4,
+                b5,
+                cover
+            };
+
+            for (int i = 0; i < labels.Count; i++)
+            {
+                labels[i].Text = Convert.ToString(values[i]);
             }
         }
     }
