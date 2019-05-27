@@ -220,9 +220,8 @@ namespace SnapFish66
                 else
                 {
                     PutDownCard(state, from, state.adown, "A");
+                    state.next = "B";
                 }
-
-                state.next = "B";
             }
             else
             {
@@ -237,9 +236,8 @@ namespace SnapFish66
                 else
                 {
                     PutDownCard(state, from, state.bdown, "B");
+                    state.next = "A";
                 }
-
-                state.next = "B";
             }
 
             return true;
