@@ -479,9 +479,9 @@
             this.OK_l.ForeColor = System.Drawing.Color.Black;
             this.OK_l.Location = new System.Drawing.Point(949, 706);
             this.OK_l.Name = "OK_l";
-            this.OK_l.Size = new System.Drawing.Size(35, 20);
+            this.OK_l.Size = new System.Drawing.Size(144, 20);
             this.OK_l.TabIndex = 34;
-            this.OK_l.Text = "OK";
+            this.OK_l.Text = "Not checked yet";
             // 
             // Bscore_l
             // 
