@@ -1,6 +1,0 @@
-Több játékos mondott 20/40-et ugyanabból a színből 
-A1-A5,Adown / B... kártyák összege helytelen
-Adown, Bdown összege több mint 1
-Atook, Btook páratlan
-Dbottom > 1
-Egy kártya több helyen is van

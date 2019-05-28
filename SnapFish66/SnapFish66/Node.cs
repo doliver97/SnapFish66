@@ -18,7 +18,7 @@ namespace SnapFish66
 
         public double EstimatedValue;
 
-        private List<String> PossibleSteps = new List<string> { "A1","A2","A3","A4","A5","B1","B2","B3","B4","B5","cover"};
+        private List<String> PossibleSteps = new List<string> { "A1","A2","A3","A4","A5","B1","B2","B3","B4","B5"}; //+cover
 
         public Node(Node newparent)
         {
