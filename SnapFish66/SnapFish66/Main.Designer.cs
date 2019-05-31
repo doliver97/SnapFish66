@@ -92,6 +92,7 @@
             this.covered_cb = new System.Windows.Forms.CheckBox();
             this.Test_btn = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.testFileSelector = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.Deck_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Dbottom_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.B3_pb)).BeginInit();
@@ -781,11 +782,22 @@
             this.progressBar.Size = new System.Drawing.Size(398, 23);
             this.progressBar.TabIndex = 63;
             // 
+            // testFileSelector
+            // 
+            this.testFileSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.testFileSelector.FormattingEnabled = true;
+            this.testFileSelector.Location = new System.Drawing.Point(949, 676);
+            this.testFileSelector.Name = "testFileSelector";
+            this.testFileSelector.Size = new System.Drawing.Size(174, 24);
+            this.testFileSelector.TabIndex = 64;
+            this.testFileSelector.Click += new System.EventHandler(this.testFileSelector_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1277, 761);
+            this.Controls.Add(this.testFileSelector);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.Test_btn);
             this.Controls.Add(this.covered_cb);
@@ -939,6 +951,7 @@
         private System.Windows.Forms.CheckBox covered_cb;
         private System.Windows.Forms.Button Test_btn;
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.ComboBox testFileSelector;
     }
 }
 

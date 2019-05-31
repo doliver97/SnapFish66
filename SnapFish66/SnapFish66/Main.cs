@@ -480,45 +480,37 @@ namespace SnapFish66
 
         private void Test_btn_Click(object sender, EventArgs e)
         {
-            state.a1 = new List<Card> { cards[15] };
-            state.a2 = new List<Card> { cards[19] };
-            state.a3 = new List<Card> { cards[4] };
-            state.a4 = new List<Card> { cards[13] };
-            state.a5 = new List<Card> { cards[14] };
-            state.b1 = new List<Card> { new Card("unknown", Properties.Resources.back) };
-            state.b2 = new List<Card> { new Card("unknown", Properties.Resources.back) };
-            state.b3 = new List<Card> { new Card("unknown", Properties.Resources.back) };
-            state.b4 = new List<Card> { new Card("unknown", Properties.Resources.back) };
-            state.b5 = new List<Card> { new Card("unknown", Properties.Resources.back) };
-            state.dbottom = new List<Card>();
-            state.trump = "T";
-            state.atook = new List<Card>
+            if(testFileSelector.SelectedItem!=null)
             {
-                cards[0],
-                cards[1],
-                cards[2],
-                cards[5],
-                cards[6],
-                cards[7],
-                cards[10],
-                cards[11],
-                cards[12],
-                cards[18]
+                State s = TestFileHandler.CreateState(cards,(string)testFileSelector.SelectedItem);
+                SetState(s);
+            }
 
-            };
+        }
 
-            A1_pb.Image = state.a1[0].image;
-            A2_pb.Image = state.a2[0].image;
-            A3_pb.Image = state.a3[0].image;
-            A4_pb.Image = state.a4[0].image;
-            A5_pb.Image = state.a5[0].image;
-            B1_pb.Image = state.b1[0].image;
-            B2_pb.Image = state.b2[0].image;
-            B3_pb.Image = state.b3[0].image;
-            B4_pb.Image = state.b4[0].image;
-            B5_pb.Image = state.b5[0].image;
-            Atook_pb.Image = Properties.Resources.back;
+        private void testFileSelector_Click(object sender, EventArgs e)
+        {
+            testFileSelector.Items.Clear();
+            testFileSelector.Items.AddRange(TestFileHandler.GetTrimmedFileNames());
+        }
 
+        private void SetImage(PictureBox pb, List<Card> place)
+        {
+            if(place.Count>0)
+            {
+                pb.Image = place[0].image;
+            }
+            else
+            {
+                pb.Image = Properties.Resources.Empty;
+            }
+        }
+
+        public void SetState(State newState)
+        {
+            state = newState;
+
+            //Set dbottom
             if (state.dbottom.Count > 0)
             {
                 Dbottom_pb.Image = state.dbottom[0].image;
@@ -545,8 +537,66 @@ namespace SnapFish66
                     state.trump = "Z";
                 }
             }
+            else
+            {
+                Dbottom_pb.Image = Properties.Resources.Empty;
+            }
 
+            //Set the images of everything else
+
+            Deck_pb.Image = Properties.Resources.back; //now constant
+
+            SetImage(A1_pb,state.a1);
+            SetImage(A2_pb, state.a2);
+            SetImage(A3_pb, state.a3);
+            SetImage(A4_pb, state.a4);
+            SetImage(A5_pb, state.a5);
+            SetImage(B1_pb, state.b1);
+            SetImage(B2_pb, state.b2);
+            SetImage(B3_pb, state.b3);
+            SetImage(B4_pb, state.b4);
+            SetImage(B5_pb, state.b5);
+            SetImage(Adown_pb, state.adown);
+            SetImage(Bdown_pb, state.bdown);
+
+            if(state.atook.Count>0)
+            {
+                Atook_pb.Image = Properties.Resources.back;
+            }
+            else
+            {
+                Atook_pb.Image = Properties.Resources.Empty;
+            }
+
+            if (state.btook.Count > 0)
+            {
+                Btook_pb.Image = Properties.Resources.back;
+            }
+            else
+            {
+                Btook_pb.Image = Properties.Resources.Empty;
+            }
+
+            //Set 20/40
+            AM20_cb.Checked = state.AM20;
+            AP20_cb.Checked = state.AP20;
+            AT20_cb.Checked = state.AT20;
+            AZ20_cb.Checked = state.AZ20;
+            BM20_cb.Checked = state.BM20;
+            BP20_cb.Checked = state.BP20;
+            BT20_cb.Checked = state.BT20;
+            BZ20_cb.Checked = state.BZ20;
+
+
+            //Set next radiobutton
+            if (state.next=="A")
+            {
+                A_rb.Checked = true;
+            }
+            else
+            {
+                B_rb.Checked = true;
+            }
         }
-
     }
 }

@@ -113,7 +113,7 @@ namespace SnapFish66
 
             for (int i = 0; i < labels.Count; i++)
             {
-                if(values[i]!=Double.NaN)
+                if(!double.IsNaN(values[i]))
                 {
                     labels[i].Text = Convert.ToString(Math.Round(values[i],2));
                 }
