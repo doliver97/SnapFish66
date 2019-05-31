@@ -182,6 +182,21 @@ namespace SnapFish66
             return "-";
         }
 
+        private string CardNumberDiff()
+        {
+            int Anum = a1.Count + a2.Count + a3.Count + a4.Count + a5.Count;
+            int Bnum = b1.Count + b2.Count + b3.Count + b4.Count + b5.Count;
+            if(Anum<Bnum)
+            {
+                return "A";
+            }
+            if(Bnum<Anum)
+            {
+                return "B";
+            }
+            return "-";
+        }
+
         public string Check()
         {
             if(!Check2040())
@@ -198,13 +213,19 @@ namespace SnapFish66
             }
 
             string mcsp = MoreCardInSinglePlace();
+            if(mcsp!="-")
             {
-                if(mcsp!="-")
-                {
-                    ErrorMessage = "Hiba: több lap " + mcsp;
-                    return ErrorMessage;
-                }
+                ErrorMessage = "Hiba: több lap " + mcsp;
+                return ErrorMessage;
             }
+
+            string cnd = CardNumberDiff();
+            if(cnd!="-")
+            {
+                ErrorMessage = "Hiba: túl kevés lap " + cnd + " kezében";
+                return ErrorMessage;
+            }
+            
             return "OK";
         }
 
