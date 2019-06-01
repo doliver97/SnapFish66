@@ -202,6 +202,8 @@ namespace SnapFish66
             string[] trumpSplit = trumpLine.Split(' ');
             state.trump = trumpSplit[1];
 
+            sr.Close();
+
             return state;
         }
     }
