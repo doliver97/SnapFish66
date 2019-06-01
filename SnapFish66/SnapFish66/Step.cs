@@ -246,9 +246,59 @@ namespace SnapFish66
             return true;
         }
 
+        //Tries to switch the dbottom with card in hand
+        private void TrySwitchDBottom(State state)
+        {
+            if(state.dbottom.Count>0 && state.deck.Count>=3)
+            {
+                //Cannot switch if not coming first
+                if(state.next == "A" && state.bdown.Count>0)
+                {
+                    return;
+                }
+                if (state.next == "B" && state.adown.Count > 0)
+                {
+                    return;
+                }
+                
+                //Try to switch, if has trump 2
+                if(state.next =="A")
+                {
+                    List<List<Card>> hand = new List<List<Card>> { state.a1, state.a2, state.a3, state.a4, state.a5 };
+
+                    foreach (var position in hand)
+                    {
+                        if(position.Count>0 && position[0].GetValue()==2 && position[0].color == state.trump)
+                        {
+                            Card temp = position[0];
+                            position[0] = state.dbottom[0];
+                            state.dbottom[0] = temp;
+                        }
+                    }
+                }
+
+                if (state.next == "B")
+                {
+                    List<List<Card>> hand = new List<List<Card>> { state.b1, state.b2, state.b3, state.b4, state.b5 };
+
+                    foreach (var position in hand)
+                    {
+                        if (position.Count > 0 && position[0].GetValue() == 2 && position[0].color == state.trump)
+                        {
+                            Card temp = position[0];
+                            position[0] = state.dbottom[0];
+                            state.dbottom[0] = temp;
+                        }
+                    }
+                }
+            }
+        }
+
         //Modifies the given state by the given action, returns wheteher the step is valid
         public bool Do(State state, string action)
         {
+            TrySwitchDBottom(state);
+
             if (action == "A1")
             {
                 if (state.next == "A")
