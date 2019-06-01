@@ -86,36 +86,85 @@ namespace SnapFish66
             }
         }
 
-        //Puts down a card, and pulls if possible
+        //Drawing a card
+        private void Draw(State state, string firstToDraw)
+        {
+            List<Card> place1 = new List<Card>();
+            List<Card> place2 = new List<Card>();
+            List<List<Card>> ahand = new List<List<Card>> { state.a1, state.a2, state.a3, state.a4, state.a5 };
+            List<List<Card>> bhand = new List<List<Card>> { state.b1, state.b2, state.b3, state.b4, state.b5 };
+
+            foreach (List<Card> place in ahand)
+            {
+                if(place.Count==0)
+                {
+                    if(firstToDraw=="A")
+                    {
+                        place1 = place;
+                        break;
+                    }
+                    else
+                    {
+                        place2 = place;
+                        break;
+                    }
+                }
+            }
+
+            foreach (List<Card> place in bhand)
+            {
+                if (place.Count == 0)
+                {
+                    if (firstToDraw == "B")
+                    {
+                        place1 = place;
+                        break;
+                    }
+                    else
+                    {
+                        place2 = place;
+                        break;
+                    }
+                }
+            }
+
+
+            if (state.deck.Count > 0)
+            {
+                place1.Add(state.deck[0]);
+                state.deck.RemoveAt(0);
+            }
+            else if (state.dbottom.Count > 0)
+            {
+                place1.Add(state.dbottom[0]);
+                state.dbottom.RemoveAt(0);
+            }
+
+            if (state.deck.Count > 0)
+            {
+                place2.Add(state.deck[0]);
+                state.deck.RemoveAt(0);
+            }
+            else if (state.dbottom.Count > 0)
+            {
+                place2.Add(state.dbottom[0]);
+                state.dbottom.RemoveAt(0);
+            }
+        }
+
+        //Puts down a card
         private void PutDownCard(State state, List<Card> from, List<Card> to, string who, bool first)
         {
             //Put down
             to.Clear();
             to.Add(from[0]);
+            from.Clear();
 
-            //Before pulling
+            //Before drawing cards
             if (first)
             { 
                 Saying20(state, who);
             }
-
-            //Pull
-            if (state.deck.Count > 0)
-            {
-                from[0] = state.deck[0];
-                state.deck.RemoveAt(0);
-            }
-            else if (state.dbottom.Count > 0)
-            {
-                from[0] = state.dbottom[0];
-                state.dbottom.RemoveAt(0);
-            }
-            else
-            {
-                from.RemoveAt(0);
-            }
-
-            
         }
 
         //Calculates who takes the 2 cards
@@ -174,7 +223,7 @@ namespace SnapFish66
             }
         }
 
-        //Compares the two cards down, moves them to Atook or Btook, and sets next
+        //Compares the two cards down, moves them to Atook or Btook, draws cards, and sets next
         private void HitAndTake(State state, string first)
         {
             bool awon = false;
@@ -189,12 +238,14 @@ namespace SnapFish66
             {
                 state.atook.Add(state.adown[0]);
                 state.atook.Add(state.bdown[0]);
+                Draw(state, "A");
                 state.next = "A";
             }
             else
             {
                 state.btook.Add(state.adown[0]);
                 state.btook.Add(state.bdown[0]);
+                Draw(state, "B");
                 state.next = "B";
             }
 
