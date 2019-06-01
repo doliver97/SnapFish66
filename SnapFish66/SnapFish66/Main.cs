@@ -312,7 +312,7 @@ namespace SnapFish66
             AddCards(state.btook);
             if (state.btook.Count > 0)
             {
-                Btook_pb.Image = state.btook[0].image;
+                Btook_pb.Image = Properties.Resources.back;
             }
             else
             {
@@ -418,7 +418,7 @@ namespace SnapFish66
             AddCards(state.atook);
             if (state.atook.Count > 0)
             {
-                Atook_pb.Image = state.atook[0].image;
+                Atook_pb.Image = Properties.Resources.back;
             }
             else
             {
