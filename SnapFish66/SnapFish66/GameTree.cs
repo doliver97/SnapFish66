@@ -11,6 +11,10 @@ namespace SnapFish66
     {
         Node root;
 
+        //Key is the depth
+        public static Dictionary<int, int> VisitedNodes = new Dictionary<int, int>();
+        public static Dictionary<int, int> UnvisitedNodes = new Dictionary<int, int>();
+
         //Estimated values of actions
         public double a1;
         public double a2;
@@ -25,9 +29,12 @@ namespace SnapFish66
         public double cover;
 
         private ProgressBar progressBar;
+        private DataGridView nodesDataGridView;
+
+        public static List<Node> allNodes;
         
 
-        public GameTree(State s, ProgressBar nprogressBar)
+        public GameTree(State s, ProgressBar nprogressBar, DataGridView ndataGridView)
         {
             root = new Node(null,0)
             {
@@ -35,6 +42,7 @@ namespace SnapFish66
             };
 
             progressBar = nprogressBar;
+            nodesDataGridView = ndataGridView;
         }
 
         //Estimated value of action, or NaN if no such action yet
@@ -67,6 +75,10 @@ namespace SnapFish66
 
         public void Calculate(List<Label> labels)
         {
+            allNodes = new List<Node> { root };
+            VisitedNodes = new Dictionary<int, int>();
+            UnvisitedNodes = new Dictionary<int, int>();
+
             int rounds = 20000;
 
             progressBar.Value = 0;
@@ -91,7 +103,38 @@ namespace SnapFish66
             }
         }
 
-        //Calculates estimated values and sets the labels
+        //Sets visited and unvisited nodes
+        private void SetUnvisitedNodes()
+        {
+            foreach (Node node in allNodes)
+            {
+                //Add all visited nodes
+                if(!VisitedNodes.ContainsKey(node.depth))
+                {
+                    VisitedNodes[node.depth] = 1;
+                }
+                else
+                {
+                    VisitedNodes[node.depth]++;
+                }
+
+                //Do not count the unvisited nodes after end of game
+                if(!node.IsEnd(node.state))
+                {
+                    //Add unvisited nodes
+                    if (!UnvisitedNodes.ContainsKey(node.depth))
+                    {
+                        UnvisitedNodes[node.depth] = node.UnvisitedSteps.Count;
+                    }
+                    else
+                    {
+                        UnvisitedNodes[node.depth]+=node.UnvisitedSteps.Count;
+                    }
+                }
+            }
+        }
+
+        //Calculates estimated values and unvisited nodes, and sets the labels
         private void SetLabels(List<Label> labels)
         {
             SetEstimatedValues();
@@ -122,6 +165,42 @@ namespace SnapFish66
                     labels[i].Text = "N/A";
                 }
             }
+
+            //Calculate visited and unvisited nodes
+            SetUnvisitedNodes();
+
+            //Clear dataGridView
+            nodesDataGridView.Rows.Clear();
+            nodesDataGridView.Refresh();
+
+            nodesDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            nodesDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+
+            //Set the dataGridView
+            nodesDataGridView.ColumnCount = 3;
+            nodesDataGridView.Columns[0].Name = "Depth";
+            nodesDataGridView.Columns[1].Name = "Visited";
+            nodesDataGridView.Columns[2].Name = "Unvisited";
+
+            //VisitedNodes has more keys
+            nodesDataGridView.RowCount = VisitedNodes.Keys.Count;
+
+            for (int i = 0; i < nodesDataGridView.RowCount; i++)
+            {
+                nodesDataGridView.Rows[i].Cells[0].Value = i;
+            }
+
+            foreach (int key in VisitedNodes.Keys)
+            {
+                nodesDataGridView.Rows[key].Cells[1].Value = VisitedNodes[key];
+            }
+
+            foreach (int key in UnvisitedNodes.Keys)
+            {
+                nodesDataGridView.Rows[key].Cells[2].Value = UnvisitedNodes[key];
+            }
+
+            nodesDataGridView.Refresh();
         }
     }
 }

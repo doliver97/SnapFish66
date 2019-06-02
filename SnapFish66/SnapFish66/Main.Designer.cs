@@ -93,6 +93,7 @@
             this.Test_btn = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.testFileSelector = new System.Windows.Forms.ComboBox();
+            this.NodesDataGridView = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.Deck_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Dbottom_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.B3_pb)).BeginInit();
@@ -111,6 +112,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Atook_pb)).BeginInit();
             this.trump_gb.SuspendLayout();
             this.next_gb.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NodesDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // Deck_pb
@@ -792,11 +794,25 @@
             this.testFileSelector.TabIndex = 64;
             this.testFileSelector.Click += new System.EventHandler(this.testFileSelector_Click);
             // 
+            // NodesDataGridView
+            // 
+            this.NodesDataGridView.AllowUserToAddRows = false;
+            this.NodesDataGridView.AllowUserToDeleteRows = false;
+            this.NodesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.NodesDataGridView.Location = new System.Drawing.Point(868, 129);
+            this.NodesDataGridView.Name = "NodesDataGridView";
+            this.NodesDataGridView.ReadOnly = true;
+            this.NodesDataGridView.RowHeadersWidth = 20;
+            this.NodesDataGridView.RowTemplate.Height = 24;
+            this.NodesDataGridView.Size = new System.Drawing.Size(325, 430);
+            this.NodesDataGridView.TabIndex = 65;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1277, 761);
+            this.Controls.Add(this.NodesDataGridView);
             this.Controls.Add(this.testFileSelector);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.Test_btn);
@@ -880,6 +896,7 @@
             this.trump_gb.PerformLayout();
             this.next_gb.ResumeLayout(false);
             this.next_gb.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NodesDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -952,6 +969,7 @@
         private System.Windows.Forms.Button Test_btn;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.ComboBox testFileSelector;
+        private System.Windows.Forms.DataGridView NodesDataGridView;
     }
 }
 

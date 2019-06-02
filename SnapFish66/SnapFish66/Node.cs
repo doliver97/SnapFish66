@@ -20,13 +20,9 @@ namespace SnapFish66
 
         public int depth;
         
-        private List<String> VisitedSteps;
-        private List<String> UnvisitedSteps;
-
-        //Key is the depth
-        public static Dictionary<int, int> VisitedNodes = new Dictionary<int, int>();
-        public static Dictionary<int, int> UnvisitedNodes = new Dictionary<int, int>();
-
+        public List<String> VisitedSteps;
+        public List<String> UnvisitedSteps;
+        
         public Node(Node newparent, int ndepth)
         {
             if(newparent==null)
@@ -44,6 +40,7 @@ namespace SnapFish66
             //Add cover later
             VisitedSteps = new List<string>();
             UnvisitedSteps = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5" };
+            
         }
 
         public bool IsEnd(State s)
@@ -51,33 +48,7 @@ namespace SnapFish66
             s.CalculatePoints();
             return (s.Apoints!=0 || s.Bpoints!=0);
         }
-
-        //Increasing or decreasing VisitedNodes
-        private void IncreaseVisited(int dpt, int value)
-        {
-            if(!VisitedNodes.ContainsKey(dpt))
-            {
-                VisitedNodes[dpt] = value;
-            }
-            else
-            {
-                VisitedNodes[dpt] += value;
-            }
-        }
-
-        //Increasing or decreasing UnvisitedNodes
-        private void IncreaseUnvisited(int dpt, int value)
-        {
-            if (!UnvisitedNodes.ContainsKey(dpt))
-            {
-                UnvisitedNodes[dpt] = value;
-            }
-            else
-            {
-                UnvisitedNodes[dpt] += value;
-            }
-        }
-
+        
         public Node AddRandomChild()
         {
             int ranVal = 0;
@@ -153,6 +124,7 @@ namespace SnapFish66
             if (!found)
             {
                 children[action].Add(child);
+                GameTree.allNodes.Add(child);
             }
 
             return child;
