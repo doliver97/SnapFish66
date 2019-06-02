@@ -1,5 +1,5 @@
 DBottom:
-AHand: M10 T11 T10
+AHand: P2 T10 Z11
 ADown:
 ATook: T2 Z4 M4 Z10 M3 T4 P11 P10
 BHand: U U U

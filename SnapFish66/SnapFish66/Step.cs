@@ -345,10 +345,160 @@ namespace SnapFish66
             }
         }
 
-        //Modifies the given state by the given action, returns wheteher the step is valid
+        //We have a trump
+        private bool HasTrump(State state, Card opcard, List<List<Card>> hand)
+        {
+            foreach (List<Card> card in hand)
+            {
+                if(card.Count>0 && card[0].color==state.trump)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        //We have card with the same color
+        private bool HasSameColor(State state, Card opcard, List<List<Card>> hand)
+        {
+            foreach (List<Card> card in hand)
+            {
+                if (card.Count>0 && card[0].color == opcard.color)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        //We have bigger card in the same color
+        private bool HasBiggerSame(State state, Card opcard, List<List<Card>> hand)
+        {
+            foreach (List<Card> card in hand)
+            {
+                if (card.Count>0 && card[0].color == opcard.color && card[0].GetValue()>opcard.GetValue())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        //Endgame (same color and hitting is obligatory)
+        private bool EndgameOK(State state, string action)
+        {
+            //Helpers
+            Dictionary<string, List<Card>> handDict = new Dictionary<string, List<Card>>();
+            List<Card> opponentCard = new List<Card>();
+            if(state.next == "A")
+            {
+                opponentCard = state.bdown;
+                handDict.Add("A1", state.a1);
+                handDict.Add("A2", state.a2);
+                handDict.Add("A3", state.a3);
+                handDict.Add("A4", state.a4);
+                handDict.Add("A5", state.a5);
+            }
+            else
+            {
+                opponentCard = state.adown;
+                handDict.Add("B1", state.b1);
+                handDict.Add("B2", state.b2);
+                handDict.Add("B3", state.b3);
+                handDict.Add("B4", state.b4);
+                handDict.Add("B5", state.b5);
+            }
+
+            List<List<Card>> hand;
+            if (state.next == "A")
+            {
+                hand = new List<List<Card>> { state.a1, state.a2, state.a3, state.a4, state.a5 };
+            }
+            else
+            {
+                hand = new List<List<Card>> { state.b1, state.b2, state.b3, state.b4, state.b5 };
+            }
+
+            //If there are cards in the deck, it is not endgame
+            if (state.deck.Count>0)
+            {
+                return true;
+            }
+
+            //If coming first, we can put anything
+            if(opponentCard.Count==0)
+            {
+                return true;
+            }
+            
+            if(handDict.ContainsKey(action) && handDict[action].Count > 0)
+            {
+                Card putCard = handDict[action][0];
+                Card opCard = opponentCard[0];
+
+                //If we have bigger of the same colour, then must put it down
+                if (HasBiggerSame(state, opCard, hand))
+                {
+                    if (putCard.color == opCard.color && putCard.GetValue() > opCard.GetValue())
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+
+                //Else if we have same color, we must put it down
+                if (HasSameColor(state, opCard, hand))
+                {
+                    if (putCard.color == opCard.color)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                //Else if we have a trump, we must put it down
+                if (HasTrump(state, opCard, hand))
+                {
+                    if(putCard.color == state.trump)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                //If dont have neither the same color, nor trump, we can put anything
+                return true;
+            }
+            //Wrong action
+            else
+            {
+                return false;
+            }
+
+        }
+
+        //Modifies the given state by the given action, returns whether the step is valid
         public bool Do(State state, string action)
         {
             TrySwitchDBottom(state);
+
+            if(!EndgameOK(state, action))
+            {
+                return false;
+            }
 
             if (action == "A1")
             {
