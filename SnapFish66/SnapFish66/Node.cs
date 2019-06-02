@@ -18,19 +18,32 @@ namespace SnapFish66
 
         public double EstimatedValue;
 
-        private List<String> PossibleSteps = new List<string> { "A1","A2","A3","A4","A5","B1","B2","B3","B4","B5"}; //+cover
+        public int depth;
+        
+        private List<String> VisitedSteps;
+        private List<String> UnvisitedSteps;
 
-        public Node(Node newparent)
+        //Key is the depth
+        public static Dictionary<int, int> VisitedNodes = new Dictionary<int, int>();
+        public static Dictionary<int, int> UnvisitedNodes = new Dictionary<int, int>();
+
+        public Node(Node newparent, int ndepth)
         {
             if(newparent==null)
             {
                 isRoot = true;
+                depth = 0;
             }
             else
             {
                 isRoot = false;
                 parent = newparent;
+                depth = ndepth;
             }
+
+            //Add cover later
+            VisitedSteps = new List<string>();
+            UnvisitedSteps = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5" };
         }
 
         public bool IsEnd(State s)
@@ -39,11 +52,37 @@ namespace SnapFish66
             return (s.Apoints!=0 || s.Bpoints!=0);
         }
 
+        //Increasing or decreasing VisitedNodes
+        private void IncreaseVisited(int dpt, int value)
+        {
+            if(!VisitedNodes.ContainsKey(dpt))
+            {
+                VisitedNodes[dpt] = value;
+            }
+            else
+            {
+                VisitedNodes[dpt] += value;
+            }
+        }
+
+        //Increasing or decreasing UnvisitedNodes
+        private void IncreaseUnvisited(int dpt, int value)
+        {
+            if (!UnvisitedNodes.ContainsKey(dpt))
+            {
+                UnvisitedNodes[dpt] = value;
+            }
+            else
+            {
+                UnvisitedNodes[dpt] += value;
+            }
+        }
+
         public Node AddRandomChild()
         {
             int ranVal = 0;
 
-            Node child = new Node(this);
+            Node child = new Node(this, depth+1);
             child.state = this.state.Copy();
 
             if (isRoot)
@@ -60,27 +99,49 @@ namespace SnapFish66
 
             bool success = false;
 
+            string action = "";
+
             while(!success)
             {
                 //reset the wrong steps effect
-                child.state = state.Copy(); 
+                child.state = state.Copy();
                 if (isRoot)
                 {
                     child.state = child.state.GenerateRandom();
                 }
 
-                ranVal = random.Next(PossibleSteps.Count);
-                success = child.state.Step(child.state,PossibleSteps[ranVal]);
+                // Only check visiteds if there are no more unvisiteds
+                if(UnvisitedSteps.Count>0)
+                {
+                    ranVal = random.Next(UnvisitedSteps.Count);
+                    action = UnvisitedSteps[ranVal];
+                    success = child.state.Step(child.state, action);
+
+                    if(success)
+                    {
+                        VisitedSteps.Add(action);
+                    }
+
+                    UnvisitedSteps.Remove(action);
+                }
+                else
+                {
+                    ranVal = random.Next(VisitedSteps.Count);
+                    action = VisitedSteps[ranVal];
+
+                    //Will always be true, but needed because of side effect
+                    success = child.state.Step(child.state, action);
+                }
             }
 
-            if(!children.ContainsKey(PossibleSteps[ranVal]))
+            if(!children.ContainsKey(action))
             {
-                children[PossibleSteps[ranVal]] = new List<Node>();
+                children[action] = new List<Node>();
             }
 
             //Check if this state has already been added. If yes, return the old one.
             bool found = false;
-            foreach (Node old in children[PossibleSteps[ranVal]])
+            foreach (Node old in children[action])
             {
                 if(child.state.IsSame(old.state))
                 {
@@ -91,7 +152,7 @@ namespace SnapFish66
 
             if (!found)
             {
-                children[PossibleSteps[ranVal]].Add(child);
+                children[action].Add(child);
             }
 
             return child;

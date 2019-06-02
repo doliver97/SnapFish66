@@ -29,7 +29,7 @@ namespace SnapFish66
 
         public GameTree(State s, ProgressBar nprogressBar)
         {
-            root = new Node(null)
+            root = new Node(null,0)
             {
                 state = s
             };
