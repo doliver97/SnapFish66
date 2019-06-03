@@ -184,8 +184,8 @@ namespace SnapFish66
 
         private string CardNumberDiff()
         {
-            int Anum = a1.Count + a2.Count + a3.Count + a4.Count + a5.Count;
-            int Bnum = b1.Count + b2.Count + b3.Count + b4.Count + b5.Count;
+            int Anum = a1.Count + a2.Count + a3.Count + a4.Count + a5.Count + adown.Count;
+            int Bnum = b1.Count + b2.Count + b3.Count + b4.Count + b5.Count + bdown.Count;
             if(Anum<Bnum)
             {
                 return "A";

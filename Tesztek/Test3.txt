@@ -2,7 +2,7 @@ DBottom: T3
 AHand: P11 T10 P3 M3 Z2
 ADown:
 ATook:
-BHand: U U U U U
+BHand: U U U U
 BDown: T2
 BTook:
 A20:
