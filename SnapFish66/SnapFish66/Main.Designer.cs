@@ -91,9 +91,10 @@
             this.label13 = new System.Windows.Forms.Label();
             this.covered_cb = new System.Windows.Forms.CheckBox();
             this.Test_btn = new System.Windows.Forms.Button();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.testFileSelector = new System.Windows.Forms.ComboBox();
             this.NodesDataGridView = new System.Windows.Forms.DataGridView();
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.Reset_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Deck_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Dbottom_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.B3_pb)).BeginInit();
@@ -455,7 +456,7 @@
             // 
             // Start_btn
             // 
-            this.Start_btn.Location = new System.Drawing.Point(1191, 729);
+            this.Start_btn.Location = new System.Drawing.Point(1191, 699);
             this.Start_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Start_btn.Name = "Start_btn";
             this.Start_btn.Size = new System.Drawing.Size(75, 23);
@@ -777,13 +778,6 @@
             this.Test_btn.UseVisualStyleBackColor = true;
             this.Test_btn.Click += new System.EventHandler(this.Test_btn_Click);
             // 
-            // progressBar
-            // 
-            this.progressBar.Location = new System.Drawing.Point(868, 76);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(398, 23);
-            this.progressBar.TabIndex = 63;
-            // 
             // testFileSelector
             // 
             this.testFileSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -807,14 +801,31 @@
             this.NodesDataGridView.Size = new System.Drawing.Size(325, 430);
             this.NodesDataGridView.TabIndex = 65;
             // 
+            // backgroundWorker
+            // 
+            this.backgroundWorker.WorkerReportsProgress = true;
+            this.backgroundWorker.WorkerSupportsCancellation = true;
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
+            this.backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
+            // 
+            // Reset_btn
+            // 
+            this.Reset_btn.Location = new System.Drawing.Point(1191, 727);
+            this.Reset_btn.Name = "Reset_btn";
+            this.Reset_btn.Size = new System.Drawing.Size(75, 23);
+            this.Reset_btn.TabIndex = 66;
+            this.Reset_btn.Text = "RESET";
+            this.Reset_btn.UseVisualStyleBackColor = true;
+            this.Reset_btn.Click += new System.EventHandler(this.Reset_btn_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1277, 761);
+            this.Controls.Add(this.Reset_btn);
             this.Controls.Add(this.NodesDataGridView);
             this.Controls.Add(this.testFileSelector);
-            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.Test_btn);
             this.Controls.Add(this.covered_cb);
             this.Controls.Add(this.label13);
@@ -967,9 +978,10 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.CheckBox covered_cb;
         private System.Windows.Forms.Button Test_btn;
-        private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.ComboBox testFileSelector;
         private System.Windows.Forms.DataGridView NodesDataGridView;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
+        private System.Windows.Forms.Button Reset_btn;
     }
 }
 

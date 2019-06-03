@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,9 +8,12 @@ using System.Windows.Forms;
 
 namespace SnapFish66
 {
-    class GameTree
+    public class GameTree
     {
-        Node root;
+        public Node root;
+
+        public delegate void SetLabelsDelegate(List<Label> labels);
+        public SetLabelsDelegate labelsDelegate;
 
         //Key is the depth
         public static Dictionary<int, int> VisitedNodes = new Dictionary<int, int>();
@@ -27,22 +31,23 @@ namespace SnapFish66
         public double b4;
         public double b5;
         public double cover;
-
-        private ProgressBar progressBar;
+        
         private DataGridView nodesDataGridView;
 
         public static List<Node> allNodes;
         
 
-        public GameTree(State s, ProgressBar nprogressBar, DataGridView ndataGridView)
+        public GameTree(State s, DataGridView ndataGridView)
         {
+            labelsDelegate = new SetLabelsDelegate(SetLabels);
+
             root = new Node(null,0)
             {
                 state = s
             };
-
-            progressBar = nprogressBar;
             nodesDataGridView = ndataGridView;
+
+            allNodes = new List<Node> { root };
         }
 
         //Estimated value of action, or NaN if no such action yet
@@ -73,24 +78,33 @@ namespace SnapFish66
             cover = EstVal("cover");
         }
 
-        public void Calculate(List<Label> labels)
+        public void Reset(State state)
         {
-            allNodes = new List<Node> { root };
-            VisitedNodes = new Dictionary<int, int>();
-            UnvisitedNodes = new Dictionary<int, int>();
+            allNodes.Clear();
+            root = new Node(null, 0);
+            root.state = state;
+            allNodes.Add(root);
+            VisitedNodes.Clear();
+            UnvisitedNodes.Clear();
+        }
 
-            int rounds = 50000;
-
-            progressBar.Value = 0;
-            progressBar.Maximum = rounds;
-
-            //while (Main.running)
-            for(int i=0; i<rounds;i++)
+        public void Calculate(List<Label> labels, BackgroundWorker worker)
+        {
+            while(!worker.CancellationPending)
             {
-                CalcOneRound();
-                progressBar.Increment(1);
+                for (int i = 0; i < 1000; i++)
+                {
+                    CalcOneRound();
+                }
+
+                //Calculate data for labels
+                SetEstimatedValues();
+                SetUnvisitedNodes(); //Calculates both visited and unvisited nodes
+
+                //Call SetLabels
+                worker.ReportProgress(0);
+                
             }
-            SetLabels(labels);
         }
 
         private void CalcOneRound()
@@ -106,6 +120,9 @@ namespace SnapFish66
         //Sets visited and unvisited nodes
         private void SetUnvisitedNodes()
         {
+            VisitedNodes.Clear();
+            UnvisitedNodes.Clear();
+
             foreach (Node node in allNodes)
             {
                 //Add all visited nodes
@@ -135,10 +152,8 @@ namespace SnapFish66
         }
 
         //Calculates estimated values and unvisited nodes, and sets the labels
-        private void SetLabels(List<Label> labels)
+        public void SetLabels(List<Label> labels)
         {
-            SetEstimatedValues();
-
             List<double> values = new List<double>
             {
                 a1,
@@ -158,7 +173,7 @@ namespace SnapFish66
             {
                 if(!double.IsNaN(values[i]))
                 {
-                    labels[i].Text = Convert.ToString(Math.Round(values[i],2));
+                    labels[i].Text = Convert.ToString(Math.Round(values[i], 2));
                 }
                 else
                 {
@@ -166,12 +181,8 @@ namespace SnapFish66
                 }
             }
 
-            //Calculate visited and unvisited nodes
-            SetUnvisitedNodes();
-
             //Clear dataGridView
             nodesDataGridView.Rows.Clear();
-            nodesDataGridView.Refresh();
 
             nodesDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             nodesDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;

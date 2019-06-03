@@ -20,8 +20,9 @@ namespace SnapFish66
 
         public static bool running = false;
 
-        public List<Label> labels;
+        public static List<Label> labels;
 
+        public static GameTree tree;
 
         public Main()
         {
@@ -46,6 +47,8 @@ namespace SnapFish66
                 B5_l,
                 cover_l
             };
+
+            tree = new GameTree(state, NodesDataGridView);
         }
 
         private void InitCardPlaces()
@@ -102,9 +105,7 @@ namespace SnapFish66
             }
         }
         
-
         
-
         private void Main_Load(object sender, EventArgs e)
         {
 
@@ -227,7 +228,6 @@ namespace SnapFish66
         }
 
         
-
         private void Deck_pb_Click(object sender, EventArgs e)
         {
             AddCards(state.deck);
@@ -466,15 +466,16 @@ namespace SnapFish66
         {
             if(running)
             {
+                backgroundWorker.CancelAsync();
                 Start_btn.Text = "START";
                 running = false;
             }
             else
             {
+                
                 Start_btn.Text = "STOP";
                 running = true;
-                GameTree tree = new GameTree(state, progressBar, NodesDataGridView);
-                tree.Calculate(labels);
+                backgroundWorker.RunWorkerAsync();
             }
         }
 
@@ -597,6 +598,36 @@ namespace SnapFish66
             {
                 B_rb.Checked = true;
             }
+        }
+
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker BW = sender as BackgroundWorker;
+            tree.root.state = state;
+            tree.Calculate(labels, BW);
+        }
+
+        private void Reset_btn_Click(object sender, EventArgs e)
+        {
+            backgroundWorker.CancelAsync();
+            tree.Reset(state);
+            tree.a1 = 0;
+            tree.a2 = 0;
+            tree.a3 = 0;
+            tree.a4 = 0;
+            tree.a5 = 0;
+            tree.b1 = 0;
+            tree.b2 = 0;
+            tree.b3 = 0;
+            tree.b4 = 0;
+            tree.b5 = 0;
+            tree.cover = 0;
+            tree.SetLabels(labels);
+        }
+
+        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            tree.SetLabels(labels);
         }
     }
 }

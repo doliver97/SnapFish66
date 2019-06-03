@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SnapFish66
 {
-    class Node
+    public class Node
     {
         public State state;
         public Node parent;
