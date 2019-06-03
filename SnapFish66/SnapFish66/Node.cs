@@ -67,6 +67,24 @@ namespace SnapFish66
                 CalcEstimatedValue();
                 return null;
             }
+            
+            //Remove invalid steps
+            if(child.state.next=="A")
+            {
+                UnvisitedSteps.Remove("B1");
+                UnvisitedSteps.Remove("B2");
+                UnvisitedSteps.Remove("B3");
+                UnvisitedSteps.Remove("B4");
+                UnvisitedSteps.Remove("B5");
+            }
+            else
+            {
+                UnvisitedSteps.Remove("A1");
+                UnvisitedSteps.Remove("A2");
+                UnvisitedSteps.Remove("A3");
+                UnvisitedSteps.Remove("A4");
+                UnvisitedSteps.Remove("A5");
+            }
 
             bool success = false;
 

@@ -79,7 +79,7 @@ namespace SnapFish66
             VisitedNodes = new Dictionary<int, int>();
             UnvisitedNodes = new Dictionary<int, int>();
 
-            int rounds = 20000;
+            int rounds = 50000;
 
             progressBar.Value = 0;
             progressBar.Maximum = rounds;
