@@ -792,13 +792,16 @@
             // 
             this.NodesDataGridView.AllowUserToAddRows = false;
             this.NodesDataGridView.AllowUserToDeleteRows = false;
+            this.NodesDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.NodesDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.NodesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.NodesDataGridView.Location = new System.Drawing.Point(868, 129);
+            this.NodesDataGridView.Location = new System.Drawing.Point(893, 66);
             this.NodesDataGridView.Name = "NodesDataGridView";
             this.NodesDataGridView.ReadOnly = true;
             this.NodesDataGridView.RowHeadersWidth = 20;
             this.NodesDataGridView.RowTemplate.Height = 24;
-            this.NodesDataGridView.Size = new System.Drawing.Size(325, 430);
+            this.NodesDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.NodesDataGridView.Size = new System.Drawing.Size(313, 597);
             this.NodesDataGridView.TabIndex = 65;
             // 
             // backgroundWorker
