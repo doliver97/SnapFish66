@@ -73,13 +73,13 @@ namespace SnapFish66
             }
         }
 
-        public bool IsEnd(State s)
+        public virtual bool IsEnd(State s)
         {
             s.CalculatePoints();
             return (s.Apoints!=0 || s.Bpoints!=0);
         }
         
-        public Node AddRandomChild()
+        public virtual Node AddRandomChild()
         {
             int ranVal = 0;
 
@@ -190,7 +190,7 @@ namespace SnapFish66
             return child;
         }
 
-        public void CalcEstimatedValue()
+        public virtual void CalcEstimatedValue()
         {
             //Trivial case
             if(IsEnd(state))
@@ -251,7 +251,7 @@ namespace SnapFish66
             return min;
         }
 
-        public List<Node> GetChildrenOfAction(string action)
+        public virtual List<Node> GetChildrenOfAction(string action)
         {
             if(children.ContainsKey(action))
             {
