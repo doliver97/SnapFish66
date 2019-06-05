@@ -91,15 +91,25 @@ namespace SnapFish66
                 child.state = child.state.GenerateRandom();
             }
 
+            //Set closed (has to be before IsEnd)
+            SetClosed();
+            
+
             //Do not try to generate child in end state, rather calculate the value of the state (and propagate up)
-            if(IsEnd(state))
+            if (IsEnd(state))
             {
                 CalcEstimatedValue();
                 return null;
             }
-            
+
+            //Do not go further if it is closed (has to be after IsEnd)
+            if (closed)
+            {
+                return null;
+            }
+
             //Remove invalid steps
-            if(child.state.next=="A")
+            if (child.state.next=="A")
             {
                 UnvisitedSteps.Remove("B1");
                 UnvisitedSteps.Remove("B2");
@@ -119,14 +129,7 @@ namespace SnapFish66
             bool success = false;
 
             string action = "";
-
-            //If it is closed, do not go further
-            SetClosed();
-            if (closed)
-            {
-                return null;
-            }
-
+            
             while (!success)
             {
                 //reset the wrong steps effect
