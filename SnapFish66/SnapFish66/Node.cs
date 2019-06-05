@@ -13,6 +13,8 @@ namespace SnapFish66
 
         private bool isRoot;
 
+        public bool closed;
+
         private Dictionary<string, List<Node>> children = new Dictionary<string, List<Node>>();
         private Random random = new Random();
 
@@ -41,6 +43,34 @@ namespace SnapFish66
             VisitedSteps = new List<string>();
             UnvisitedSteps = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5" };
             
+        }
+
+        private void SetClosed()
+        {
+            //Trivial case: end of game
+            if(IsEnd(state))
+            {
+                closed = true;
+            }
+            else
+            {
+                //If there are no unvisited possible steps left, and every child is closed, set this as closed
+                if(UnvisitedSteps.Count==0)
+                {
+                    closed = true;
+                }
+                foreach(List<Node> childlist in children.Values)
+                {
+                    foreach (Node child in childlist)
+                    {
+                        if(!child.closed)
+                        {
+                            closed = false;
+                            return;
+                        }
+                    }
+                }
+            }
         }
 
         public bool IsEnd(State s)
@@ -90,7 +120,14 @@ namespace SnapFish66
 
             string action = "";
 
-            while(!success)
+            //If it is closed, do not go further
+            SetClosed();
+            if (closed)
+            {
+                return null;
+            }
+
+            while (!success)
             {
                 //reset the wrong steps effect
                 child.state = state.Copy();
@@ -144,6 +181,8 @@ namespace SnapFish66
                 children[action].Add(child);
                 GameTree.allNodes.Add(child);
             }
+
+            
 
             return child;
         }

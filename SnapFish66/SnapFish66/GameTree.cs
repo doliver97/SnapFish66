@@ -90,7 +90,7 @@ namespace SnapFish66
 
         public void Calculate(List<Label> labels, BackgroundWorker worker)
         {
-            while(!worker.CancellationPending)
+            while(!worker.CancellationPending && root.closed==false)
             {
                 for (int i = 0; i < 1000; i++)
                 {
