@@ -87,10 +87,10 @@ namespace SnapFish66
 
         private void AddCards(List<Card> target)
         {
-            target.Clear();
-            CardSelector cs = new CardSelector();
+            CardSelector cs = new CardSelector(target);
             cs.ShowDialog();
             List<string> selected = cs.GetSelectedCards();
+            target.Clear();
 
             if(selected.Count>0 && selected[0]=="unknown")
             {

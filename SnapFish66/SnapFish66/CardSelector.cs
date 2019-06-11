@@ -13,12 +13,32 @@ namespace SnapFish66
     public partial class CardSelector : Form
     {
         private List<string> selectedCards;
-        public CardSelector()
+        public CardSelector(List<Card> cards)
         {
             InitializeComponent();
             selectedCards = new List<string>();
+
+            SetSelectedCards(cards);
         }
-        
+
+        public void SetSelectedCards(List<Card> cards)
+        {
+            List<string> IDs = new List<string> { "M2", "M3", "M4", "M10", "M11", "P2", "P3", "P4", "P10", "P11", "T2", "T3", "T4", "T10", "T11", "Z2", "Z3", "Z4", "Z10", "Z11" };
+            List<CheckBox> checkboxes = new List<CheckBox> { checkBoxM2, checkBoxM3, checkBoxM4, checkBoxM10, checkBoxM11, checkBoxP2, checkBoxP3, checkBoxP4, checkBoxP10, checkBoxP11, checkBoxT2, checkBoxT3, checkBoxT4, checkBoxT10, checkBoxT11, checkBoxZ2, checkBoxZ3, checkBoxZ4, checkBoxZ10, checkBoxZ11};
+
+            foreach(Card card in cards)
+            {
+                for (int i = 0; i < IDs.Count; i++)
+                {
+                    if(card.ID==IDs[i])
+                    {
+                        //It adds the string to selectedCards list
+                        checkboxes[i].Checked = true;
+                    }
+                }
+            }
+        }
+
         public List<string> GetSelectedCards()
         {
             return selectedCards;
