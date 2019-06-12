@@ -41,10 +41,7 @@ namespace SnapFish66
         {
             labelsDelegate = new SetLabelsDelegate(SetLabels);
 
-            root = new Node(null,0)
-            {
-                state = s
-            };
+            root = new Node(null,s,0);
             nodesDataGridView = ndataGridView;
 
             allNodes = new List<Node> { root };
@@ -81,8 +78,7 @@ namespace SnapFish66
         public void Reset(State state)
         {
             allNodes.Clear();
-            root = new Node(null, 0);
-            root.state = state;
+            root = new Node(null,state, 0);
             allNodes.Add(root);
             VisitedNodes.Clear();
             UnvisitedNodes.Clear();
@@ -136,7 +132,7 @@ namespace SnapFish66
                 }
 
                 //Do not count the unvisited nodes after end of game
-                if(!node.IsEnd(node.state))
+                if(!node.IsEnd())
                 {
                     //Add unvisited nodes
                     if (!UnvisitedNodes.ContainsKey(node.depth))

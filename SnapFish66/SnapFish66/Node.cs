@@ -10,7 +10,11 @@ namespace SnapFish66
     public class Node
     {
         public State state;
-        public Node parent;
+        private Node parent;
+
+        double value;
+        double alpha;
+        double beta;
 
         private bool isRoot;
 
@@ -26,7 +30,7 @@ namespace SnapFish66
         public List<String> VisitedSteps;
         public List<String> UnvisitedSteps;
         
-        public Node(Node newparent, int ndepth)
+        public Node(Node newparent, State nstate, int ndepth)
         {
             if(newparent==null)
             {
@@ -40,16 +44,17 @@ namespace SnapFish66
                 depth = ndepth;
             }
 
-            //Add cover later
-            VisitedSteps = new List<string>();
-            UnvisitedSteps = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5" };
+            state = nstate;
             
+            VisitedSteps = new List<string>();
+            UnvisitedSteps = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5" }; //Add cover later
+
         }
 
         private void SetClosed()
         {
             //Trivial case: end of game
-            if(IsEnd(state))
+            if(IsEnd())
             {
                 closed = true;
             }
@@ -74,18 +79,17 @@ namespace SnapFish66
             }
         }
 
-        public virtual bool IsEnd(State s)
+        public virtual bool IsEnd()
         {
-            s.CalculatePoints();
-            return (s.Apoints!=0 || s.Bpoints!=0);
+            state.CalculatePoints();
+            return (state.Apoints!=0 || state.Bpoints!=0);
         }
         
         public virtual Node AddRandomChild()
         {
             int ranVal = 0;
 
-            Node child = new Node(this, depth+1);
-            child.state = this.state.Copy();
+            Node child = new Node(this, state.Copy(), depth+1);
 
             if (isRoot)
             {
@@ -97,7 +101,7 @@ namespace SnapFish66
             
 
             //Do not try to generate child in end state, rather calculate the value of the state (and propagate up)
-            if (IsEnd(state))
+            if (IsEnd())
             {
                 CalcEstimatedValue();
                 return null;
@@ -194,7 +198,7 @@ namespace SnapFish66
         public virtual void CalcEstimatedValue()
         {
             //Trivial case
-            if(IsEnd(state))
+            if(IsEnd())
             {
                 if(state.Apoints>0)
                 {
