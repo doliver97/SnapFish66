@@ -41,7 +41,7 @@ namespace SnapFish66
         {
             labelsDelegate = new SetLabelsDelegate(SetLabels);
 
-            root = new Node(null,s,0);
+            root = new Node(null, s, "", 0);
             nodesDataGridView = ndataGridView;
 
             allNodes = new List<Node> { root };
@@ -50,14 +50,16 @@ namespace SnapFish66
         //Estimated value of action, or NaN if no such action yet
         private double EstVal(string s)
         {
-            List<Node> nodes = root.GetChildrenOfAction(s);
+            List<Node> childrenOfRoot = root.children;
 
-            if(nodes.Count==0)
+            List<Node> nodesOfAction = childrenOfRoot.Where(x=>x.actionBefore==s).ToList();
+
+            if(nodesOfAction.Count==0)
             {
                 return Double.NaN;
             }
 
-            return nodes.Average(x => x.EstimatedValue);
+            return nodesOfAction.Average(x => x.EstimatedValue);
         }
 
         private void SetEstimatedValues()
@@ -78,7 +80,7 @@ namespace SnapFish66
         public void Reset(State state)
         {
             allNodes.Clear();
-            root = new Node(null,state, 0);
+            root = new Node(null, state, "", 0);
             allNodes.Add(root);
             VisitedNodes.Clear();
             UnvisitedNodes.Clear();
@@ -88,10 +90,7 @@ namespace SnapFish66
         {
             while(!worker.CancellationPending && root.closed==false)
             {
-                for (int i = 0; i < 1000; i++)
-                {
-                    CalcOneRound();
-                }
+                root.AlphaBeta(-3, 3);
 
                 //Calculate data for labels
                 SetEstimatedValues();
@@ -100,16 +99,6 @@ namespace SnapFish66
                 //Call SetLabels
                 worker.ReportProgress(0);
                 
-            }
-        }
-
-        private void CalcOneRound()
-        {
-            Node actual = root;
-            
-            while(actual!=null)
-            {
-                actual = actual.AddRandomChild();
             }
         }
 
@@ -197,12 +186,12 @@ namespace SnapFish66
                 nodesDataGridView.Rows[i].Cells[0].Value = i;
             }
 
-            foreach (int key in VisitedNodes.Keys)
+            foreach (int key in VisitedNodes.Keys.ToList())
             {
                 nodesDataGridView.Rows[key].Cells[1].Value = VisitedNodes[key];
             }
 
-            foreach (int key in UnvisitedNodes.Keys)
+            foreach (int key in UnvisitedNodes.Keys.ToList())
             {
                 nodesDataGridView.Rows[key].Cells[2].Value = UnvisitedNodes[key];
             }

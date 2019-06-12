@@ -15,12 +15,15 @@ namespace SnapFish66
         double value;
         double alpha;
         double beta;
+        bool maximizer;
+
+        public string actionBefore;
 
         private bool isRoot;
 
         public bool closed;
-
-        private Dictionary<string, List<Node>> children = new Dictionary<string, List<Node>>();
+        
+        public List<Node> children = new List<Node>();
         private Random random = new Random();
 
         public double EstimatedValue;
@@ -30,8 +33,11 @@ namespace SnapFish66
         public List<String> VisitedSteps;
         public List<String> UnvisitedSteps;
         
-        public Node(Node newparent, State nstate, int ndepth)
+        public Node(Node newparent, State nstate, string nactionBefore, int ndepth)
         {
+            state = nstate;
+            actionBefore = nactionBefore;
+
             if(newparent==null)
             {
                 isRoot = true;
@@ -44,11 +50,23 @@ namespace SnapFish66
                 depth = ndepth;
             }
 
-            state = nstate;
-            
             VisitedSteps = new List<string>();
-            UnvisitedSteps = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5" }; //Add cover later
+            UnvisitedSteps = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5" };
 
+            if(state.next == "A")
+            {
+                maximizer = true;
+                value = -3;
+            }
+            else
+            {
+                maximizer = false;
+                value = 3;
+            }
+
+            //3 is the maximum score possible
+            alpha = -3;
+            beta = 3;
         }
 
         private void SetClosed()
@@ -65,142 +83,94 @@ namespace SnapFish66
                 {
                     closed = true;
                 }
-                foreach(List<Node> childlist in children.Values)
+                foreach (Node child in children)
                 {
-                    foreach (Node child in childlist)
+                    if (!child.closed)
                     {
-                        if(!child.closed)
-                        {
-                            closed = false;
-                            return;
-                        }
+                        closed = false;
+                        return;
                     }
                 }
+
             }
         }
 
-        public virtual bool IsEnd()
+        public bool IsEnd()
         {
             state.CalculatePoints();
             return (state.Apoints!=0 || state.Bpoints!=0);
         }
         
-        public virtual Node AddRandomChild()
+        //Generate all possible children from this node, store in "children" variable
+        public void GenerateChildren()
         {
-            int ranVal = 0;
+            children.Clear();
 
-            Node child = new Node(this, state.Copy(), depth+1);
-
-            if (isRoot)
+            //root works in special way
+            if(isRoot)
             {
-                child.state = child.state.GenerateRandom();
+                GenerateChildrenForRoot();
+                return;
             }
 
-            //Set closed (has to be before IsEnd)
-            SetClosed();
-            
-
-            //Do not try to generate child in end state, rather calculate the value of the state (and propagate up)
-            if (IsEnd())
+            foreach (string action in UnvisitedSteps)
             {
-                CalcEstimatedValue();
-                return null;
+                Node child = new Node(this, state.Copy(), action, depth + 1);
+                bool success = child.state.Step(child.state, action);
+                if(success)
+                {
+                    children.Add(child);
+                }
             }
+        }
 
-            //Do not go further if it is closed (has to be after IsEnd)
-            if (closed)
+        //Generates children for the root (gives all possible combinations to unknown cards)
+        private void GenerateChildrenForRoot()
+        {
+            //TODO generate not one but all random !!!
+            foreach (string action in UnvisitedSteps)
             {
-                return null;
+                Node child = new Node(this, state.GenerateRandom(), action, depth + 1);
+                bool success = child.state.Step(child.state, action);
+                if (success)
+                {
+                    children.Add(child);
+                }
             }
+        }
 
-            //Remove invalid steps
-            if (child.state.next=="A")
+        private double Max(double a, double b)
+        {
+            if(a>b)
             {
-                UnvisitedSteps.Remove("B1");
-                UnvisitedSteps.Remove("B2");
-                UnvisitedSteps.Remove("B3");
-                UnvisitedSteps.Remove("B4");
-                UnvisitedSteps.Remove("B5");
+                return a;
             }
             else
             {
-                UnvisitedSteps.Remove("A1");
-                UnvisitedSteps.Remove("A2");
-                UnvisitedSteps.Remove("A3");
-                UnvisitedSteps.Remove("A4");
-                UnvisitedSteps.Remove("A5");
+                return b;
             }
-
-            bool success = false;
-
-            string action = "";
-            
-            while (!success)
-            {
-                //reset the wrong steps effect
-                child.state = state.Copy();
-                if (isRoot)
-                {
-                    child.state = child.state.GenerateRandom();
-                }
-
-                // Only check visiteds if there are no more unvisiteds
-                if(UnvisitedSteps.Count>0)
-                {
-                    ranVal = random.Next(UnvisitedSteps.Count);
-                    action = UnvisitedSteps[ranVal];
-                    success = child.state.Step(child.state, action);
-
-                    if(success)
-                    {
-                        VisitedSteps.Add(action);
-                    }
-
-                    UnvisitedSteps.Remove(action);
-                }
-                else
-                {
-                    ranVal = random.Next(VisitedSteps.Count);
-                    action = VisitedSteps[ranVal];
-
-                    //Will always be true, but needed because of side effect
-                    success = child.state.Step(child.state, action);
-                }
-            }
-
-            if(!children.ContainsKey(action))
-            {
-                children[action] = new List<Node>();
-            }
-
-            //Check if this state has already been added. If yes, return the old one.
-            bool found = false;
-            foreach (Node old in children[action])
-            {
-                if(child.state.IsSame(old.state))
-                {
-                    found = true;
-                    child = old;
-                }
-            }
-
-            if (!found)
-            {
-                children[action].Add(child);
-                GameTree.allNodes.Add(child);
-            }
-
-            
-
-            return child;
         }
 
-        public virtual void CalcEstimatedValue()
+        private double Min(double a, double b)
         {
-            //Trivial case
+            if(a>b)
+            {
+                return b;
+            }
+            else
+            {
+                return a;
+            }
+        }
+
+        public double AlphaBeta(double alpha, double beta)
+        {
+            GenerateChildren();
+
+            //Trivial end case
             if(IsEnd())
             {
-                if(state.Apoints>0)
+                if (state.Apoints > 0)
                 {
                     EstimatedValue = state.Apoints;
                 }
@@ -208,63 +178,39 @@ namespace SnapFish66
                 {
                     EstimatedValue = state.Bpoints * (-1);
                 }
-                
-            }
-            //Find best step, with highest average points
-            else if(state.next=="A")
-            {
-                EstimatedValue = HighestInDict();
-            }
-            //Find best step, with lowest average points
-            else if(state.next=="B")
-            {
-                EstimatedValue = LowestInDict();
-            }
 
-            //Propagate value up the tree
-            if (parent != null)
-            {
-                parent.CalcEstimatedValue();
+                return EstimatedValue;
             }
-        }
-
-        private double HighestInDict()
-        {
-            double max = -10;
-            foreach (var item in children.Values)
+            //This node is a maximizer
+            else if(maximizer)
             {
-                if(item.Average(x=>x.EstimatedValue)> max)
+                value = -3; //Minimum value possible
+                foreach (Node child in children)
                 {
-                    max = item.Average(x => x.EstimatedValue);
+                    value = Max(value, child.AlphaBeta(alpha, beta));
+                    alpha = Max(alpha, value);
+                    if (alpha >= beta)
+                    {
+                        break;
+                    }
                 }
+                return value;
             }
-
-            return max;
-        }
-
-        private double LowestInDict()
-        {
-            double min = 10;
-            foreach (var item in children.Values)
-            {
-                if (item.Average(x => x.EstimatedValue) < min)
-                {
-                    min = item.Average(x => x.EstimatedValue);
-                }
-            }
-
-            return min;
-        }
-
-        public virtual List<Node> GetChildrenOfAction(string action)
-        {
-            if(children.ContainsKey(action))
-            {
-                return children[action];
-            }
+            //This node is a minimizer
             else
             {
-                return new List<Node>();
+                value = 3; //Maximum value possible
+                foreach (Node child in children)
+                {
+                    value = Min(value, child.AlphaBeta(alpha, beta));
+                    beta = Min(beta, value);
+                    if (alpha >= beta)
+                    {
+                        break;
+                    }
+                }
+
+                return value;
             }
         }
     }
