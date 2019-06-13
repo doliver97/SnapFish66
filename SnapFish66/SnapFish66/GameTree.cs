@@ -93,6 +93,7 @@ namespace SnapFish66
                 root.closed = true; //DEBUG, TODO delete
 
                 //Calculate data for labels
+                CalculateEstimatedValues();
                 SetEstimatedValues();
 
                 //Call SetLabels
@@ -100,7 +101,13 @@ namespace SnapFish66
                 
             }
         }
-        
+
+        private void CalculateEstimatedValues()
+        {
+            ; //TODO
+            root.GetEstimatedValue();
+        }
+
         //Calculates estimated values and unvisited nodes, and sets the labels
         public void SetLabels(List<Label> labels)
         {

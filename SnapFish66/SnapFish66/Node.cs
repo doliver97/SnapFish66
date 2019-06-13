@@ -53,40 +53,11 @@ namespace SnapFish66
             VisitedSteps = new List<string>();
             UnvisitedSteps = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5" };
 
-            if(state.next == "A")
-            {
-                maximizer = true;
-                EstimatedValue = -3;
-                value = -3;
-            }
-            else
-            {
-                maximizer = false;
-                EstimatedValue = 3;
-                value = 3;
-            }
+            
 
             //3 is the maximum score possible
             alpha = -3;
             beta = 3;
-        }
-
-        //Updating every estimated value up the tree
-        private void UpdateEstimatedValues()
-        {
-            if(parent!=null)
-            {
-                if(parent.maximizer)
-                {
-                    parent.EstimatedValue = Max(EstimatedValue, parent.EstimatedValue);
-                }
-                else
-                {
-                    parent.EstimatedValue = Min(EstimatedValue, parent.EstimatedValue);
-                }
-
-                parent.UpdateEstimatedValues();
-            }
         }
 
         private void SetClosed()
@@ -139,12 +110,12 @@ namespace SnapFish66
                 if(IsEnd())
                 {
                     SetEstimatedValue();
-                    UpdateEstimatedValues();
                     return;
                 }
 
                 Node child = new Node(this, state.Copy(), action, depth + 1);
                 bool success = child.state.Step(child.state, action);
+                child.SetMaximizer();
                 if(success)
                 {
                     lock(GameTree.VisitedNodes)
@@ -163,6 +134,22 @@ namespace SnapFish66
             }
         }
 
+        private void SetMaximizer()
+        {
+            if (state.next == "A")
+            {
+                maximizer = true;
+                EstimatedValue = -3;
+                value = -3;
+            }
+            else
+            {
+                maximizer = false;
+                EstimatedValue = 3;
+                value = 3;
+            }
+        }
+
         private void SetEstimatedValue()
         {
             if(state.Apoints!=0)
@@ -175,6 +162,27 @@ namespace SnapFish66
             }
         }
 
+        //Getting estimated value of node by recurively calling it for all of its children
+        public double GetEstimatedValue()
+        {
+            //If end or pruned
+            if(children.Count == 0)
+            {
+                return EstimatedValue;
+            }
+
+            if(maximizer)
+            {
+                EstimatedValue = children.Max(x => x.GetEstimatedValue());
+            }
+            else
+            {
+                EstimatedValue = children.Min(x => x.GetEstimatedValue());
+            }
+
+            return EstimatedValue;
+        }
+
         //Generates children for the root (gives all possible combinations to unknown cards)
         private void GenerateChildrenForRoot()
         {
@@ -183,13 +191,9 @@ namespace SnapFish66
             {
                 Node child = new Node(this, state.GenerateRandom(), action, depth + 1);
                 bool success = child.state.Step(child.state, action);
+                child.SetMaximizer();
                 if (success)
                 {
-                    if(IsEnd())
-                    {
-                        child.UpdateEstimatedValues();
-                    }
-
                     children.Add(child);
                 }
             }
