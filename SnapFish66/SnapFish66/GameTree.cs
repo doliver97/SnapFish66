@@ -94,36 +94,13 @@ namespace SnapFish66
 
                 //Calculate data for labels
                 SetEstimatedValues();
-                SetVisitedNodes(); //Calculates visited nodes
 
                 //Call SetLabels
                 worker.ReportProgress(0);
                 
             }
         }
-
-        //Sets visited nodes
-        private void SetVisitedNodes()
-        {
-            lock (VisitedNodes)
-            {
-                VisitedNodes.Clear();
-
-                foreach (Node node in allNodes)
-                {
-                    //Add all visited nodes
-                    if (!VisitedNodes.ContainsKey(node.depth))
-                    {
-                        VisitedNodes[node.depth] = 1;
-                    }
-                    else
-                    {
-                        VisitedNodes[node.depth]++;
-                    }
-                } 
-            }
-        }
-
+        
         //Calculates estimated values and unvisited nodes, and sets the labels
         public void SetLabels(List<Label> labels)
         {
@@ -167,7 +144,10 @@ namespace SnapFish66
 
             lock (VisitedNodes)
             {
-                nodesDataGridView.RowCount = VisitedNodes.Keys.Count;
+                if (VisitedNodes.Keys.Count > 0)
+                {
+                    nodesDataGridView.RowCount = VisitedNodes.Keys.Max() + 1;
+                }
 
                 for (int i = 0; i < nodesDataGridView.RowCount; i++)
                 {
@@ -181,6 +161,12 @@ namespace SnapFish66
             }
 
             nodesDataGridView.Refresh();
+        }
+
+        //Creates root nodes by giving value to unknown cards (generates all possible permutations)
+        private void CreateRoots()
+        {
+            //TODO
         }
     }
 }

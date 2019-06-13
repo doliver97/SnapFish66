@@ -147,6 +147,17 @@ namespace SnapFish66
                 bool success = child.state.Step(child.state, action);
                 if(success)
                 {
+                    lock(GameTree.VisitedNodes)
+                    {
+                        if(!GameTree.VisitedNodes.ContainsKey(child.depth))
+                        {
+                            GameTree.VisitedNodes[child.depth] = 1;
+                        }
+                        else
+                        {
+                            GameTree.VisitedNodes[child.depth]++;
+                        }
+                    }
                     children.Add(child);
                 }
             }
