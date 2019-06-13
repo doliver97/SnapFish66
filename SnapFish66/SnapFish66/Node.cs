@@ -163,7 +163,7 @@ namespace SnapFish66
             }
         }
 
-        public double AlphaBeta(double alpha, double beta)
+        public double AlphaBeta(double nalpha, double nbeta)
         {
             GenerateChildren();
 
@@ -187,8 +187,8 @@ namespace SnapFish66
                 value = -3; //Minimum value possible
                 foreach (Node child in children)
                 {
-                    value = Max(value, child.AlphaBeta(alpha, beta));
-                    alpha = Max(alpha, value);
+                    value = Max(value, child.AlphaBeta(nalpha, nbeta));
+                    alpha = Max(nalpha, value);
                     if (alpha >= beta)
                     {
                         break;
@@ -202,8 +202,8 @@ namespace SnapFish66
                 value = 3; //Maximum value possible
                 foreach (Node child in children)
                 {
-                    value = Min(value, child.AlphaBeta(alpha, beta));
-                    beta = Min(beta, value);
+                    value = Min(value, child.AlphaBeta(nalpha, nbeta));
+                    beta = Min(nbeta, value);
                     if (alpha >= beta)
                     {
                         break;

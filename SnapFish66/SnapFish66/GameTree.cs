@@ -17,7 +17,6 @@ namespace SnapFish66
 
         //Key is the depth
         public static Dictionary<int, int> VisitedNodes = new Dictionary<int, int>();
-        public static Dictionary<int, int> UnvisitedNodes = new Dictionary<int, int>();
 
         //Estimated values of actions
         public double a1;
@@ -83,7 +82,6 @@ namespace SnapFish66
             root = new Node(null, state, "", 0);
             allNodes.Add(root);
             VisitedNodes.Clear();
-            UnvisitedNodes.Clear();
         }
 
         public void Calculate(List<Label> labels, BackgroundWorker worker)
@@ -94,7 +92,7 @@ namespace SnapFish66
 
                 //Calculate data for labels
                 SetEstimatedValues();
-                SetUnvisitedNodes(); //Calculates both visited and unvisited nodes
+                SetVisitedNodes(); //Calculates visited nodes
 
                 //Call SetLabels
                 worker.ReportProgress(0);
@@ -102,37 +100,25 @@ namespace SnapFish66
             }
         }
 
-        //Sets visited and unvisited nodes
-        private void SetUnvisitedNodes()
+        //Sets visited nodes
+        private void SetVisitedNodes()
         {
-            VisitedNodes.Clear();
-            UnvisitedNodes.Clear();
-
-            foreach (Node node in allNodes)
+            lock (VisitedNodes)
             {
-                //Add all visited nodes
-                if(!VisitedNodes.ContainsKey(node.depth))
-                {
-                    VisitedNodes[node.depth] = 1;
-                }
-                else
-                {
-                    VisitedNodes[node.depth]++;
-                }
+                VisitedNodes.Clear();
 
-                //Do not count the unvisited nodes after end of game
-                if(!node.IsEnd())
+                foreach (Node node in allNodes)
                 {
-                    //Add unvisited nodes
-                    if (!UnvisitedNodes.ContainsKey(node.depth))
+                    //Add all visited nodes
+                    if (!VisitedNodes.ContainsKey(node.depth))
                     {
-                        UnvisitedNodes[node.depth] = node.UnvisitedSteps.Count;
+                        VisitedNodes[node.depth] = 1;
                     }
                     else
                     {
-                        UnvisitedNodes[node.depth]+=node.UnvisitedSteps.Count;
+                        VisitedNodes[node.depth]++;
                     }
-                }
+                } 
             }
         }
 
@@ -173,27 +159,23 @@ namespace SnapFish66
             nodesDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
 
             //Set the dataGridView
-            nodesDataGridView.ColumnCount = 3;
+            nodesDataGridView.ColumnCount = 2;
             nodesDataGridView.Columns[0].Name = "Depth";
             nodesDataGridView.Columns[1].Name = "Visited";
-            nodesDataGridView.Columns[2].Name = "Unvisited";
 
-            //VisitedNodes has more keys
-            nodesDataGridView.RowCount = VisitedNodes.Keys.Count;
-
-            for (int i = 0; i < nodesDataGridView.RowCount; i++)
+            lock (VisitedNodes)
             {
-                nodesDataGridView.Rows[i].Cells[0].Value = i;
-            }
+                nodesDataGridView.RowCount = VisitedNodes.Keys.Count;
 
-            foreach (int key in VisitedNodes.Keys.ToList())
-            {
-                nodesDataGridView.Rows[key].Cells[1].Value = VisitedNodes[key];
-            }
+                for (int i = 0; i < nodesDataGridView.RowCount; i++)
+                {
+                    nodesDataGridView.Rows[i].Cells[0].Value = i;
+                }
 
-            foreach (int key in UnvisitedNodes.Keys.ToList())
-            {
-                nodesDataGridView.Rows[key].Cells[2].Value = UnvisitedNodes[key];
+                foreach (int key in VisitedNodes.Keys)
+                {
+                    nodesDataGridView.Rows[key].Cells[1].Value = VisitedNodes[key];
+                } 
             }
 
             nodesDataGridView.Refresh();

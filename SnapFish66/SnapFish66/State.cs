@@ -109,6 +109,8 @@ namespace SnapFish66
                 newstate.deck.Add(c);
             }
 
+            newstate.CalculatePoints();
+
             return newstate;
         }
 
