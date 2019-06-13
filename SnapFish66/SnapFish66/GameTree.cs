@@ -90,6 +90,8 @@ namespace SnapFish66
             {
                 root.AlphaBeta(-3, 3);
 
+                root.closed = true; //DEBUG, TODO delete
+
                 //Calculate data for labels
                 SetEstimatedValues();
                 SetVisitedNodes(); //Calculates visited nodes

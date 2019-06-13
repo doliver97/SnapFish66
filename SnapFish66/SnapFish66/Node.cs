@@ -56,17 +56,37 @@ namespace SnapFish66
             if(state.next == "A")
             {
                 maximizer = true;
+                EstimatedValue = -3;
                 value = -3;
             }
             else
             {
                 maximizer = false;
+                EstimatedValue = 3;
                 value = 3;
             }
 
             //3 is the maximum score possible
             alpha = -3;
             beta = 3;
+        }
+
+        //Updating every estimated value up the tree
+        private void UpdateEstimatedValues()
+        {
+            if(parent!=null)
+            {
+                if(parent.maximizer)
+                {
+                    parent.EstimatedValue = Max(EstimatedValue, parent.EstimatedValue);
+                }
+                else
+                {
+                    parent.EstimatedValue = Min(EstimatedValue, parent.EstimatedValue);
+                }
+
+                parent.UpdateEstimatedValues();
+            }
         }
 
         private void SetClosed()
@@ -115,6 +135,14 @@ namespace SnapFish66
 
             foreach (string action in UnvisitedSteps)
             {
+                //If game ended, do not go further
+                if(IsEnd())
+                {
+                    SetEstimatedValue();
+                    UpdateEstimatedValues();
+                    return;
+                }
+
                 Node child = new Node(this, state.Copy(), action, depth + 1);
                 bool success = child.state.Step(child.state, action);
                 if(success)
@@ -124,16 +152,33 @@ namespace SnapFish66
             }
         }
 
+        private void SetEstimatedValue()
+        {
+            if(state.Apoints!=0)
+            {
+                EstimatedValue = state.Apoints;
+            }
+            else
+            {
+                EstimatedValue = state.Bpoints;
+            }
+        }
+
         //Generates children for the root (gives all possible combinations to unknown cards)
         private void GenerateChildrenForRoot()
         {
-            //TODO generate not one but all random !!!
+            //TODO generate not one but all !!!
             foreach (string action in UnvisitedSteps)
             {
                 Node child = new Node(this, state.GenerateRandom(), action, depth + 1);
                 bool success = child.state.Step(child.state, action);
                 if (success)
                 {
+                    if(IsEnd())
+                    {
+                        child.UpdateEstimatedValues();
+                    }
+
                     children.Add(child);
                 }
             }
@@ -187,8 +232,8 @@ namespace SnapFish66
                 value = -3; //Minimum value possible
                 foreach (Node child in children)
                 {
-                    value = Max(value, child.AlphaBeta(nalpha, nbeta));
-                    alpha = Max(nalpha, value);
+                    value = Max(value, child.AlphaBeta(alpha, beta));
+                    alpha = Max(alpha, value);
                     if (alpha >= beta)
                     {
                         break;
@@ -202,8 +247,8 @@ namespace SnapFish66
                 value = 3; //Maximum value possible
                 foreach (Node child in children)
                 {
-                    value = Min(value, child.AlphaBeta(nalpha, nbeta));
-                    beta = Min(nbeta, value);
+                    value = Min(value, child.AlphaBeta(alpha, beta));
+                    beta = Min(beta, value);
                     if (alpha >= beta)
                     {
                         break;
