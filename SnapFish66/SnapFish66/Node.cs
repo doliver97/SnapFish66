@@ -171,7 +171,7 @@ namespace SnapFish66
             }
             else
             {
-                EstimatedValue = state.Bpoints;
+                EstimatedValue = (-1)*state.Bpoints;
             }
         }
 
