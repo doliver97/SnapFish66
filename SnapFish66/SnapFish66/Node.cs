@@ -97,13 +97,6 @@ namespace SnapFish66
         {
             children.Clear();
 
-            //root works in special way
-            if(isRoot)
-            {
-                GenerateChildrenForRoot();
-                return;
-            }
-
             foreach (string action in UnvisitedSteps)
             {
                 //If game ended, do not go further
@@ -181,22 +174,6 @@ namespace SnapFish66
             }
 
             return EstimatedValue;
-        }
-
-        //Generates children for the root (gives all possible combinations to unknown cards)
-        private void GenerateChildrenForRoot()
-        {
-            //TODO generate not one but all !!!
-            foreach (string action in UnvisitedSteps)
-            {
-                Node child = new Node(this, state.GenerateRandom(), action, depth + 1);
-                bool success = child.state.Step(child.state, action);
-                child.SetMaximizer();
-                if (success)
-                {
-                    children.Add(child);
-                }
-            }
         }
 
         private double Max(double a, double b)

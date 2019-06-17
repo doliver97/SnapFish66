@@ -34,23 +34,44 @@ namespace SnapFish66
         private DataGridView nodesDataGridView;
 
         public static List<Node> allNodes;
+
+        public int possibleSubroots;
+        public List<Node> subroots;
         
 
         public GameTree(State s, DataGridView ndataGridView)
         {
             labelsDelegate = new SetLabelsDelegate(SetLabels);
 
+            subroots = new List<Node>();
+
             root = new Node(null, s, "", 0);
             root.SetMaximizer();
+            
             nodesDataGridView = ndataGridView;
 
             allNodes = new List<Node> { root };
         }
 
-        //Estimated value of action, or NaN if no such action yet
-        private double EstVal(string s)
+        private int CalcPossibleSubroots()
         {
-            List<Node> childrenOfRoot = root.children;
+            int cardsInBHand = root.state.b1.Count + root.state.b2.Count + root.state.b3.Count + root.state.b4.Count + root.state.b5.Count;
+            int cardsInDeck = 20 - cardsInBHand - root.state.dbottom.Count - root.state.adown.Count - root.state.bdown.Count - root.state.atook.Count - root.state.btook.Count - root.state.a1.Count - root.state.a2.Count - root.state.a3.Count - root.state.a4.Count - root.state.a5.Count;
+
+            // count is sum unknown factorial per in hand factorial
+            int count = 1;
+            for (int i = cardsInBHand+1; i <= cardsInBHand+cardsInDeck; i++)
+            {
+                count *= i;
+            }
+
+            return count;
+        }
+
+        //Estimated value of action, or NaN if no such action yet
+        private double EstVal(Node subroot, string s)
+        {
+            List<Node> childrenOfRoot = subroot.children;
 
             List<Node> nodesOfAction = childrenOfRoot.Where(x=>x.actionBefore==s).ToList();
 
@@ -62,24 +83,10 @@ namespace SnapFish66
             return nodesOfAction.Average(x => x.EstimatedValue);
         }
 
-        private void SetEstimatedValues()
-        {
-            a1 = EstVal("A1");
-            a2 = EstVal("A2");
-            a3 = EstVal("A3");
-            a4 = EstVal("A4");
-            a5 = EstVal("A5");
-            b1 = EstVal("B1");
-            b2 = EstVal("B2");
-            b3 = EstVal("B3");
-            b4 = EstVal("B4");
-            b5 = EstVal("B5");
-            cover = EstVal("cover");
-        }
-
         public void Reset(State state)
         {
             allNodes.Clear();
+            subroots.Clear();
             root = new Node(null, state, "", 0);
             root.SetMaximizer();
             allNodes.Add(root);
@@ -88,26 +95,52 @@ namespace SnapFish66
 
         public void Calculate(List<Label> labels, BackgroundWorker worker)
         {
-            while(!worker.CancellationPending && root.closed==false)
+            possibleSubroots = CalcPossibleSubroots();
+
+            while (!worker.CancellationPending)
             {
-                root.AlphaBeta(-3, 3);
+                if(subroots.Count<possibleSubroots)
+                {
+                    Node subroot = CreateNewSubroot();
 
-                root.closed = true; //DEBUG, TODO delete
+                    subroot.AlphaBeta(-3, 3);
+                    
+                    //Calculate data for labels
+                    CalculateEstimatedValues();
 
-                //Calculate data for labels
-                CalculateEstimatedValues();
-                SetEstimatedValues();
-
-                //Call SetLabels
-                worker.ReportProgress(0);
-                
+                    //Call SetLabels
+                    worker.ReportProgress(0); 
+                }
             }
         }
-
+        
         private void CalculateEstimatedValues()
         {
-            ; //TODO
-            root.GetEstimatedValue();
+            a1 = 0;
+            a2 = 0;
+            a3 = 0;
+            a4 = 0;
+            a5 = 0;
+            b1 = 0;
+            b2 = 0;
+            b3 = 0;
+            b4 = 0;
+            b5 = 0;
+
+            foreach (Node subroot in subroots)
+            {
+                subroot.GetEstimatedValue();
+                a1 += EstVal(subroot, "A1") / subroots.Count;
+                a2 += EstVal(subroot, "A2") / subroots.Count;
+                a3 += EstVal(subroot, "A3") / subroots.Count;
+                a4 += EstVal(subroot, "A4") / subroots.Count;
+                a5 += EstVal(subroot, "A5") / subroots.Count;
+                b1 += EstVal(subroot, "B1") / subroots.Count;
+                b2 += EstVal(subroot, "B2") / subroots.Count;
+                b3 += EstVal(subroot, "B3") / subroots.Count;
+                b4 += EstVal(subroot, "B4") / subroots.Count;
+                b5 += EstVal(subroot, "B5") / subroots.Count;
+            }
         }
 
         //Calculates estimated values and unvisited nodes, and sets the labels
@@ -172,10 +205,28 @@ namespace SnapFish66
             nodesDataGridView.Refresh();
         }
 
-        //Creates root nodes by giving value to unknown cards (generates all possible permutations)
-        private void CreateRoots()
+        //Creates random root node by giving value to unknown cards
+        private Node CreateNewSubroot()
         {
-            //TODO
+            bool found = false;
+            Node newNode = new Node(null,root.state.GenerateRandom(),"",0);
+
+            while(!found)
+            {
+                newNode = new Node(null, root.state.GenerateRandom(), "", 0);
+                found = true;
+                foreach (Node n in subroots)
+                {
+                    if(newNode.state.IsSame(n.state))
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+            }
+
+            subroots.Add(newNode);
+            return newNode;
         }
     }
 }
