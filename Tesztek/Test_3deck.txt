@@ -1,0 +1,11 @@
+DBottom: P2
+AHand: T11 M2 M4 Z3 Z2
+ADown:
+ATook: P11 T3 Z11 Z4
+BHand: U U U U U
+BDown:
+BTook: T2 P10
+A20:
+B20:
+Next: A
+Trump: P

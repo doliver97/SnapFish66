@@ -41,6 +41,7 @@ namespace SnapFish66
             labelsDelegate = new SetLabelsDelegate(SetLabels);
 
             root = new Node(null, s, "", 0);
+            root.SetMaximizer();
             nodesDataGridView = ndataGridView;
 
             allNodes = new List<Node> { root };
@@ -80,6 +81,7 @@ namespace SnapFish66
         {
             allNodes.Clear();
             root = new Node(null, state, "", 0);
+            root.SetMaximizer();
             allNodes.Add(root);
             VisitedNodes.Clear();
         }

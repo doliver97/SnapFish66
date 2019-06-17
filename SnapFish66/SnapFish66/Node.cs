@@ -134,7 +134,7 @@ namespace SnapFish66
             }
         }
 
-        private void SetMaximizer()
+        public void SetMaximizer()
         {
             if (state.next == "A")
             {
