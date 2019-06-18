@@ -19,18 +19,26 @@ namespace SnapFish66
         public static Dictionary<int, int> VisitedNodes = new Dictionary<int, int>();
 
         //Estimated values of actions
-        public double a1;
-        public double a2;
-        public double a3;
-        public double a4;
-        public double a5;
-        public double b1;
-        public double b2;
-        public double b3;
-        public double b4;
-        public double b5;
-        public double cover;
-        
+        public List<double> a1;
+        public List<double> a2;
+        public List<double> a3;
+        public List<double> a4;
+        public List<double> a5;
+        public List<double> b1;
+        public List<double> b2;
+        public List<double> b3;
+        public List<double> b4;
+        public List<double> b5;
+        public List<double> cover;
+
+        //Easy access to the lists above
+        public List<List<double>> estimatedLists;
+
+        //The averages of the lists above repectively, CalcAverages() sets it
+        public List<double> averages;
+
+        List<string> actionList;
+
         private DataGridView nodesDataGridView;
 
         public static List<Node> allNodes;
@@ -43,6 +51,25 @@ namespace SnapFish66
         {
             labelsDelegate = new SetLabelsDelegate(SetLabels);
 
+            a1 = new List<double>();
+            a2 = new List<double>();
+            a3 = new List<double>();
+            a4 = new List<double>();
+            a5 = new List<double>();
+            b1 = new List<double>();
+            b2 = new List<double>();
+            b3 = new List<double>();
+            b4 = new List<double>();
+            b5 = new List<double>();
+            cover = new List<double>();
+            estimatedLists = new List<List<double>> { a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, cover };
+            actionList = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5", "cover" };
+
+            averages = new List<double>();
+            for (int i = 0; i < estimatedLists.Count; i++)
+            {
+                averages.Add(double.NaN);
+            }
             subroots = new List<Node>();
 
             root = new Node(null, s, "", 0);
@@ -85,8 +112,17 @@ namespace SnapFish66
 
         public void Reset(State state)
         {
+            foreach (var item in estimatedLists)
+            {
+                item.Clear();
+            }
             allNodes.Clear();
             subroots.Clear();
+            averages.Clear();
+            for (int i = 0; i < estimatedLists.Count; i++)
+            {
+                averages.Add(double.NaN);
+            }
             root = new Node(null, state, "", 0);
             root.SetMaximizer();
             allNodes.Add(root);
@@ -103,69 +139,55 @@ namespace SnapFish66
                 {
                     Node subroot = CreateNewSubroot();
 
-                    subroot.AlphaBeta(-3, 3);
-                    
+                    subroot.AlphaBeta(-4, 4);
+
                     //Calculate data for labels
-                    CalculateEstimatedValues();
+                    AddEstimatedValues(subroot);
+                    CalcAverages();
+
+                    //We wont need the children of the subroot
+                    subroot.children.Clear();
 
                     //Call SetLabels
                     worker.ReportProgress(0); 
                 }
             }
         }
-        
-        private void CalculateEstimatedValues()
-        {
-            a1 = 0;
-            a2 = 0;
-            a3 = 0;
-            a4 = 0;
-            a5 = 0;
-            b1 = 0;
-            b2 = 0;
-            b3 = 0;
-            b4 = 0;
-            b5 = 0;
 
-            foreach (Node subroot in subroots)
+        private void AddEstimatedValues(Node subroot)
+        {
+            subroot.GetEstimatedValue();
+
+            double val = 0;
+            for (int i = 0; i < actionList.Count; i++)
             {
-                subroot.GetEstimatedValue();
-                a1 += EstVal(subroot, "A1") / subroots.Count;
-                a2 += EstVal(subroot, "A2") / subroots.Count;
-                a3 += EstVal(subroot, "A3") / subroots.Count;
-                a4 += EstVal(subroot, "A4") / subroots.Count;
-                a5 += EstVal(subroot, "A5") / subroots.Count;
-                b1 += EstVal(subroot, "B1") / subroots.Count;
-                b2 += EstVal(subroot, "B2") / subroots.Count;
-                b3 += EstVal(subroot, "B3") / subroots.Count;
-                b4 += EstVal(subroot, "B4") / subroots.Count;
-                b5 += EstVal(subroot, "B5") / subroots.Count;
+                val = EstVal(subroot, actionList[i]);
+                if (val != 4 && val != -4)
+                {
+                    estimatedLists[i].Add(val);
+                }
+            }
+        }
+
+        private void CalcAverages()
+        {
+            for (int i = 0; i < estimatedLists.Count; i++)
+            {
+                if (estimatedLists[i].Count > 0)
+                {
+                    averages[i] = estimatedLists[i].Average();
+                }
             }
         }
 
         //Calculates estimated values and unvisited nodes, and sets the labels
         public void SetLabels(List<Label> labels)
         {
-            List<double> values = new List<double>
-            {
-                a1,
-                a2,
-                a3,
-                a4,
-                a5,
-                b1,
-                b2,
-                b3,
-                b4,
-                b5,
-                cover
-            };
-
             for (int i = 0; i < labels.Count; i++)
             {
-                if(!double.IsNaN(values[i]))
+                if(!double.IsNaN(averages[i]))
                 {
-                    labels[i].Text = Convert.ToString(Math.Round(values[i], 2));
+                    labels[i].Text = Convert.ToString(Math.Round(averages[i], 2));
                 }
                 else
                 {

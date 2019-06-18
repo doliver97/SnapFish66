@@ -611,17 +611,6 @@ namespace SnapFish66
         {
             backgroundWorker.CancelAsync();
             tree.Reset(state);
-            tree.a1 = 0;
-            tree.a2 = 0;
-            tree.a3 = 0;
-            tree.a4 = 0;
-            tree.a5 = 0;
-            tree.b1 = 0;
-            tree.b2 = 0;
-            tree.b3 = 0;
-            tree.b4 = 0;
-            tree.b5 = 0;
-            tree.cover = 0;
             tree.SetLabels(labels);
         }
 

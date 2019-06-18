@@ -13,8 +13,6 @@ namespace SnapFish66
         private Node parent;
 
         double value;
-        //double alpha;
-        //double beta;
         bool maximizer;
 
         public string actionBefore;
@@ -54,10 +52,6 @@ namespace SnapFish66
             UnvisitedSteps = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5" };
 
             SetMaximizer();
-
-            //3 is the maximum score possible
-            //alpha = -3;
-            //beta = 3;
         }
 
         private void SetClosed()
@@ -133,14 +127,14 @@ namespace SnapFish66
             if (state.next == "A")
             {
                 maximizer = true;
-                EstimatedValue = -3;
-                value = -3;
+                EstimatedValue = -4;
+                value = -4;
             }
             else
             {
                 maximizer = false;
-                EstimatedValue = 3;
-                value = 3;
+                EstimatedValue = 4;
+                value = 4;
             }
         }
 
@@ -222,7 +216,7 @@ namespace SnapFish66
             //This node is a maximizer
             else if(maximizer)
             {
-                value = -3; //Minimum value possible
+                value = -4; //Minimum value possible is -3
                 foreach (Node child in children)
                 {
                     value = Max(value, child.AlphaBeta(alpha, beta));
@@ -237,7 +231,7 @@ namespace SnapFish66
             //This node is a minimizer
             else
             {
-                value = 3; //Maximum value possible
+                value = 4; //Maximum value possible is +3
                 foreach (Node child in children)
                 {
                     value = Min(value, child.AlphaBeta(alpha, beta));
