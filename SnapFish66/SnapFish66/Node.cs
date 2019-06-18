@@ -13,8 +13,8 @@ namespace SnapFish66
         private Node parent;
 
         double value;
-        double alpha;
-        double beta;
+        //double alpha;
+        //double beta;
         bool maximizer;
 
         public string actionBefore;
@@ -53,11 +53,11 @@ namespace SnapFish66
             VisitedSteps = new List<string>();
             UnvisitedSteps = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5" };
 
-            
+            SetMaximizer();
 
             //3 is the maximum score possible
-            alpha = -3;
-            beta = 3;
+            //alpha = -3;
+            //beta = 3;
         }
 
         private void SetClosed()
@@ -109,6 +109,7 @@ namespace SnapFish66
                 Node child = new Node(this, state.Copy(), action, depth + 1);
                 bool success = child.state.Step(child.state, action);
                 child.SetMaximizer();
+
                 if(success)
                 {
                     lock(GameTree.VisitedNodes)
@@ -200,7 +201,7 @@ namespace SnapFish66
             }
         }
 
-        public double AlphaBeta(double nalpha, double nbeta)
+        public double AlphaBeta(double alpha, double beta)
         {
             GenerateChildren();
 
