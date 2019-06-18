@@ -10,6 +10,8 @@ namespace SnapFish66
 {
     public class GameTree
     {
+        //public static int GenerateTimeSum;
+
         public Node root;
 
         public delegate void SetLabelsDelegate(List<Label> labels);
@@ -233,6 +235,8 @@ namespace SnapFish66
             bool found = false;
             Node newNode = new Node(null,root.state.GenerateRandom(),"",0);
 
+            //DateTime begin = DateTime.Now;
+
             while(!found)
             {
                 newNode = new Node(null, root.state.GenerateRandom(), "", 0);
@@ -246,6 +250,14 @@ namespace SnapFish66
                     }
                 }
             }
+
+            //DateTime end = DateTime.Now;
+
+            //TimeSpan span = end - begin;
+
+            //GenerateTimeSum += span.Milliseconds;
+
+            //Console.WriteLine(GenerateTimeSum);
 
             subroots.Add(newNode);
             return newNode;
