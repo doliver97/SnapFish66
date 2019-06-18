@@ -104,9 +104,11 @@ namespace SnapFish66
                 }
             }
 
-            foreach (Card c in remaining)
+            while(remaining.Count>0)
             {
-                newstate.deck.Add(c);
+                int r = rand.Next(remaining.Count);
+                newstate.deck.Add(remaining[r]);
+                remaining.RemoveAt(r);
             }
 
             newstate.CalculatePoints();
