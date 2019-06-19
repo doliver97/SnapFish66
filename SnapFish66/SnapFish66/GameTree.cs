@@ -172,7 +172,7 @@ namespace SnapFish66
             {
                 if(actionList[i]==child.actionBefore)
                 {
-                    estimatedLists[i].Add(child.GetEstimatedValue());
+                    estimatedLists[i].Add(child.value);
                     break;
                 }
             }

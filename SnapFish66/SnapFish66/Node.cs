@@ -12,7 +12,7 @@ namespace SnapFish66
         public State state;
         private Node parent;
 
-        double value;
+        public double value;
         bool maximizer;
 
         public string actionBefore;
@@ -23,8 +23,6 @@ namespace SnapFish66
         
         public List<Node> children = new List<Node>();
         private Random random = new Random();
-
-        public double EstimatedValue;
 
         public int depth;
         
@@ -96,7 +94,6 @@ namespace SnapFish66
                 //If game ended, do not go further
                 if(IsEnd())
                 {
-                    SetEstimatedValue();
                     return;
                 }
 
@@ -127,48 +124,13 @@ namespace SnapFish66
             if (state.next == "A")
             {
                 maximizer = true;
-                EstimatedValue = -4;
                 value = -4;
             }
             else
             {
                 maximizer = false;
-                EstimatedValue = 4;
                 value = 4;
             }
-        }
-
-        private void SetEstimatedValue()
-        {
-            if(state.Apoints!=0)
-            {
-                EstimatedValue = state.Apoints;
-            }
-            else
-            {
-                EstimatedValue = (-1)*state.Bpoints;
-            }
-        }
-
-        //Getting estimated value of node by recurively calling it for all of its children
-        public double GetEstimatedValue()
-        {
-            //If end or pruned
-            if(children.Count == 0)
-            {
-                return EstimatedValue;
-            }
-
-            if(maximizer)
-            {
-                EstimatedValue = children.Max(x => x.GetEstimatedValue());
-            }
-            else
-            {
-                EstimatedValue = children.Min(x => x.GetEstimatedValue());
-            }
-
-            return EstimatedValue;
         }
 
         private double Max(double a, double b)
@@ -204,14 +166,15 @@ namespace SnapFish66
             {
                 if (state.Apoints > 0)
                 {
-                    EstimatedValue = state.Apoints;
+                    value = state.Apoints;
                 }
                 else
                 {
-                    EstimatedValue = state.Bpoints * (-1);
+                    value = state.Bpoints * (-1);
                 }
 
-                return EstimatedValue;
+                return value;
+
             }
             //This node is a maximizer
             else if(maximizer)
@@ -226,6 +189,7 @@ namespace SnapFish66
                         break;
                     }
                 }
+                children.Clear();
                 return value;
             }
             //This node is a minimizer
@@ -241,7 +205,7 @@ namespace SnapFish66
                         break;
                     }
                 }
-
+                children.Clear();
                 return value;
             }
         }
