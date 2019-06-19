@@ -17,8 +17,8 @@ namespace SnapFish66
 
         public delegate void SetLabelsDelegate(List<Label> labels, ProgressBar progressBar, Label timeLeft);
         public SetLabelsDelegate labelsDelegate;
-
-        public static Stopwatch stopWatch;
+        
+        public static DateTime started;
 
         //Key is the depth
         public static Dictionary<int, int> VisitedNodes = new Dictionary<int, int>();
@@ -55,7 +55,7 @@ namespace SnapFish66
         public GameTree(State s, DataGridView ndataGridView)
         {
             labelsDelegate = new SetLabelsDelegate(SetLabels);
-            stopWatch = new Stopwatch();
+            started = DateTime.Now;
 
             a1 = new List<double>();
             a2 = new List<double>();
@@ -103,7 +103,7 @@ namespace SnapFish66
         
         public void Reset(State state)
         {
-            stopWatch.Reset();
+            started = DateTime.Now;
             foreach (var item in estimatedLists)
             {
                 item.Clear();
@@ -124,8 +124,8 @@ namespace SnapFish66
         public void Calculate(List<Label> labels, ProgressBar progressBar, BackgroundWorker worker)
         {
             possibleSubroots = CalcPossibleSubroots();
-
-            stopWatch.Start();
+            
+            started = DateTime.Now;
             
             while (!worker.CancellationPending)
             {
@@ -164,8 +164,6 @@ namespace SnapFish66
                     }
                 }
             }
-
-            stopWatch.Stop();
         }
 
         private void AddEstimatedValue(Node child)
@@ -201,16 +199,21 @@ namespace SnapFish66
 
             //Set time left label
             double proportion = subroots.Count/Convert.ToDouble(possibleSubroots);
-            TimeSpan left = TimeSpan.FromTicks(Convert.ToInt64(stopWatch.ElapsedTicks * ((1-proportion)/proportion)));
+            double multiplier = (1 - proportion) / proportion;
+            TimeSpan left = TimeSpan.FromTicks(Convert.ToInt64((DateTime.Now-started).Ticks * multiplier));
             if(left.Days>=365)
             {
                 int years = left.Days / 365;
                 int days = left.Days % 365;
                 timeLeft.Text = years + " years " + days + " days";
             }
-            else if(left.Days>=1)
+            else if(left.Days>=10)
             {
                 timeLeft.Text = left.Days + " days";
+            }
+            else if(left.Days>=1)
+            {
+                timeLeft.Text = left.Days + " days " + left.Hours + " hours";
             }
             else
             {
