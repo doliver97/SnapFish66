@@ -96,6 +96,7 @@
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.Reset_btn = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.timeLeft_l = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Deck_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Dbottom_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.B3_pb)).BeginInit();
@@ -468,7 +469,7 @@
             // 
             // Check_btn
             // 
-            this.Check_btn.Location = new System.Drawing.Point(893, 699);
+            this.Check_btn.Location = new System.Drawing.Point(893, 686);
             this.Check_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Check_btn.Name = "Check_btn";
             this.Check_btn.Size = new System.Drawing.Size(75, 23);
@@ -482,7 +483,7 @@
             this.OK_l.AutoSize = true;
             this.OK_l.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.OK_l.ForeColor = System.Drawing.Color.Black;
-            this.OK_l.Location = new System.Drawing.Point(974, 702);
+            this.OK_l.Location = new System.Drawing.Point(974, 686);
             this.OK_l.Name = "OK_l";
             this.OK_l.Size = new System.Drawing.Size(144, 20);
             this.OK_l.TabIndex = 34;
@@ -829,11 +830,22 @@
             this.progressBar1.Size = new System.Drawing.Size(313, 23);
             this.progressBar1.TabIndex = 67;
             // 
+            // timeLeft_l
+            // 
+            this.timeLeft_l.AutoSize = true;
+            this.timeLeft_l.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.timeLeft_l.Location = new System.Drawing.Point(893, 715);
+            this.timeLeft_l.Name = "timeLeft_l";
+            this.timeLeft_l.Size = new System.Drawing.Size(90, 25);
+            this.timeLeft_l.TabIndex = 68;
+            this.timeLeft_l.Text = "00:00:00";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1277, 761);
+            this.Controls.Add(this.timeLeft_l);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.Reset_btn);
             this.Controls.Add(this.NodesDataGridView);
@@ -995,6 +1007,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker;
         private System.Windows.Forms.Button Reset_btn;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label timeLeft_l;
     }
 }
 

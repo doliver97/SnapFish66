@@ -611,12 +611,12 @@ namespace SnapFish66
         {
             backgroundWorker.CancelAsync();
             tree.Reset(state);
-            tree.SetLabels(labels,progressBar1);
+            tree.SetLabels(labels,progressBar1,timeLeft_l);
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            tree.SetLabels(labels,progressBar1);
+            tree.SetLabels(labels,progressBar1,timeLeft_l);
         }
     }
 }

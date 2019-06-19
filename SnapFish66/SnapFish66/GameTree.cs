@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,8 +15,10 @@ namespace SnapFish66
 
         public Node root;
 
-        public delegate void SetLabelsDelegate(List<Label> labels, ProgressBar progressBar);
+        public delegate void SetLabelsDelegate(List<Label> labels, ProgressBar progressBar, Label timeLeft);
         public SetLabelsDelegate labelsDelegate;
+
+        public static Stopwatch stopWatch;
 
         //Key is the depth
         public static Dictionary<int, int> VisitedNodes = new Dictionary<int, int>();
@@ -52,6 +55,7 @@ namespace SnapFish66
         public GameTree(State s, DataGridView ndataGridView)
         {
             labelsDelegate = new SetLabelsDelegate(SetLabels);
+            stopWatch = new Stopwatch();
 
             a1 = new List<double>();
             a2 = new List<double>();
@@ -99,6 +103,7 @@ namespace SnapFish66
         
         public void Reset(State state)
         {
+            stopWatch.Reset();
             foreach (var item in estimatedLists)
             {
                 item.Clear();
@@ -120,8 +125,8 @@ namespace SnapFish66
         {
             possibleSubroots = CalcPossibleSubroots();
 
+            stopWatch.Start();
             
-
             while (!worker.CancellationPending)
             {
                 if(subroots.Count<possibleSubroots)
@@ -159,6 +164,8 @@ namespace SnapFish66
                     }
                 }
             }
+
+            stopWatch.Stop();
         }
 
         private void AddEstimatedValue(Node child)
@@ -186,11 +193,30 @@ namespace SnapFish66
         }
 
         //Calculates estimated values and unvisited nodes, and sets the labels
-        public void SetLabels(List<Label> labels, ProgressBar progressBar)
+        public void SetLabels(List<Label> labels, ProgressBar progressBar, Label timeLeft)
         {
             //Set progressBar
             progressBar.Maximum = possibleSubroots;
             progressBar.Value = subroots.Count;
+
+            //Set time left label
+            double proportion = subroots.Count/Convert.ToDouble(possibleSubroots);
+            TimeSpan left = TimeSpan.FromTicks(Convert.ToInt64(stopWatch.ElapsedTicks * ((1-proportion)/proportion)));
+            if(left.Days>=365)
+            {
+                int years = left.Days / 365;
+                int days = left.Days % 365;
+                timeLeft.Text = years + " years " + days + " days";
+            }
+            else if(left.Days>=1)
+            {
+                timeLeft.Text = left.Days + " days";
+            }
+            else
+            {
+                timeLeft.Text = left.Hours/10 + "" + left.Hours%10 + ":" + left.Minutes/10 + "" + left.Minutes%10 + ":" + left.Seconds/10 + "" + left.Seconds%10;
+            }
+
 
             for (int i = 0; i < labels.Count; i++)
             {
