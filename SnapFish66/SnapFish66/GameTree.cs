@@ -96,22 +96,7 @@ namespace SnapFish66
 
             return count;
         }
-
-        //Estimated value of action, or NaN if no such action yet
-        private double EstVal(Node subroot, string s)
-        {
-            List<Node> childrenOfRoot = subroot.children;
-
-            List<Node> nodesOfAction = childrenOfRoot.Where(x=>x.actionBefore==s).ToList();
-
-            if(nodesOfAction.Count==0)
-            {
-                return Double.NaN;
-            }
-
-            return nodesOfAction.Average(x => x.EstimatedValue);
-        }
-
+        
         public void Reset(State state)
         {
             foreach (var item in estimatedLists)
@@ -141,34 +126,50 @@ namespace SnapFish66
                 {
                     Node subroot = CreateNewSubroot();
 
-                    subroot.AlphaBeta(-4, 4);
+                    //Add children of different actions (will be root of alphabeta)
+                    List<Node> children = new List<Node>();
+                    for (int i = 0; i < actionList.Count-1; i++) //without cover
+                    {
+                        Node child = new Node(subroot, subroot.state.Copy(), actionList[i], subroot.depth + 1);
+                        bool success = child.state.Step(child.state, actionList[i]);
+                        child.SetMaximizer();
 
-                    //Calculate data for labels
-                    AddEstimatedValues(subroot);
-                    CalcAverages();
+                        if(success)
+                        {
+                            children.Add(child);
+                        }
+                    }
 
-                    //We wont need the children of the subroot
-                    subroot.children.Clear();
+                    for (int i = 0; i < children.Count; i++)
+                    {
+                        children[i].AlphaBeta(-4, 4);
 
-                    //Call SetLabels
-                    worker.ReportProgress(0); 
+                        //Calculate data for labels
+                        AddEstimatedValue(children[i]);
+                        CalcAverages();
+
+                        //We wont need the children of the subroot
+                        children.RemoveAt(i);
+                        i--;
+
+                        //Call SetLabels
+                        worker.ReportProgress(0);  
+                    }
                 }
             }
         }
 
-        private void AddEstimatedValues(Node subroot)
+        private void AddEstimatedValue(Node child)
         {
-            subroot.GetEstimatedValue();
-
-            double val = 0;
             for (int i = 0; i < actionList.Count; i++)
             {
-                val = EstVal(subroot, actionList[i]);
-                if (val != 4 && val != -4)
+                if(actionList[i]==child.actionBefore)
                 {
-                    estimatedLists[i].Add(val);
+                    estimatedLists[i].Add(child.GetEstimatedValue());
+                    break;
                 }
             }
+            
         }
 
         private void CalcAverages()
