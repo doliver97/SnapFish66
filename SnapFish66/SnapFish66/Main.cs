@@ -604,19 +604,19 @@ namespace SnapFish66
         {
             BackgroundWorker BW = sender as BackgroundWorker;
             tree.root.state = state;
-            tree.Calculate(labels, BW);
+            tree.Calculate(labels, progressBar1, BW);
         }
 
         private void Reset_btn_Click(object sender, EventArgs e)
         {
             backgroundWorker.CancelAsync();
             tree.Reset(state);
-            tree.SetLabels(labels);
+            tree.SetLabels(labels,progressBar1);
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            tree.SetLabels(labels);
+            tree.SetLabels(labels,progressBar1);
         }
     }
 }

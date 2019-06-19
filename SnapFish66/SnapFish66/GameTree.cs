@@ -14,7 +14,7 @@ namespace SnapFish66
 
         public Node root;
 
-        public delegate void SetLabelsDelegate(List<Label> labels);
+        public delegate void SetLabelsDelegate(List<Label> labels, ProgressBar progressBar);
         public SetLabelsDelegate labelsDelegate;
 
         //Key is the depth
@@ -116,9 +116,11 @@ namespace SnapFish66
             VisitedNodes.Clear();
         }
 
-        public void Calculate(List<Label> labels, BackgroundWorker worker)
+        public void Calculate(List<Label> labels, ProgressBar progressBar, BackgroundWorker worker)
         {
             possibleSubroots = CalcPossibleSubroots();
+
+            
 
             while (!worker.CancellationPending)
             {
@@ -184,8 +186,12 @@ namespace SnapFish66
         }
 
         //Calculates estimated values and unvisited nodes, and sets the labels
-        public void SetLabels(List<Label> labels)
+        public void SetLabels(List<Label> labels, ProgressBar progressBar)
         {
+            //Set progressBar
+            progressBar.Maximum = possibleSubroots;
+            progressBar.Value = subroots.Count;
+
             for (int i = 0; i < labels.Count; i++)
             {
                 if(!double.IsNaN(averages[i]))

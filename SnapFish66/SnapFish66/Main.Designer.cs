@@ -95,6 +95,7 @@
             this.NodesDataGridView = new System.Windows.Forms.DataGridView();
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.Reset_btn = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.Deck_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Dbottom_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.B3_pb)).BeginInit();
@@ -467,7 +468,7 @@
             // 
             // Check_btn
             // 
-            this.Check_btn.Location = new System.Drawing.Point(868, 704);
+            this.Check_btn.Location = new System.Drawing.Point(893, 699);
             this.Check_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Check_btn.Name = "Check_btn";
             this.Check_btn.Size = new System.Drawing.Size(75, 23);
@@ -481,7 +482,7 @@
             this.OK_l.AutoSize = true;
             this.OK_l.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.OK_l.ForeColor = System.Drawing.Color.Black;
-            this.OK_l.Location = new System.Drawing.Point(949, 706);
+            this.OK_l.Location = new System.Drawing.Point(974, 702);
             this.OK_l.Name = "OK_l";
             this.OK_l.Size = new System.Drawing.Size(144, 20);
             this.OK_l.TabIndex = 34;
@@ -770,11 +771,11 @@
             // 
             // Test_btn
             // 
-            this.Test_btn.Location = new System.Drawing.Point(868, 676);
+            this.Test_btn.Location = new System.Drawing.Point(1073, 69);
             this.Test_btn.Name = "Test_btn";
             this.Test_btn.Size = new System.Drawing.Size(75, 23);
             this.Test_btn.TabIndex = 62;
-            this.Test_btn.Text = "TEST";
+            this.Test_btn.Text = "SET";
             this.Test_btn.UseVisualStyleBackColor = true;
             this.Test_btn.Click += new System.EventHandler(this.Test_btn_Click);
             // 
@@ -782,7 +783,7 @@
             // 
             this.testFileSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.testFileSelector.FormattingEnabled = true;
-            this.testFileSelector.Location = new System.Drawing.Point(949, 676);
+            this.testFileSelector.Location = new System.Drawing.Point(893, 69);
             this.testFileSelector.Name = "testFileSelector";
             this.testFileSelector.Size = new System.Drawing.Size(174, 24);
             this.testFileSelector.TabIndex = 64;
@@ -795,13 +796,13 @@
             this.NodesDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.NodesDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.NodesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.NodesDataGridView.Location = new System.Drawing.Point(893, 66);
+            this.NodesDataGridView.Location = new System.Drawing.Point(893, 99);
             this.NodesDataGridView.Name = "NodesDataGridView";
             this.NodesDataGridView.ReadOnly = true;
             this.NodesDataGridView.RowHeadersWidth = 20;
             this.NodesDataGridView.RowTemplate.Height = 24;
             this.NodesDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.NodesDataGridView.Size = new System.Drawing.Size(313, 597);
+            this.NodesDataGridView.Size = new System.Drawing.Size(313, 553);
             this.NodesDataGridView.TabIndex = 65;
             // 
             // backgroundWorker
@@ -821,11 +822,19 @@
             this.Reset_btn.UseVisualStyleBackColor = true;
             this.Reset_btn.Click += new System.EventHandler(this.Reset_btn_Click);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(893, 658);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(313, 23);
+            this.progressBar1.TabIndex = 67;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1277, 761);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.Reset_btn);
             this.Controls.Add(this.NodesDataGridView);
             this.Controls.Add(this.testFileSelector);
@@ -985,6 +994,7 @@
         private System.Windows.Forms.DataGridView NodesDataGridView;
         private System.ComponentModel.BackgroundWorker backgroundWorker;
         private System.Windows.Forms.Button Reset_btn;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 
