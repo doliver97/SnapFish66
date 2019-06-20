@@ -226,6 +226,7 @@ namespace SnapFish66
                 if(!double.IsNaN(averages[i]))
                 {
                     labels[i].Text = Convert.ToString(Math.Round(averages[i], 2));
+                    labels[i].Refresh();
                 }
                 else
                 {
