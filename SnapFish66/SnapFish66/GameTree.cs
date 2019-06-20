@@ -163,6 +163,10 @@ namespace SnapFish66
                         worker.ReportProgress(0);  
                     }
                 }
+                else
+                {
+                    break;
+                }
             }
         }
 
@@ -199,8 +203,12 @@ namespace SnapFish66
 
             //Set time left label
             double proportion = subroots.Count/Convert.ToDouble(possibleSubroots);
-            double multiplier = (1 - proportion) / proportion;
-            TimeSpan left = TimeSpan.FromTicks(Convert.ToInt64((DateTime.Now-started).Ticks * multiplier));
+            TimeSpan left = new TimeSpan(0);
+            if (proportion > 0)
+            {
+                double multiplier = (1 - proportion) / proportion;
+                left = TimeSpan.FromTicks(Convert.ToInt64((DateTime.Now - started).Ticks * multiplier));
+            }
             if(left.Days>=365)
             {
                 int years = left.Days / 365;
