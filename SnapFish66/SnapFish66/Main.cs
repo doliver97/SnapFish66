@@ -33,6 +33,13 @@ namespace SnapFish66
             state.next = "A";
             InitCardPlaces();
 
+            //Fill B hand with unknown
+            state.b1 = new List<Card> { new Card("unknown", Properties.Resources.back) };
+            state.b2 = new List<Card> { new Card("unknown", Properties.Resources.back) };
+            state.b3 = new List<Card> { new Card("unknown", Properties.Resources.back) };
+            state.b4 = new List<Card> { new Card("unknown", Properties.Resources.back) };
+            state.b5 = new List<Card> { new Card("unknown", Properties.Resources.back) };
+
             labels = new List<Label>
             {
                 A1_l,
@@ -59,11 +66,11 @@ namespace SnapFish66
             A3_pb.Image = Properties.Resources.Empty;
             A4_pb.Image = Properties.Resources.Empty;
             A5_pb.Image = Properties.Resources.Empty;
-            B1_pb.Image = Properties.Resources.Empty;
-            B2_pb.Image = Properties.Resources.Empty;
-            B3_pb.Image = Properties.Resources.Empty;
-            B4_pb.Image = Properties.Resources.Empty;
-            B5_pb.Image = Properties.Resources.Empty;
+            B1_pb.Image = Properties.Resources.back;
+            B2_pb.Image = Properties.Resources.back;
+            B3_pb.Image = Properties.Resources.back;
+            B4_pb.Image = Properties.Resources.back;
+            B5_pb.Image = Properties.Resources.back;
             Deck_pb.Image = Properties.Resources.back;
             Dbottom_pb.Image = Properties.Resources.Empty;
             Atook_pb.Image = Properties.Resources.Empty;
