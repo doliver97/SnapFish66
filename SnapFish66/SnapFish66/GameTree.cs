@@ -253,6 +253,8 @@ namespace SnapFish66
             nodesDataGridView.Columns[0].Name = "Depth";
             nodesDataGridView.Columns[1].Name = "Visited";
 
+            nodesDataGridView.Columns[1].DefaultCellStyle.Format = "N0";
+
             lock (VisitedNodes)
             {
                 if (VisitedNodes.Keys.Count > 0)
