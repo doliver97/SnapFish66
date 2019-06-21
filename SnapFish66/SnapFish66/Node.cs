@@ -160,6 +160,16 @@ namespace SnapFish66
                 }
             }
 
+            //If found in database, we can cut it here
+            if(Main.AllowReadDatabase)
+            {
+                int val = GameTree.database.ReadFromDB(this);
+                if (val != -100) // -100 means not found
+                {
+                    return val;
+                }
+            }
+
             GenerateChildren();
 
             //Trivial end case
@@ -191,6 +201,15 @@ namespace SnapFish66
                     }
                 }
                 children.Clear();
+
+                //Write to database
+                if(Main.AllowWriteDatabase)
+                {
+                    if(depth<=10 && depth%2==0)
+                    {
+                        GameTree.database.AddToDB(this);
+                    }
+                }
                 return value;
             }
             //This node is a minimizer
@@ -207,6 +226,15 @@ namespace SnapFish66
                     }
                 }
                 children.Clear();
+
+                //Write to database
+                if (Main.AllowWriteDatabase)
+                {
+                    if (depth <= 10 && depth % 2 == 0)
+                    {
+                        GameTree.database.AddToDB(this);
+                    }
+                }
                 return value;
             }
         }

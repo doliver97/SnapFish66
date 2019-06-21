@@ -15,6 +15,8 @@ namespace SnapFish66
 
         public Node root;
 
+        public static Database database;
+
         public delegate void SetLabelsDelegate(List<Label> labels, ProgressBar progressBar, Label timeLeft);
         public SetLabelsDelegate labelsDelegate;
         
@@ -128,7 +130,10 @@ namespace SnapFish66
             possibleSubroots = CalcPossibleSubroots();
             
             started = DateTime.Now;
-            
+
+            //Does not create new database, only opens it
+            database = new Database();
+
             while (!worker.CancellationPending)
             {
                 if(subroots.Count<possibleSubroots)
@@ -170,6 +175,8 @@ namespace SnapFish66
                     break;
                 }
             }
+
+            database.CloseDB();
         }
 
         private void AddEstimatedValue(Node child)

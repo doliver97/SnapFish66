@@ -97,6 +97,10 @@
             this.Reset_btn = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.timeLeft_l = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.RDB_b = new System.Windows.Forms.Button();
+            this.WDB_b = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Deck_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Dbottom_pb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.B3_pb)).BeginInit();
@@ -840,11 +844,56 @@
             this.timeLeft_l.TabIndex = 68;
             this.timeLeft_l.Text = "00:00:00";
             // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(557, 348);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(141, 17);
+            this.label14.TabIndex = 69;
+            this.label14.Text = "Read from database:";
+            this.label14.Click += new System.EventHandler(this.label14_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(564, 386);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(124, 17);
+            this.label15.TabIndex = 70;
+            this.label15.Text = "Write to database:";
+            // 
+            // RDB_b
+            // 
+            this.RDB_b.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RDB_b.Location = new System.Drawing.Point(705, 339);
+            this.RDB_b.Name = "RDB_b";
+            this.RDB_b.Size = new System.Drawing.Size(75, 32);
+            this.RDB_b.TabIndex = 71;
+            this.RDB_b.Text = "NO";
+            this.RDB_b.UseVisualStyleBackColor = true;
+            this.RDB_b.Click += new System.EventHandler(this.RDB_b_Click);
+            // 
+            // WDB_b
+            // 
+            this.WDB_b.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WDB_b.Location = new System.Drawing.Point(705, 380);
+            this.WDB_b.Name = "WDB_b";
+            this.WDB_b.Size = new System.Drawing.Size(75, 32);
+            this.WDB_b.TabIndex = 72;
+            this.WDB_b.Text = "NO";
+            this.WDB_b.UseVisualStyleBackColor = true;
+            this.WDB_b.Click += new System.EventHandler(this.WDB_b_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1277, 761);
+            this.Controls.Add(this.WDB_b);
+            this.Controls.Add(this.RDB_b);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.label14);
             this.Controls.Add(this.timeLeft_l);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.Reset_btn);
@@ -1008,6 +1057,10 @@
         private System.Windows.Forms.Button Reset_btn;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label timeLeft_l;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Button RDB_b;
+        private System.Windows.Forms.Button WDB_b;
     }
 }
 

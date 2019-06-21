@@ -24,6 +24,9 @@ namespace SnapFish66
 
         public static GameTree tree;
 
+        public static bool AllowReadDatabase;
+        public static bool AllowWriteDatabase;
+
         public Main()
         {
             InitializeComponent();
@@ -32,6 +35,9 @@ namespace SnapFish66
             state = new State();
             state.next = "A";
             InitCardPlaces();
+
+            AllowReadDatabase = false;
+            AllowWriteDatabase = false;
 
             //Fill B hand with unknown
             state.b1 = new List<Card> { new Card("unknown", Properties.Resources.back) };
@@ -624,6 +630,39 @@ namespace SnapFish66
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             tree.SetLabels(labels,progressBar1,timeLeft_l);
+        }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RDB_b_Click(object sender, EventArgs e)
+        {
+            if(AllowReadDatabase == false)
+            {
+                AllowReadDatabase = true;
+                RDB_b.Text = "YES";
+            }
+            else
+            {
+                AllowReadDatabase = false;
+                RDB_b.Text = "NO";
+            }
+        }
+
+        private void WDB_b_Click(object sender, EventArgs e)
+        {
+            if (AllowWriteDatabase == false)
+            {
+                AllowWriteDatabase = true;
+                WDB_b.Text = "YES";
+            }
+            else
+            {
+                AllowWriteDatabase = false;
+                WDB_b.Text = "NO";
+            }
         }
     }
 }
