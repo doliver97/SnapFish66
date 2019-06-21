@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -23,7 +24,7 @@ namespace SnapFish66
         public static DateTime started;
 
         //Key is the depth
-        public static Dictionary<int, int> VisitedNodes = new Dictionary<int, int>();
+        public static int[] VisitedNodes = new int[21];
 
         //Estimated values of actions
         public List<double> a1;
@@ -122,7 +123,7 @@ namespace SnapFish66
             root = new Node(null, state, "", 0);
             root.SetMaximizer();
             allNodes.Add(root);
-            VisitedNodes.Clear();
+            VisitedNodes = new int[21];
         }
 
         public void Calculate(List<Label> labels, ProgressBar progressBar, BackgroundWorker worker)
@@ -264,22 +265,11 @@ namespace SnapFish66
 
             nodesDataGridView.Columns[1].DefaultCellStyle.Format = "N0";
 
-            lock (VisitedNodes)
+            nodesDataGridView.RowCount = VisitedNodes.Length;
+            for (int i = 0; i < VisitedNodes.Length; i++)
             {
-                if (VisitedNodes.Keys.Count > 0)
-                {
-                    nodesDataGridView.RowCount = VisitedNodes.Keys.Max() + 1;
-                }
-
-                for (int i = 0; i < nodesDataGridView.RowCount; i++)
-                {
-                    nodesDataGridView.Rows[i].Cells[0].Value = i;
-                }
-
-                foreach (int key in VisitedNodes.Keys)
-                {
-                    nodesDataGridView.Rows[key].Cells[1].Value = VisitedNodes[key];
-                } 
+                nodesDataGridView.Rows[i].Cells[0].Value = i;
+                nodesDataGridView.Rows[i].Cells[1].Value = VisitedNodes[i];
             }
 
             nodesDataGridView.Refresh();

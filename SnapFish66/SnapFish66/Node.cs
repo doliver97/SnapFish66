@@ -148,20 +148,10 @@ namespace SnapFish66
 
         public double AlphaBeta(double alpha, double beta)
         {
-            lock (GameTree.VisitedNodes)
-            {
-                if (!GameTree.VisitedNodes.ContainsKey(depth))
-                {
-                    GameTree.VisitedNodes[depth] = 1;
-                }
-                else
-                {
-                    GameTree.VisitedNodes[depth]++;
-                }
-            }
+            GameTree.VisitedNodes[depth]++;
 
             //If found in database, we can cut it here
-            if(Main.AllowReadDatabase)
+            if (Main.AllowReadDatabase)
             {
                 int val = GameTree.database.ReadFromDB(this);
                 if (val != -100) // -100 means not found
