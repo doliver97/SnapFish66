@@ -78,7 +78,9 @@ namespace SnapFish66
             }
             subroots = new List<Node>();
 
-            root = new Node(null, s, "", 0);
+            int round = s.adown.Count + s.bdown.Count + s.atook.Count + s.btook.Count;
+
+            root = new Node(null, s, "", round);
             root.SetMaximizer();
             
             nodesDataGridView = ndataGridView;
@@ -280,13 +282,14 @@ namespace SnapFish66
         private Node CreateNewSubroot()
         {
             bool found = false;
-            Node newNode = new Node(null,root.state.GenerateRandom(),"",0);
+            int round = root.state.adown.Count + root.state.bdown.Count + root.state.atook.Count + root.state.btook.Count;
+            Node newNode = new Node(null,root.state.GenerateRandom(),"",round);
 
             //DateTime begin = DateTime.Now;
 
             while(!found)
             {
-                newNode = new Node(null, root.state.GenerateRandom(), "", 0);
+                newNode = new Node(null, root.state.GenerateRandom(), "", round);
                 found = true;
                 foreach (Node n in subroots)
                 {

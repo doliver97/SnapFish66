@@ -36,8 +36,8 @@ namespace SnapFish66
 
             if(newparent==null)
             {
+                depth = ndepth;
                 isRoot = true;
-                depth = 0;
             }
             else
             {
@@ -103,17 +103,6 @@ namespace SnapFish66
 
                 if(success)
                 {
-                    lock(GameTree.VisitedNodes)
-                    {
-                        if(!GameTree.VisitedNodes.ContainsKey(child.depth))
-                        {
-                            GameTree.VisitedNodes[child.depth] = 1;
-                        }
-                        else
-                        {
-                            GameTree.VisitedNodes[child.depth]++;
-                        }
-                    }
                     children.Add(child);
                 }
             }
@@ -159,6 +148,18 @@ namespace SnapFish66
 
         public double AlphaBeta(double alpha, double beta)
         {
+            lock (GameTree.VisitedNodes)
+            {
+                if (!GameTree.VisitedNodes.ContainsKey(depth))
+                {
+                    GameTree.VisitedNodes[depth] = 1;
+                }
+                else
+                {
+                    GameTree.VisitedNodes[depth]++;
+                }
+            }
+
             GenerateChildren();
 
             //Trivial end case
