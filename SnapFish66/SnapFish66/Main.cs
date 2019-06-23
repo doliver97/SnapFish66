@@ -12,6 +12,8 @@ namespace SnapFish66
 {
     public partial class Main : Form
     {
+        private DateTime lastUpdate;
+
         public static List<Card> cards;
 
         public State state;
@@ -30,6 +32,7 @@ namespace SnapFish66
         public Main()
         {
             InitializeComponent();
+            lastUpdate = DateTime.Now;
             cards = new List<Card>();
             InitCards();
             state = new State();
@@ -629,7 +632,11 @@ namespace SnapFish66
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            tree.SetLabels(labels,progressBar1,timeLeft_l);
+            if ((DateTime.Now - lastUpdate).TotalMilliseconds > 1000)
+            {
+                tree.SetLabels(labels, progressBar1, timeLeft_l);
+                lastUpdate = DateTime.Now;
+            }
         }
 
         private void label14_Click(object sender, EventArgs e)

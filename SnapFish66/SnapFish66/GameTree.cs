@@ -157,6 +157,11 @@ namespace SnapFish66
 
                     for (int i = 0; i < children.Count; i++)
                     {
+                        if(worker.CancellationPending)
+                        {
+                            break;
+                        }
+
                         children[i].AlphaBeta(-4, 4);
 
                         //Calculate data for labels
@@ -166,9 +171,9 @@ namespace SnapFish66
                         //We wont need the children of the subroot
                         children.RemoveAt(i);
                         i--;
-
+                        
                         //Call SetLabels
-                        worker.ReportProgress(0);  
+                        worker.ReportProgress(0);
                     }
                 }
                 else
