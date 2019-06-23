@@ -55,7 +55,7 @@ namespace SnapFish66
 
             // Get collection instance
             var col = database.GetCollection<Record>("Records");
-
+            
             // Insert document to collection - if collection do not exists, create now
             col.Upsert(rec);
 

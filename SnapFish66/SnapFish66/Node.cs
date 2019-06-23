@@ -54,27 +54,14 @@ namespace SnapFish66
 
         private void SetClosed()
         {
-            //Trivial case: end of game
-            if(IsEnd())
+            closed = true;
+            foreach (Node child in children)
             {
-                closed = true;
-            }
-            else
-            {
-                //If there are no unvisited possible steps left, and every child is closed, set this as closed
-                if(UnvisitedSteps.Count==0)
+                if (!child.closed)
                 {
-                    closed = true;
+                    closed = false;
+                    return;
                 }
-                foreach (Node child in children)
-                {
-                    if (!child.closed)
-                    {
-                        closed = false;
-                        return;
-                    }
-                }
-
             }
         }
 
@@ -151,11 +138,12 @@ namespace SnapFish66
             GameTree.VisitedNodes[depth]++;
 
             //If found in database, we can cut it here
-            if (Main.AllowReadDatabase)
+            if (Main.AllowReadDatabase && depth%2==0 && depth<=10)
             {
                 int val = GameTree.database.ReadFromDB(this);
                 if (val != -100) // -100 means not found
                 {
+                    GameTree.ReadNodes[depth]++;
                     return val;
                 }
             }
@@ -173,7 +161,7 @@ namespace SnapFish66
                 {
                     value = state.Bpoints * (-1);
                 }
-
+                closed = true;
                 return value;
 
             }
@@ -190,14 +178,17 @@ namespace SnapFish66
                         break;
                     }
                 }
+                SetClosed();
                 children.Clear();
 
                 //Write to database
                 if(Main.AllowWriteDatabase)
                 {
-                    if(depth<=10 && depth%2==0)
+                    //Write only if it is closed
+                    if(depth<=10 && depth%2==0 && closed)
                     {
                         GameTree.database.AddToDB(this);
+                        GameTree.SavedNodes[depth]++;
                     }
                 }
                 return value;
@@ -215,14 +206,17 @@ namespace SnapFish66
                         break;
                     }
                 }
+                SetClosed();
                 children.Clear();
 
                 //Write to database
                 if (Main.AllowWriteDatabase)
                 {
-                    if (depth <= 10 && depth % 2 == 0)
+                    //Write only if it is closed
+                    if (depth <= 10 && depth % 2 == 0 && closed)
                     {
                         GameTree.database.AddToDB(this);
+                        GameTree.SavedNodes[depth]++;
                     }
                 }
                 return value;

@@ -807,7 +807,7 @@
             this.NodesDataGridView.RowHeadersWidth = 20;
             this.NodesDataGridView.RowTemplate.Height = 24;
             this.NodesDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.NodesDataGridView.Size = new System.Drawing.Size(313, 553);
+            this.NodesDataGridView.Size = new System.Drawing.Size(361, 553);
             this.NodesDataGridView.TabIndex = 65;
             // 
             // backgroundWorker
@@ -831,7 +831,7 @@
             // 
             this.progressBar1.Location = new System.Drawing.Point(893, 658);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(313, 23);
+            this.progressBar1.Size = new System.Drawing.Size(361, 23);
             this.progressBar1.TabIndex = 67;
             // 
             // timeLeft_l

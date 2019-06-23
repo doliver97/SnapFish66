@@ -25,6 +25,8 @@ namespace SnapFish66
 
         //Key is the depth
         public static int[] VisitedNodes = new int[21];
+        public static int[] ReadNodes = new int[21];
+        public static int[] SavedNodes = new int[21];
 
         //Estimated values of actions
         public List<double> a1;
@@ -124,6 +126,8 @@ namespace SnapFish66
             root.SetMaximizer();
             allNodes.Add(root);
             VisitedNodes = new int[21];
+            ReadNodes = new int[21];
+            SavedNodes = new int[21];
         }
 
         public void Calculate(List<Label> labels, ProgressBar progressBar, BackgroundWorker worker)
@@ -264,17 +268,23 @@ namespace SnapFish66
             nodesDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
 
             //Set the dataGridView
-            nodesDataGridView.ColumnCount = 2;
+            nodesDataGridView.ColumnCount = 4;
             nodesDataGridView.Columns[0].Name = "Depth";
             nodesDataGridView.Columns[1].Name = "Visited";
+            nodesDataGridView.Columns[2].Name = "Read";
+            nodesDataGridView.Columns[3].Name = "Saved";
 
             nodesDataGridView.Columns[1].DefaultCellStyle.Format = "N0";
+            nodesDataGridView.Columns[2].DefaultCellStyle.Format = "N0";
+            nodesDataGridView.Columns[3].DefaultCellStyle.Format = "N0";
 
             nodesDataGridView.RowCount = VisitedNodes.Length;
             for (int i = 0; i < VisitedNodes.Length; i++)
             {
                 nodesDataGridView.Rows[i].Cells[0].Value = i;
                 nodesDataGridView.Rows[i].Cells[1].Value = VisitedNodes[i];
+                nodesDataGridView.Rows[i].Cells[2].Value = ReadNodes[i];
+                nodesDataGridView.Rows[i].Cells[3].Value = SavedNodes[i];
             }
 
             nodesDataGridView.Refresh();
