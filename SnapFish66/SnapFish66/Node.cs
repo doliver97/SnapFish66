@@ -171,7 +171,14 @@ namespace SnapFish66
                 value = -4; //Minimum value possible is -3
                 foreach (Node child in children)
                 {
-                    value = Max(value, child.AlphaBeta(alpha, beta));
+                    if(Main.AllowWriteDatabase)
+                    {
+                        value = Max(value,child.AlphaBeta(-4, 4));
+                    }
+                    else
+                    {
+                        value = Max(value, child.AlphaBeta(alpha, beta));
+                    }
                     alpha = Max(alpha, value);
                     if (alpha >= beta)
                     {
@@ -199,7 +206,14 @@ namespace SnapFish66
                 value = 4; //Maximum value possible is +3
                 foreach (Node child in children)
                 {
-                    value = Min(value, child.AlphaBeta(alpha, beta));
+                    if(Main.AllowWriteDatabase)
+                    {
+                        value = Min(value, child.AlphaBeta(-4, 4));
+                    }
+                    else
+                    {
+                        value = Min(value, child.AlphaBeta(alpha, beta));
+                    }
                     beta = Min(beta, value);
                     if (alpha >= beta)
                     {
