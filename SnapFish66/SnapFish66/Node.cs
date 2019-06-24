@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -133,9 +134,14 @@ namespace SnapFish66
             }
         }
 
-        public double AlphaBeta(double alpha, double beta)
+        public double AlphaBeta(double alpha, double beta, BackgroundWorker worker)
         {
             GameTree.VisitedNodes[depth]++;
+
+            if (depth <= 7)
+            {
+                worker.ReportProgress(0);
+            }
 
             //If found in database, we can cut it here
             if (Main.AllowReadDatabase && depth%2==0 && depth<=10)
@@ -173,11 +179,11 @@ namespace SnapFish66
                 {
                     if(Main.AllowWriteDatabase)
                     {
-                        value = Max(value,child.AlphaBeta(-4, 4));
+                        value = Max(value,child.AlphaBeta(-4, 4, worker));
                     }
                     else
                     {
-                        value = Max(value, child.AlphaBeta(alpha, beta));
+                        value = Max(value, child.AlphaBeta(alpha, beta, worker));
                     }
                     alpha = Max(alpha, value);
                     if (alpha >= beta)
@@ -208,11 +214,11 @@ namespace SnapFish66
                 {
                     if(Main.AllowWriteDatabase)
                     {
-                        value = Min(value, child.AlphaBeta(-4, 4));
+                        value = Min(value, child.AlphaBeta(-4, 4, worker));
                     }
                     else
                     {
-                        value = Min(value, child.AlphaBeta(alpha, beta));
+                        value = Min(value, child.AlphaBeta(alpha, beta, worker));
                     }
                     beta = Min(beta, value);
                     if (alpha >= beta)

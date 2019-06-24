@@ -166,7 +166,7 @@ namespace SnapFish66
                             break;
                         }
 
-                        children[i].AlphaBeta(-4, 4);
+                        children[i].AlphaBeta(-4, 4, worker);
 
                         //Calculate data for labels
                         AddEstimatedValue(children[i]);
