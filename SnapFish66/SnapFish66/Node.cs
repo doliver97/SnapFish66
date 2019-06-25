@@ -19,8 +19,6 @@ namespace SnapFish66
         public string actionBefore;
 
         private bool isRoot;
-
-        public bool closed;
         
         public List<Node> children = new List<Node>();
         private Random random = new Random();
@@ -51,19 +49,6 @@ namespace SnapFish66
             UnvisitedSteps = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5" };
 
             SetMaximizer();
-        }
-
-        private void SetClosed()
-        {
-            closed = true;
-            foreach (Node child in children)
-            {
-                if (!child.closed)
-                {
-                    closed = false;
-                    return;
-                }
-            }
         }
 
         public bool IsEnd()
@@ -138,7 +123,7 @@ namespace SnapFish66
         {
             GameTree.VisitedNodes[depth]++;
 
-            if (depth <= 7)
+            if (depth <= 8)
             {
                 worker.ReportProgress(0);
             }
@@ -167,7 +152,6 @@ namespace SnapFish66
                 {
                     value = state.Bpoints * (-1);
                 }
-                closed = true;
                 return value;
 
             }
@@ -191,14 +175,12 @@ namespace SnapFish66
                         break;
                     }
                 }
-                SetClosed();
                 children.Clear();
 
                 //Write to database
                 if(Main.AllowWriteDatabase)
                 {
-                    //Write only if it is closed
-                    if(depth<=10 && depth%2==0 && closed)
+                    if(depth<=10 && depth%2==0)
                     {
                         GameTree.database.AddToDB(this);
                         GameTree.SavedNodes[depth]++;
@@ -226,14 +208,12 @@ namespace SnapFish66
                         break;
                     }
                 }
-                SetClosed();
                 children.Clear();
 
                 //Write to database
                 if (Main.AllowWriteDatabase)
                 {
-                    //Write only if it is closed
-                    if (depth <= 10 && depth % 2 == 0 && closed)
+                    if (depth <= 10 && depth % 2 == 0)
                     {
                         GameTree.database.AddToDB(this);
                         GameTree.SavedNodes[depth]++;
