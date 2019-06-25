@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -187,6 +188,10 @@ namespace SnapFish66
             }
 
             database.CloseDB();
+
+            //Making sure that labels are refreshed after the calculations
+            Thread.Sleep(1100);
+            worker.ReportProgress(0);
         }
 
         private void AddEstimatedValue(Node child)
