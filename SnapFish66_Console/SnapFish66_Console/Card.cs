@@ -26,10 +26,5 @@ namespace SnapFish66_Console
             color = id.Substring(0, 1);
             value = int.Parse(id.Substring(1));
         }
-
-        public bool IsSame(Card other)
-        {
-            return this.ID == other.ID;
-        }
     }
 }

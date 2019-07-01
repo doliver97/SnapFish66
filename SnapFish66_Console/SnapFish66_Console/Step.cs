@@ -13,11 +13,11 @@ namespace SnapFish66_Console
         {
             if(who == "A")
             {
-                List<Card>[] places = new List<Card>[] { state.a1, state.a2, state.a3, state.a4, state.a5};
+                Card[] places = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5};
 
                 for (int i = 0; i < places.Length; i++)
                 {
-                    if(places[i].Count>0 && places[i][0].ID == cardID)
+                    if(places[i]!= null && places[i].ID == cardID)
                     {
                         return true;
                     }
@@ -27,11 +27,11 @@ namespace SnapFish66_Console
             }
             else
             {
-                List<Card>[] places = new List<Card>[] { state.b1, state.b2, state.b3, state.b4, state.b5 };
+                Card[] places = new Card[] { state.b1, state.b2, state.b3, state.b4, state.b5 };
 
                 for (int i = 0; i < places.Length; i++)
                 {
-                    if (places[i].Count > 0 && places[i][0].ID == cardID)
+                    if (places[i] != null && places[i].ID == cardID)
                     {
                         return true;
                     }
@@ -47,19 +47,19 @@ namespace SnapFish66_Console
 
             if (who=="A")
             {
-                if ((state.adown[0].ID == "M3" && CardInHand(state, "A", "M4")) || (state.adown[0].ID == "M4" && CardInHand(state, "A", "M3")))
+                if ((state.adown.ID == "M3" && CardInHand(state, "A", "M4")) || (state.adown.ID == "M4" && CardInHand(state, "A", "M3")))
                 {
                     state.AM20 = true;
                 }
-                if ((state.adown[0].ID == "P3" && CardInHand(state, "A", "P4")) || (state.adown[0].ID == "P4" && CardInHand(state, "A", "P3")))
+                if ((state.adown.ID == "P3" && CardInHand(state, "A", "P4")) || (state.adown.ID == "P4" && CardInHand(state, "A", "P3")))
                 {
                     state.AP20 = true;
                 }
-                if ((state.adown[0].ID == "T3" && CardInHand(state, "A", "T4")) || (state.adown[0].ID == "T4" && CardInHand(state, "A", "T3")))
+                if ((state.adown.ID == "T3" && CardInHand(state, "A", "T4")) || (state.adown.ID == "T4" && CardInHand(state, "A", "T3")))
                 {
                     state.AT20 = true;
                 }
-                if ((state.adown[0].ID == "Z3" && CardInHand(state, "A", "Z4")) || (state.adown[0].ID == "Z4" && CardInHand(state, "A", "Z3")))
+                if ((state.adown.ID == "Z3" && CardInHand(state, "A", "Z4")) || (state.adown.ID == "Z4" && CardInHand(state, "A", "Z3")))
                 {
                     state.AZ20 = true;
                 }
@@ -67,19 +67,19 @@ namespace SnapFish66_Console
             }
             else
             {
-                if ((state.bdown[0].ID == "M3" && CardInHand(state, "B", "M4")) || (state.bdown[0].ID == "M4" && CardInHand(state, "B", "M3")))
+                if ((state.bdown.ID == "M3" && CardInHand(state, "B", "M4")) || (state.bdown.ID == "M4" && CardInHand(state, "B", "M3")))
                 {
                     state.BM20 = true;
                 }
-                if ((state.bdown[0].ID == "P3" && CardInHand(state, "B", "P4")) || (state.bdown[0].ID == "P4" && CardInHand(state, "B", "P3")))
+                if ((state.bdown.ID == "P3" && CardInHand(state, "B", "P4")) || (state.bdown.ID == "P4" && CardInHand(state, "B", "P3")))
                 {
                     state.BP20 = true;
                 }
-                if ((state.bdown[0].ID == "T3" && CardInHand(state, "B", "T4")) || (state.bdown[0].ID == "T4" && CardInHand(state, "B", "T3")))
+                if ((state.bdown.ID == "T3" && CardInHand(state, "B", "T4")) || (state.bdown.ID == "T4" && CardInHand(state, "B", "T3")))
                 {
                     state.BT20 = true;
                 }
-                if ((state.bdown[0].ID == "Z3" && CardInHand(state, "B", "Z4")) || (state.bdown[0].ID == "Z4" && CardInHand(state, "B", "Z3")))
+                if ((state.bdown.ID == "Z3" && CardInHand(state, "B", "Z4")) || (state.bdown.ID == "Z4" && CardInHand(state, "B", "Z3")))
                 {
                     state.BZ20 = true;
                 }
@@ -89,76 +89,101 @@ namespace SnapFish66_Console
         //Drawing a card
         private void Draw(State state, string firstToDraw)
         {
-            List<Card> place1 = new List<Card>();
-            List<Card> place2 = new List<Card>();
-            List<List<Card>> ahand = new List<List<Card>> { state.a1, state.a2, state.a3, state.a4, state.a5 };
-            List<List<Card>> bhand = new List<List<Card>> { state.b1, state.b2, state.b3, state.b4, state.b5 };
+            int place1 = -1;
+            int place2 = -1;
+            Card[] ahand = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5 };
+            Card[] bhand = new Card[] { state.b1, state.b2, state.b3, state.b4, state.b5 };
 
-            foreach (List<Card> place in ahand)
+            for (int i =0; i<ahand.Length; i++)
             {
-                if(place.Count==0)
+                if(ahand[i]==null)
                 {
                     if(firstToDraw=="A")
                     {
-                        place1 = place;
+                        place1 = i;
                         break;
                     }
                     else
                     {
-                        place2 = place;
+                        place2 = i;
                         break;
                     }
                 }
             }
 
-            foreach (List<Card> place in bhand)
+            for (int i = 0; i< bhand.Length; i++)
             {
-                if (place.Count == 0)
+                if (bhand[i]!= null)
                 {
                     if (firstToDraw == "B")
                     {
-                        place1 = place;
+                        place1 = i;
                         break;
                     }
                     else
                     {
-                        place2 = place;
+                        place2 = i;
                         break;
                     }
                 }
             }
 
+            if(firstToDraw=="A")
+            {
+                if (state.deck.Count > 0)
+                {
+                    ahand[place1] = state.deck[0];
+                    state.deck.RemoveAt(0);
+                }
+                else if (state.dbottom != null)
+                {
+                    ahand[place1] = state.dbottom;
+                    state.dbottom = null;
+                }
 
-            if (state.deck.Count > 0)
-            {
-                place1.Add(state.deck[0]);
-                state.deck.RemoveAt(0);
+                if (state.deck.Count > 0)
+                {
+                    bhand[place2] = state.deck[0];
+                    state.deck.RemoveAt(0);
+                }
+                else if (state.dbottom != null)
+                {
+                    bhand[place2] = state.dbottom;
+                    state.dbottom = null;
+                }
             }
-            else if (state.dbottom.Count > 0)
+            else
             {
-                place1.Add(state.dbottom[0]);
-                state.dbottom.RemoveAt(0);
-            }
+                if (state.deck.Count > 0)
+                {
+                    bhand[place1] = state.deck[0];
+                    state.deck.RemoveAt(0);
+                }
+                else if (state.dbottom != null)
+                {
+                    bhand[place1] = state.dbottom;
+                    state.dbottom = null;
+                }
 
-            if (state.deck.Count > 0)
-            {
-                place2.Add(state.deck[0]);
-                state.deck.RemoveAt(0);
-            }
-            else if (state.dbottom.Count > 0)
-            {
-                place2.Add(state.dbottom[0]);
-                state.dbottom.RemoveAt(0);
+                if (state.deck.Count > 0)
+                {
+                    ahand[place2] = state.deck[0];
+                    state.deck.RemoveAt(0);
+                }
+                else if (state.dbottom != null)
+                {
+                    ahand[place2] = state.dbottom;
+                    state.dbottom = null;
+                }
             }
         }
 
         //Puts down a card
-        private void PutDownCard(State state, List<Card> from, List<Card> to, string who, bool first)
+        private void PutDownCard(State state, Card from, Card to, string who, bool first)
         {
             //Put down
-            to.Clear();
-            to.Add(from[0]);
-            from.Clear();
+            to = new Card(from.ID);
+            from = null;
 
             //Before drawing cards
             if (first)
@@ -173,14 +198,14 @@ namespace SnapFish66_Console
             if(first == "A")
             {
                 // B neither put the same color, nor trump
-                if(state.adown[0].color!=state.bdown[0].color && state.bdown[0].color!=state.trump)
+                if(state.adown.color!=state.bdown.color && state.bdown.color!=state.trump)
                 {
                     return "A";
                 }
                 // They have the same color, bigger value wins
-                else if(state.adown[0].color==state.bdown[0].color)
+                else if(state.adown.color==state.bdown.color)
                 {
-                    if(state.adown[0].value>state.bdown[0].value)
+                    if(state.adown.value>state.bdown.value)
                     {
                         return "A";
                     }
@@ -199,14 +224,14 @@ namespace SnapFish66_Console
             else
             {
                 // A neither put the same color, nor trump
-                if (state.adown[0].color != state.bdown[0].color && state.adown[0].color != state.trump)
+                if (state.adown.color != state.bdown.color && state.adown.color != state.trump)
                 {
                     return "B";
                 }
                 // They have the same color, bigger value wins
-                else if (state.adown[0].color == state.bdown[0].color)
+                else if (state.adown.color == state.bdown.color)
                 {
-                    if (state.adown[0].value > state.bdown[0].value)
+                    if (state.adown.value > state.bdown.value)
                     {
                         return "A";
                     }
@@ -236,27 +261,27 @@ namespace SnapFish66_Console
 
             if(awon)
             {
-                state.atook.Add(state.adown[0]);
-                state.atook.Add(state.bdown[0]);
+                state.atook.Add(state.adown);
+                state.atook.Add(state.bdown);
                 Draw(state, "A");
                 state.next = "A";
             }
             else
             {
-                state.btook.Add(state.adown[0]);
-                state.btook.Add(state.bdown[0]);
+                state.btook.Add(state.adown);
+                state.btook.Add(state.bdown);
                 Draw(state, "B");
                 state.next = "B";
             }
 
-            state.adown.Clear();
-            state.bdown.Clear();
+            state.adown = null;
+            state.bdown = null;
         }
 
         //Perform a step (excluding covering)
-        private bool PerformStep(State state, List<Card> from)
+        private bool PerformStep(State state, Card from)
         {
-            if(from.Count==0)
+            if(from == null)
             {
                 return false;
             }
@@ -264,7 +289,7 @@ namespace SnapFish66_Console
             if (state.next == "A")
             {
                 //B put down a card, a "answers" it
-                if (state.bdown.Count > 0)
+                if (state.bdown!=null)
                 {
                     PutDownCard(state, from, state.adown, "A",false);
                     HitAndTake(state,"B");
@@ -280,7 +305,7 @@ namespace SnapFish66_Console
             else
             {
                 //A put down a card, b "answers" it
-                if (state.adown.Count > 0)
+                if (state.adown != null)
                 {
                     PutDownCard(state, from, state.bdown, "B",false);
                     HitAndTake(state,"A");
@@ -300,14 +325,14 @@ namespace SnapFish66_Console
         //Tries to switch the dbottom with card in hand
         private void TrySwitchDBottom(State state)
         {
-            if(state.dbottom.Count>0 && state.deck.Count>=3)
+            if(state.dbottom != null && state.deck.Count>=3)
             {
                 //Cannot switch if not coming first
-                if(state.next == "A" && state.bdown.Count>0)
+                if(state.next == "A" && state.bdown != null)
                 {
                     return;
                 }
-                if (state.next == "B" && state.adown.Count > 0)
+                if (state.next == "B" && state.adown != null)
                 {
                     return;
                 }
@@ -315,30 +340,30 @@ namespace SnapFish66_Console
                 //Try to switch, if has trump 2
                 if(state.next =="A")
                 {
-                    List<List<Card>> hand = new List<List<Card>> { state.a1, state.a2, state.a3, state.a4, state.a5 };
+                    Card[] hand = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5 };
 
-                    foreach (var position in hand)
+                    for (int i = 0; i< hand.Length; i++)
                     {
-                        if(position.Count>0 && position[0].value==2 && position[0].color == state.trump)
+                        if(hand[i] != null && hand[i].value==2 && hand[i].color == state.trump)
                         {
-                            Card temp = position[0];
-                            position[0] = state.dbottom[0];
-                            state.dbottom[0] = temp;
+                            Card temp = new Card(hand[i].ID);
+                            hand[i] = new Card(state.dbottom.ID);
+                            state.dbottom = temp;
                         }
                     }
                 }
 
                 if (state.next == "B")
                 {
-                    List<List<Card>> hand = new List<List<Card>> { state.b1, state.b2, state.b3, state.b4, state.b5 };
+                    Card[] hand = new Card[] { state.b1, state.b2, state.b3, state.b4, state.b5 };
 
-                    foreach (var position in hand)
+                    for (int i = 0; i< hand.Length; i++)
                     {
-                        if (position.Count > 0 && position[0].value == 2 && position[0].color == state.trump)
+                        if (hand[i] != null && hand[i].value == 2 && hand[i].color == state.trump)
                         {
-                            Card temp = position[0];
-                            position[0] = state.dbottom[0];
-                            state.dbottom[0] = temp;
+                            Card temp = new Card(hand[i].ID);
+                            hand[i] = new Card(state.dbottom.ID);
+                            state.dbottom = temp;
                         }
                     }
                 }
@@ -346,11 +371,11 @@ namespace SnapFish66_Console
         }
 
         //We have a trump
-        private bool HasTrump(State state, Card opcard, List<List<Card>> hand)
+        private bool HasTrump(State state, Card opcard, Card[] hand)
         {
-            foreach (List<Card> card in hand)
+            foreach (Card card in hand)
             {
-                if(card.Count>0 && card[0].color==state.trump)
+                if(card!= null && card.color==state.trump)
                 {
                     return true;
                 }
@@ -360,11 +385,11 @@ namespace SnapFish66_Console
         }
 
         //We have card with the same color
-        private bool HasSameColor(State state, Card opcard, List<List<Card>> hand)
+        private bool HasSameColor(State state, Card opcard, Card[] hand)
         {
-            foreach (List<Card> card in hand)
+            foreach (Card card in hand)
             {
-                if (card.Count>0 && card[0].color == opcard.color)
+                if (card != null && card.color == opcard.color)
                 {
                     return true;
                 }
@@ -374,11 +399,11 @@ namespace SnapFish66_Console
         }
 
         //We have bigger card in the same color
-        private bool HasBiggerSame(State state, Card opcard, List<List<Card>> hand)
+        private bool HasBiggerSame(State state, Card opcard, Card[] hand)
         {
-            foreach (List<Card> card in hand)
+            foreach (Card card in hand)
             {
-                if (card.Count>0 && card[0].color == opcard.color && card[0].value>opcard.value)
+                if (card!=null && card.color == opcard.color && card.value>opcard.value)
                 {
                     return true;
                 }
@@ -391,8 +416,8 @@ namespace SnapFish66_Console
         private bool EndgameOK(State state, string action)
         {
             //Helpers
-            Dictionary<string, List<Card>> handDict = new Dictionary<string, List<Card>>();
-            List<Card> opponentCard = new List<Card>();
+            Dictionary<string, Card> handDict = new Dictionary<string, Card>();
+            Card opponentCard;
             if(state.next == "A")
             {
                 opponentCard = state.bdown;
@@ -412,14 +437,14 @@ namespace SnapFish66_Console
                 handDict.Add("B5", state.b5);
             }
 
-            List<List<Card>> hand;
+            Card[] hand;
             if (state.next == "A")
             {
-                hand = new List<List<Card>> { state.a1, state.a2, state.a3, state.a4, state.a5 };
+                hand = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5 };
             }
             else
             {
-                hand = new List<List<Card>> { state.b1, state.b2, state.b3, state.b4, state.b5 };
+                hand = new Card[] { state.b1, state.b2, state.b3, state.b4, state.b5 };
             }
 
             //If there are cards in the deck, it is not endgame
@@ -429,15 +454,15 @@ namespace SnapFish66_Console
             }
 
             //If coming first, we can put anything
-            if(opponentCard.Count==0)
+            if(opponentCard == null)
             {
                 return true;
             }
             
-            if(handDict.ContainsKey(action) && handDict[action].Count > 0)
+            if(handDict.ContainsKey(action) && handDict[action] != null)
             {
-                Card putCard = handDict[action][0];
-                Card opCard = opponentCard[0];
+                Card putCard = handDict[action];
+                Card opCard = opponentCard;
 
                 //If we have bigger of the same colour, then must put it down
                 if (HasBiggerSame(state, opCard, hand))

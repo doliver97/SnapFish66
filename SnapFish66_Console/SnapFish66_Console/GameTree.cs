@@ -77,7 +77,7 @@ namespace SnapFish66_Console
             }
             subroots = new List<Node>();
 
-            int round = s.adown.Count + s.bdown.Count + s.atook.Count + s.btook.Count;
+            int round = CardToInt(s.adown) + CardToInt(s.bdown) + s.atook.Count + s.btook.Count;
 
             root = new Node(null, s, "", round);
             root.SetMaximizer();
@@ -85,10 +85,22 @@ namespace SnapFish66_Console
             allNodes = new List<Node> { root };
         }
 
+        private int CardToInt(Card c)
+        {
+            if(c==null)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+
         private int CalcPossibleSubroots()
         {
-            int cardsInBHand = root.state.b1.Count + root.state.b2.Count + root.state.b3.Count + root.state.b4.Count + root.state.b5.Count;
-            int cardsInDeck = 20 - cardsInBHand - root.state.dbottom.Count - root.state.adown.Count - root.state.bdown.Count - root.state.atook.Count - root.state.btook.Count - root.state.a1.Count - root.state.a2.Count - root.state.a3.Count - root.state.a4.Count - root.state.a5.Count;
+            int cardsInBHand = CardToInt(root.state.b1) + CardToInt(root.state.b2) + CardToInt(root.state.b3) + CardToInt(root.state.b4) + CardToInt(root.state.b5);
+            int cardsInDeck = 20 - cardsInBHand - CardToInt(root.state.dbottom) - CardToInt(root.state.adown) - CardToInt(root.state.bdown) - root.state.atook.Count - root.state.btook.Count - CardToInt(root.state.a1) - CardToInt(root.state.a2) - CardToInt(root.state.a3) - CardToInt(root.state.a4) - CardToInt(root.state.a5);
 
             // count is sum unknown factorial per in hand factorial
             int count = 1;
@@ -213,7 +225,7 @@ namespace SnapFish66_Console
         private Node CreateNewSubroot()
         {
             bool found = false;
-            int round = root.state.adown.Count + root.state.bdown.Count + root.state.atook.Count + root.state.btook.Count;
+            int round = CardToInt(root.state.adown) + CardToInt(root.state.bdown) + root.state.atook.Count + root.state.btook.Count;
             Node newNode = new Node(null,root.state.GenerateRandom(),"",round);
 
             //DateTime begin = DateTime.Now;

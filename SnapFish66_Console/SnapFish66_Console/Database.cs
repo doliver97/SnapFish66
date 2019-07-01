@@ -81,9 +81,9 @@ namespace SnapFish66_Console
         }
 
         //Helper for stringify
-        private void SetChar(ref char[] key, List<Card> place, char val, State s, int i)
+        private void SetChar(ref char[] key, Card place, char val, State s, int i)
         {
-            if (place.Count > 0 && place[0].ID == s.IDs[i])
+            if (place!=null && place.ID == s.IDs[i])
             {
                 key[i + 2] = val;
             }
