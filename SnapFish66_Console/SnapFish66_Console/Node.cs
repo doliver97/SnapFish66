@@ -18,8 +18,6 @@ namespace SnapFish66_Console
 
         public string actionBefore;
 
-        private bool isRoot;
-        
         public List<Node> children = new List<Node>();
         private Random random = new Random();
 
@@ -32,17 +30,11 @@ namespace SnapFish66_Console
         {
             state = nstate;
             actionBefore = nactionBefore;
+            depth = ndepth;
 
-            if(newparent==null)
+            if(newparent!=null)
             {
-                depth = ndepth;
-                isRoot = true;
-            }
-            else
-            {
-                isRoot = false;
                 parent = newparent;
-                depth = ndepth;
             }
 
             VisitedSteps = new List<string>();

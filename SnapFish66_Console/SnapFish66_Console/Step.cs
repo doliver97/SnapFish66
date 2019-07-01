@@ -180,7 +180,7 @@ namespace SnapFish66_Console
                 // They have the same color, bigger value wins
                 else if(state.adown[0].color==state.bdown[0].color)
                 {
-                    if(state.adown[0].GetValue()>state.bdown[0].GetValue())
+                    if(state.adown[0].value>state.bdown[0].value)
                     {
                         return "A";
                     }
@@ -206,7 +206,7 @@ namespace SnapFish66_Console
                 // They have the same color, bigger value wins
                 else if (state.adown[0].color == state.bdown[0].color)
                 {
-                    if (state.adown[0].GetValue() > state.bdown[0].GetValue())
+                    if (state.adown[0].value > state.bdown[0].value)
                     {
                         return "A";
                     }
@@ -319,7 +319,7 @@ namespace SnapFish66_Console
 
                     foreach (var position in hand)
                     {
-                        if(position.Count>0 && position[0].GetValue()==2 && position[0].color == state.trump)
+                        if(position.Count>0 && position[0].value==2 && position[0].color == state.trump)
                         {
                             Card temp = position[0];
                             position[0] = state.dbottom[0];
@@ -334,7 +334,7 @@ namespace SnapFish66_Console
 
                     foreach (var position in hand)
                     {
-                        if (position.Count > 0 && position[0].GetValue() == 2 && position[0].color == state.trump)
+                        if (position.Count > 0 && position[0].value == 2 && position[0].color == state.trump)
                         {
                             Card temp = position[0];
                             position[0] = state.dbottom[0];
@@ -378,7 +378,7 @@ namespace SnapFish66_Console
         {
             foreach (List<Card> card in hand)
             {
-                if (card.Count>0 && card[0].color == opcard.color && card[0].GetValue()>opcard.GetValue())
+                if (card.Count>0 && card[0].color == opcard.color && card[0].value>opcard.value)
                 {
                     return true;
                 }
@@ -442,7 +442,7 @@ namespace SnapFish66_Console
                 //If we have bigger of the same colour, then must put it down
                 if (HasBiggerSame(state, opCard, hand))
                 {
-                    if (putCard.color == opCard.color && putCard.GetValue() > opCard.GetValue())
+                    if (putCard.color == opCard.color && putCard.value > opCard.value)
                     {
                         return true;
                     }

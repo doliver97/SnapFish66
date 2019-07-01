@@ -236,8 +236,8 @@ namespace SnapFish66_Console
         private void CountScores()
         {
             
-            Ascore = atook.Sum(x => x.GetValue());
-            Bscore = btook.Sum(x => x.GetValue());
+            Ascore = atook.Sum(x => x.value);
+            Bscore = btook.Sum(x => x.value);
 
             if(Ascore!=0)
             {
