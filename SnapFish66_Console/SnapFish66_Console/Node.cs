@@ -111,7 +111,7 @@ namespace SnapFish66_Console
             }
         }
 
-        public double AlphaBeta(double alpha, double beta, BackgroundWorker worker)
+        public double AlphaBeta(double alpha, double beta)
         {
             //Increasing alpha and decreasing beta if we can
             if (state.Ascore >= 33 && alpha < -1)
@@ -132,12 +132,7 @@ namespace SnapFish66_Console
             }
 
             GameTree.VisitedNodes[depth]++;
-
-            if (depth <= 8)
-            {
-                worker.ReportProgress(0);
-            }
-
+            
             //If found in database, we can cut it here
             if (Program.AllowReadDatabase && depth%2==0 && depth<=10)
             {
@@ -168,16 +163,16 @@ namespace SnapFish66_Console
             //This node is a maximizer
             else if(maximizer)
             {
-                value = -4; //Minimum value possible is -3
+                value = -3; //Minimum value possible is -3
                 foreach (Node child in children)
                 {
                     if(Program.AllowWriteDatabase)
                     {
-                        value = Max(value,child.AlphaBeta(-4, 4, worker));
+                        value = Max(value,child.AlphaBeta(-3,3));
                     }
                     else
                     {
-                        value = Max(value, child.AlphaBeta(alpha, beta, worker));
+                        value = Max(value, child.AlphaBeta(alpha, beta));
                     }
                     alpha = Max(alpha, value);
                     if (alpha >= beta)
@@ -201,16 +196,16 @@ namespace SnapFish66_Console
             //This node is a minimizer
             else
             {
-                value = 4; //Maximum value possible is +3
+                value = 3; //Maximum value possible is +3
                 foreach (Node child in children)
                 {
                     if(Program.AllowWriteDatabase)
                     {
-                        value = Min(value, child.AlphaBeta(-4, 4, worker));
+                        value = Min(value, child.AlphaBeta(-3, 3));
                     }
                     else
                     {
-                        value = Min(value, child.AlphaBeta(alpha, beta, worker));
+                        value = Min(value, child.AlphaBeta(alpha, beta));
                     }
                     beta = Min(beta, value);
                     if (alpha >= beta)

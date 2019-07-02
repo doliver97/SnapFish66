@@ -142,59 +142,41 @@ namespace SnapFish66_Console
 
             //Does not create new database, only opens it
             database = new Database();
-
-            while (!worker.CancellationPending)
+            
+            if (subroots.Count < possibleSubroots)
             {
-                if(subroots.Count<possibleSubroots)
+                Node subroot = CreateNewSubroot();
+
+                //Add children of different actions (will be root of alphabeta)
+                List<Node> children = new List<Node>();
+                for (int i = 0; i < actionList.Count - 1; i++) //without cover
                 {
-                    Node subroot = CreateNewSubroot();
+                    Node child = new Node(subroot, subroot.state.Copy(), actionList[i], subroot.depth + 1);
+                    bool success = child.state.Step(child.state, actionList[i]);
+                    child.SetMaximizer();
 
-                    //Add children of different actions (will be root of alphabeta)
-                    List<Node> children = new List<Node>();
-                    for (int i = 0; i < actionList.Count-1; i++) //without cover
+                    if (success)
                     {
-                        Node child = new Node(subroot, subroot.state.Copy(), actionList[i], subroot.depth + 1);
-                        bool success = child.state.Step(child.state, actionList[i]);
-                        child.SetMaximizer();
-
-                        if(success)
-                        {
-                            children.Add(child);
-                        }
-                    }
-
-                    for (int i = 0; i < children.Count; i++)
-                    {
-                        if(worker.CancellationPending)
-                        {
-                            break;
-                        }
-
-                        children[i].AlphaBeta(-3, 3, worker);
-
-                        //Calculate data for labels
-                        AddEstimatedValue(children[i]);
-                        CalcAverages();
-
-                        //We wont need the children of the subroot
-                        children.RemoveAt(i);
-                        i--;
-                        
-                        //Call SetLabels
-                        worker.ReportProgress(0);
+                        children.Add(child);
                     }
                 }
-                else
+
+                for (int i = 0; i < children.Count; i++)
                 {
-                    break;
+
+                    children[i].AlphaBeta(-3, 3);
+
+                    //Calculate data for labels
+                    AddEstimatedValue(children[i]);
+                    CalcAverages();
+
+                    //We wont need the children of the subroot
+                    children.RemoveAt(i);
+                    i--;
                 }
             }
-
+            
             database.CloseDB();
-
-            //Making sure that labels are refreshed after the calculations
-            Thread.Sleep(1100);
-            worker.ReportProgress(0);
         }
 
         private void AddEstimatedValue(Node child)

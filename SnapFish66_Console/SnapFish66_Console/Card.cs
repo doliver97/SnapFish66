@@ -17,7 +17,10 @@ namespace SnapFish66_Console
         {
             ID = id;
             color = id.Substring(0, 1);
-            value = int.Parse(id.Substring(1));
+            if(ID!="unknown")
+            {
+                value = int.Parse(id.Substring(1));
+            }
         }
     }
 }

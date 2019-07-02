@@ -74,7 +74,7 @@ namespace SnapFish66_Console
 
                 for (int i = 0; i < SimpleCardPlaces.Length; i++)
                 {
-                    if (SimpleCardPlaces[i].ID == c.ID)
+                    if (SimpleCardPlaces[i]!=null && SimpleCardPlaces[i].ID == c.ID)
                     {
                         cards.RemoveAll(x => x.ID == c.ID);
                     }
@@ -313,21 +313,60 @@ namespace SnapFish66_Console
             State copy = new State();
 
             copy.deck = CopyCardList(deck);
-            copy.dbottom = new Card(dbottom.ID);
-            copy.a1 = new Card(a1.ID);
-            copy.a2 = new Card(a2.ID);
-            copy.a3 = new Card(a3.ID);
-            copy.a4 = new Card(a4.ID);
-            copy.a5 = new Card(a5.ID);
-            copy.b1 = new Card(b1.ID);
-            copy.b2 = new Card(b2.ID);
-            copy.b3 = new Card(b3.ID);
-            copy.b4 = new Card(b4.ID);
-            copy.b5 = new Card(b5.ID);
+            if(dbottom!=null)
+            {
+                copy.dbottom = new Card(dbottom.ID);
+            }
+            if(a1!=null)
+            {
+                copy.a1 = new Card(a1.ID);
+            }
+            if (a2 != null)
+            {
+                copy.a2 = new Card(a2.ID);
+            }
+            if (a3 != null)
+            {
+                copy.a3 = new Card(a3.ID);
+            }
+            if (a4 != null)
+            {
+                copy.a4 = new Card(a4.ID);
+            }
+            if (a5 != null)
+            {
+                copy.a5 = new Card(a5.ID);
+            }
+            if (b1 != null)
+            {
+                copy.b1 = new Card(b1.ID);
+            }
+            if (b2 != null)
+            {
+                copy.b2 = new Card(b2.ID);
+            }
+            if (b3 != null)
+            {
+                copy.b3 = new Card(b3.ID);
+            }
+            if (b4 != null)
+            {
+                copy.b4 = new Card(b4.ID);
+            }
+            if (b5 != null)
+            {
+                copy.b5 = new Card(b5.ID);
+            }
             copy.atook = CopyCardList(atook);
             copy.btook = CopyCardList(btook);
-            copy.adown = new Card(adown.ID);
-            copy.bdown = new Card(bdown.ID);
+            if (adown != null)
+            {
+                copy.adown = new Card(adown.ID);
+            }
+            if (bdown != null)
+            {
+                copy.bdown = new Card(bdown.ID);
+            }
 
             copy.AM20 = AM20;
             copy.AP20 = AP20;
