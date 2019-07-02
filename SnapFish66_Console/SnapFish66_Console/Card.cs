@@ -13,13 +13,6 @@ namespace SnapFish66_Console
         public string color;
         public int value;
 
-        public Card()
-        {
-            ID = "empty";
-            color = "";
-            value = 0;
-        }
-
         public Card(string id)
         {
             ID = id;

@@ -37,7 +37,8 @@ namespace SnapFish66_Console
         static void Main(string[] args)
         {
             SetStaticCards();
-            Console.WriteLine("Hello World!");
+
+            Console.ReadKey();
         }
     }
 }
