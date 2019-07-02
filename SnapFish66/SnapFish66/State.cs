@@ -438,6 +438,8 @@ namespace SnapFish66
             copy.next = next;
             copy.trump = trump;
 
+            copy.CountScores();
+
             return copy;
         }
 
