@@ -342,6 +342,8 @@ namespace SnapFish66_Console
             copy.next = next;
             copy.trump = trump;
 
+            copy.CountScores();
+
             return copy;
         }
 
