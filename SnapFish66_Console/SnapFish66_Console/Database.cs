@@ -48,10 +48,12 @@ namespace SnapFish66_Console
 
         public void AddToDB(Node node)
         {
-            Record rec = new Record();
-            rec.Key = StringifyNode(node);
-            rec.Value = Convert.ToSByte(node.value);
-            rec.Depth = Convert.ToByte(node.depth);
+            Record rec = new Record
+            { 
+                Key = StringifyNode(node),
+                Value = Convert.ToSByte(node.value),
+                Depth = Convert.ToByte(node.depth)
+            };
 
             // Get collection instance
             var col = database.GetCollection<Record>("Records");

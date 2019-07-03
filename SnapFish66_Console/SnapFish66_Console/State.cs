@@ -110,6 +110,21 @@ namespace SnapFish66_Console
                 }
             }
 
+            newstate.dbottom = newSinglePlaces[0];
+            newstate.adown = newSinglePlaces[1];
+            newstate.bdown = newSinglePlaces[2];
+            newstate.a1 = newSinglePlaces[3];
+            newstate.a2 = newSinglePlaces[4];
+            newstate.a3 = newSinglePlaces[5];
+            newstate.a4 = newSinglePlaces[6];
+            newstate.a5 = newSinglePlaces[7];
+            newstate.b1 = newSinglePlaces[8];
+            newstate.b2 = newSinglePlaces[9];
+            newstate.b3 = newSinglePlaces[10];
+            newstate.b4 = newSinglePlaces[11];
+            newstate.b5 = newSinglePlaces[12];
+
+            newstate.deck.Clear();
             while(remaining.Count>0)
             {
                 int r = rand.Next(remaining.Count);

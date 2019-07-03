@@ -226,7 +226,7 @@ namespace SnapFish66_Console
 
             State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
 
-            State s2 = s.GenerateRandom(); //TODO not ok, check
+            State s2 = s.GenerateRandom();
 
             Console.ReadKey();
         }
