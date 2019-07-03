@@ -91,8 +91,8 @@ namespace SnapFish66_Console
         {
             int place1 = -1;
             int place2 = -1;
-            Card[] ahand = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5 };
-            Card[] bhand = new Card[] { state.b1, state.b2, state.b3, state.b4, state.b5 };
+            Card[] ahand = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5 }; //TODO possible bug: overwriting ahand wont affect state
+            Card[] bhand = new Card[] { state.b1, state.b2, state.b3, state.b4, state.b5 }; //TODO same
 
             for (int i =0; i<ahand.Length; i++)
             {
@@ -347,7 +347,7 @@ namespace SnapFish66_Console
                         if(hand[i] != null && hand[i].value==2 && hand[i].color == state.trump)
                         {
                             Card temp = new Card(hand[i].ID);
-                            hand[i] = new Card(state.dbottom.ID);
+                            hand[i] = new Card(state.dbottom.ID); //TODO possible bug, overwriting wont affect state
                             state.dbottom = temp;
                         }
                     }
@@ -362,7 +362,7 @@ namespace SnapFish66_Console
                         if (hand[i] != null && hand[i].value == 2 && hand[i].color == state.trump)
                         {
                             Card temp = new Card(hand[i].ID);
-                            hand[i] = new Card(state.dbottom.ID);
+                            hand[i] = new Card(state.dbottom.ID); //TODO same
                             state.dbottom = temp;
                         }
                     }
