@@ -228,6 +228,10 @@ namespace SnapFish66_Console
 
             State s2 = s.GenerateRandom();
 
+            GameTree tree = new GameTree(s);
+
+            tree.Calculate();
+
             Console.ReadKey();
         }
     }

@@ -45,7 +45,7 @@ namespace SnapFish66_Console
         private void Saying20(State state, string who)
         {
 
-            if (who=="A")
+            if (state.adown != null && who=="A")
             {
                 if ((state.adown.ID == "M3" && CardInHand(state, "A", "M4")) || (state.adown.ID == "M4" && CardInHand(state, "A", "M3")))
                 {
@@ -65,7 +65,7 @@ namespace SnapFish66_Console
                 }
 
             }
-            else
+            else if(state.bdown!=null)
             {
                 if ((state.bdown.ID == "M3" && CardInHand(state, "B", "M4")) || (state.bdown.ID == "M4" && CardInHand(state, "B", "M3")))
                 {
@@ -86,13 +86,64 @@ namespace SnapFish66_Console
             }
         }
 
+        //Helper for Draw() and TrySwitchBottom(), sets the i-th card of hand
+        private void SetStateCard(State state, string who, int i, Card card)
+        {
+            if(who == "A")
+            {
+                if(i==0)
+                {
+                    state.a1 = card;
+                }
+                else if(i==1)
+                {
+                    state.a2 = card;
+                }
+                else if (i == 2)
+                {
+                    state.a3 = card;
+                }
+                else if (i == 3)
+                {
+                    state.a4 = card;
+                }
+                else if (i == 4)
+                {
+                    state.a5 = card;
+                }
+            }
+            else
+            {
+                if (i == 0)
+                {
+                    state.b1 = card;
+                }
+                else if (i == 1)
+                {
+                    state.b2 = card;
+                }
+                else if (i == 2)
+                {
+                    state.b3 = card;
+                }
+                else if (i == 3)
+                {
+                    state.b4 = card;
+                }
+                else if (i == 4)
+                {
+                    state.b5 = card;
+                }
+            }
+        }
+
         //Drawing a card
         private void Draw(State state, string firstToDraw)
         {
             int place1 = -1;
             int place2 = -1;
-            Card[] ahand = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5 }; //TODO possible bug: overwriting ahand wont affect state
-            Card[] bhand = new Card[] { state.b1, state.b2, state.b3, state.b4, state.b5 }; //TODO same
+            Card[] ahand = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5 };
+            Card[] bhand = new Card[] { state.b1, state.b2, state.b3, state.b4, state.b5 };
 
             for (int i =0; i<ahand.Length; i++)
             {
@@ -132,23 +183,23 @@ namespace SnapFish66_Console
             {
                 if (state.deck.Count > 0)
                 {
-                    ahand[place1] = state.deck[0];
+                    SetStateCard(state, "A", place1, state.deck[0]);
                     state.deck.RemoveAt(0);
                 }
                 else if (state.dbottom != null)
                 {
-                    ahand[place1] = state.dbottom;
+                    SetStateCard(state, "A", place1, state.dbottom);
                     state.dbottom = null;
                 }
 
                 if (state.deck.Count > 0)
                 {
-                    bhand[place2] = state.deck[0];
+                    SetStateCard(state, "B", place2, state.deck[0]);
                     state.deck.RemoveAt(0);
                 }
                 else if (state.dbottom != null)
                 {
-                    bhand[place2] = state.dbottom;
+                    SetStateCard(state, "B", place2, state.dbottom);
                     state.dbottom = null;
                 }
             }
@@ -156,30 +207,30 @@ namespace SnapFish66_Console
             {
                 if (state.deck.Count > 0)
                 {
-                    bhand[place1] = state.deck[0];
+                    SetStateCard(state, "B", place1, state.deck[0]);
                     state.deck.RemoveAt(0);
                 }
                 else if (state.dbottom != null)
                 {
-                    bhand[place1] = state.dbottom;
+                    SetStateCard(state, "B", place1, state.dbottom);
                     state.dbottom = null;
                 }
 
                 if (state.deck.Count > 0)
                 {
-                    ahand[place2] = state.deck[0];
+                    SetStateCard(state, "A", place2, state.deck[0]);
                     state.deck.RemoveAt(0);
                 }
                 else if (state.dbottom != null)
                 {
-                    ahand[place2] = state.dbottom;
+                    SetStateCard(state, "A", place2, state.dbottom);
                     state.dbottom = null;
                 }
             }
         }
 
         //Puts down a card
-        private void PutDownCard(State state, Card from, Card to, string who, bool first)
+        private void PutDownCard(State state, ref Card from, ref Card to, string who, bool first)
         {
             //Put down
             to = new Card(from.ID);
@@ -279,7 +330,7 @@ namespace SnapFish66_Console
         }
 
         //Perform a step (excluding covering)
-        private bool PerformStep(State state, Card from)
+        private bool PerformStep(State state, ref Card from)
         {
             if(from == null)
             {
@@ -291,14 +342,14 @@ namespace SnapFish66_Console
                 //B put down a card, a "answers" it
                 if (state.bdown!=null)
                 {
-                    PutDownCard(state, from, state.adown, "A",false);
+                    PutDownCard(state, ref from, ref state.adown, "A",false);
                     HitAndTake(state,"B");
 
                 }
                 //A starts the round
                 else
                 {
-                    PutDownCard(state, from, state.adown, "A",true);
+                    PutDownCard(state, ref from, ref state.adown, "A",true);
                     state.next = "B";
                 }
             }
@@ -307,14 +358,14 @@ namespace SnapFish66_Console
                 //A put down a card, b "answers" it
                 if (state.adown != null)
                 {
-                    PutDownCard(state, from, state.bdown, "B",false);
+                    PutDownCard(state, ref from, ref state.bdown, "B",false);
                     HitAndTake(state,"A");
 
                 }
                 //B starts the round
                 else
                 {
-                    PutDownCard(state, from, state.bdown, "B",true);
+                    PutDownCard(state, ref from, ref state.bdown, "B",true);
                     state.next = "A";
                 }
             }
@@ -347,7 +398,7 @@ namespace SnapFish66_Console
                         if(hand[i] != null && hand[i].value==2 && hand[i].color == state.trump)
                         {
                             Card temp = new Card(hand[i].ID);
-                            hand[i] = new Card(state.dbottom.ID); //TODO possible bug, overwriting wont affect state
+                            SetStateCard(state, "A", i, state.dbottom);
                             state.dbottom = temp;
                         }
                     }
@@ -362,7 +413,7 @@ namespace SnapFish66_Console
                         if (hand[i] != null && hand[i].value == 2 && hand[i].color == state.trump)
                         {
                             Card temp = new Card(hand[i].ID);
-                            hand[i] = new Card(state.dbottom.ID); //TODO same
+                            SetStateCard(state, "B", i, state.dbottom);
                             state.dbottom = temp;
                         }
                     }
@@ -529,7 +580,7 @@ namespace SnapFish66_Console
             {
                 if (state.next == "A")
                 {
-                    return PerformStep(state, state.a1);
+                    return PerformStep(state, ref state.a1);
                 }
                 else
                 {
@@ -540,7 +591,7 @@ namespace SnapFish66_Console
             {
                 if (state.next == "A")
                 {
-                    return PerformStep(state, state.a2);
+                    return PerformStep(state, ref state.a2);
                 }
                 else
                 {
@@ -551,7 +602,7 @@ namespace SnapFish66_Console
             {
                 if (state.next == "A")
                 {
-                    return PerformStep(state, state.a3);
+                    return PerformStep(state, ref state.a3);
                 }
                 else
                 {
@@ -562,7 +613,7 @@ namespace SnapFish66_Console
             {
                 if (state.next == "A")
                 {
-                    return PerformStep(state, state.a4);
+                    return PerformStep(state, ref state.a4);
                 }
                 else
                 {
@@ -573,7 +624,7 @@ namespace SnapFish66_Console
             {
                 if (state.next == "A")
                 {
-                    return PerformStep(state, state.a5);
+                    return PerformStep(state, ref state.a5);
                 }
                 else
                 {
@@ -588,7 +639,7 @@ namespace SnapFish66_Console
                 }
                 else
                 {
-                    return PerformStep(state, state.b1);
+                    return PerformStep(state, ref state.b1);
                 }
             }
             if (action == "B2")
@@ -599,7 +650,7 @@ namespace SnapFish66_Console
                 }
                 else
                 {
-                    return PerformStep(state, state.b2);
+                    return PerformStep(state, ref state.b2);
                 }
             }
             if (action == "B3")
@@ -610,7 +661,7 @@ namespace SnapFish66_Console
                 }
                 else
                 {
-                    return PerformStep(state, state.b3);
+                    return PerformStep(state, ref state.b3);
                 }
             }
             if (action == "B4")
@@ -621,7 +672,7 @@ namespace SnapFish66_Console
                 }
                 else
                 {
-                    return PerformStep(state, state.b4);
+                    return PerformStep(state, ref state.b4);
                 }
             }
             if (action == "B5")
@@ -632,7 +683,7 @@ namespace SnapFish66_Console
                 }
                 else
                 {
-                    return PerformStep(state, state.b5);
+                    return PerformStep(state, ref state.b5);
                 }
             }
             if(action == "cover")

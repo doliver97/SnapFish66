@@ -467,7 +467,15 @@ namespace SnapFish66_Console
 
             for (int i = 0; i < SinglePlaces.Length; i++)
             {
-                if(SinglePlaces[i].ID!=OtherSinglePlaces[i].ID)
+                if(SinglePlaces[i]==null && OtherSinglePlaces[i]==null)
+                {
+                    continue;
+                }
+                else if((SinglePlaces[i]==null && OtherSinglePlaces[i]!= null) || (SinglePlaces[i]!=null && OtherSinglePlaces==null))
+                {
+                    return false;
+                }
+                else if(SinglePlaces[i].ID!=OtherSinglePlaces[i].ID)
                 {
                     return false;
                 }

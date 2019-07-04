@@ -134,7 +134,7 @@ namespace SnapFish66_Console
             SavedNodes = new int[21];
         }
 
-        public void Calculate(BackgroundWorker worker)
+        public void Calculate()
         {
             possibleSubroots = CalcPossibleSubroots();
             
@@ -143,7 +143,7 @@ namespace SnapFish66_Console
             //Does not create new database, only opens it
             database = new Database();
             
-            if (subroots.Count < possibleSubroots)
+            while (subroots.Count < possibleSubroots)
             {
                 Node subroot = CreateNewSubroot();
 
