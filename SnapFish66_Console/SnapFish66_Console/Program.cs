@@ -225,8 +225,10 @@ namespace SnapFish66_Console
             SetStaticCards();
 
             State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
+            //State s = SetStateFromString("APHHHUADAAAAHHUUUUHHUHXXXX"); // Test 8 , result must be +2 for all PASSED
+            //State s = SetStateFromString("AMHGGUHAHHGGGHGAUUHGGAXXXX"); //Test 5, result must be -1 for all PASSED
 
-            State s2 = s.GenerateRandom();
+            //State s2 = s.GenerateRandom(); //Seems to be working
 
             GameTree tree = new GameTree(s);
 

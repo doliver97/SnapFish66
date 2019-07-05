@@ -429,7 +429,11 @@ namespace SnapFish66_Console
 
                 for (int j = 0; j < other.Count; j++)
                 {
-                    if(one[i].ID == other[j].ID)
+                    if(one[i]==null && other[j]==null)
+                    {
+                        found = true;
+                    }
+                    else if(one[i]!=null && other[j] != null && one[i].ID == other[j].ID)
                     {
                         found = true;
                     }

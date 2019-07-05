@@ -140,8 +140,8 @@ namespace SnapFish66_Console
         //Drawing a card
         private void Draw(State state, string firstToDraw)
         {
-            int place1 = -1;
-            int place2 = -1;
+            int place1 = -1; //Index of first drawn card
+            int place2 = -1; //Index of second drawn card
             Card[] ahand = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5 };
             Card[] bhand = new Card[] { state.b1, state.b2, state.b3, state.b4, state.b5 };
 
@@ -164,7 +164,7 @@ namespace SnapFish66_Console
 
             for (int i = 0; i< bhand.Length; i++)
             {
-                if (bhand[i]!= null)
+                if (bhand[i]== null)
                 {
                     if (firstToDraw == "B")
                     {

@@ -78,12 +78,12 @@ namespace SnapFish66_Console
             if (state.next == "A")
             {
                 maximizer = true;
-                value = -4;
+                value = -3;
             }
             else
             {
                 maximizer = false;
-                value = 4;
+                value = 3;
             }
         }
 
@@ -180,7 +180,8 @@ namespace SnapFish66_Console
                         break;
                     }
                 }
-                children.Clear();
+
+                children = new List<Node>(); //Faster than clear
 
                 //Write to database
                 if(Program.AllowWriteDatabase)
@@ -213,7 +214,8 @@ namespace SnapFish66_Console
                         break;
                     }
                 }
-                children.Clear();
+
+                children = new List<Node>(); //Faster than clear
 
                 //Write to database
                 if (Program.AllowWriteDatabase)
