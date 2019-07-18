@@ -57,7 +57,7 @@ namespace SnapFish66_Console
 
             // Get collection instance
             var col = database.GetCollection<Record>("Records");
-            
+
             // Insert document to collection - if collection do not exists, create now
             col.Upsert(rec);
 
@@ -108,7 +108,7 @@ namespace SnapFish66_Console
                 {
                     if(s.deck[j].ID == s.IDs[i])
                     {
-                        key[i + 2] = Convert.ToChar(j);
+                        key[i + 2] = Convert.ToChar(j+'0');
                     }
                 }
 
