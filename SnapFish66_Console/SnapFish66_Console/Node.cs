@@ -126,7 +126,7 @@ namespace SnapFish66_Console
             {
                 beta = 1;
             }
-            else if (state.Ascore > 0 && beta > 2)
+            else if (state.Bscore > 0 && beta > 2)
             {
                 beta = 2;
             }
@@ -166,7 +166,7 @@ namespace SnapFish66_Console
                 value = -3; //Minimum value possible is -3
                 foreach (Node child in children)
                 {
-                    if(Program.AllowWriteDatabase)
+                    if(Program.AllowWriteDatabase && depth<=10 && depth%2==0)
                     {
                         value = Max(value,child.AlphaBeta(-3,3));
                     }
@@ -200,7 +200,7 @@ namespace SnapFish66_Console
                 value = 3; //Maximum value possible is +3
                 foreach (Node child in children)
                 {
-                    if(Program.AllowWriteDatabase)
+                    if(Program.AllowWriteDatabase && depth<=10 && depth%2==0)
                     {
                         value = Min(value, child.AlphaBeta(-3, 3));
                     }
