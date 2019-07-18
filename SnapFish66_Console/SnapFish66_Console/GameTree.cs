@@ -174,6 +174,43 @@ namespace SnapFish66_Console
                     children.RemoveAt(i);
                     i--;
                 }
+
+                //Writing data to console
+                Console.Clear();
+                Console.Write("Unknown card permutations: ");
+                Console.WriteLine(subroots.Count + "/" + possibleSubroots);
+
+                double estimatedSpeed = subroots.Count/(DateTime.Now-started).TotalSeconds; //permutations per second
+                double finishduration = (possibleSubroots-subroots.Count)/estimatedSpeed;//finish will be after x seconds
+                DateTime finishtime = DateTime.Now.AddSeconds(finishduration);
+
+                Console.WriteLine();
+                Console.WriteLine("Finish at: " + finishtime);
+
+                Console.WriteLine();
+                Console.WriteLine("Estimated values for cards:");
+                State s = subroots.Last().state;
+
+                if (s.a1!=null)
+                {
+                    Console.WriteLine(s.a1.ID + " : " + Math.Round(averages[0], 2));
+                }
+                if (s.a2 != null)
+                {
+                    Console.WriteLine(s.a2.ID + " : " + Math.Round(averages[1], 2));
+                }
+                if (s.a3 != null)
+                {
+                    Console.WriteLine(s.a3.ID + " : " + Math.Round(averages[2], 2));
+                }
+                if (s.a4 != null)
+                {
+                    Console.WriteLine(s.a4.ID + " : " + Math.Round(averages[3], 2));
+                }
+                if (s.a5 != null)
+                {
+                    Console.WriteLine(s.a5.ID + " : " + Math.Round(averages[4], 2));
+                }
             }
             
             database.CloseDB();

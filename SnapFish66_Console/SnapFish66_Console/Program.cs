@@ -224,7 +224,9 @@ namespace SnapFish66_Console
         {
             SetStaticCards();
 
-            State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
+            //State s = SetStateFromString("APUUAUUDAUUAUUUAUUAUUUXXXX"); //Random starting hand
+            State s = SetStateFromString("APUUUUADAAAAUUUUUUUUUUXXXX"); //Best starting hand
+            //State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
             //State s = SetStateFromString("APHHHUADAAAAHHUUUUHHUHXXXX"); // Test 8 , result must be +2 for all PASSED
             //State s = SetStateFromString("AMHGGUHAHHGGGHGAUUHGGAXXXX"); //Test 5, result must be -1 for all PASSED
 
@@ -234,7 +236,10 @@ namespace SnapFish66_Console
 
             tree.Calculate();
 
-            Console.ReadKey();
+            Console.WriteLine();
+            Console.WriteLine("Exit with enter...");
+
+            Console.ReadLine();
         }
     }
 }
