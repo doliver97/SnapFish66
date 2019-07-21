@@ -14,6 +14,9 @@ namespace SnapFish66_Console
     {
         //public static int GenerateTimeSum;
 
+        private readonly object lockobject = new object();
+        private readonly object lockobject2 = new object();
+
         public Node root;
 
         public static Database database;
@@ -137,82 +140,103 @@ namespace SnapFish66_Console
         public void Calculate()
         {
             possibleSubroots = CalcPossibleSubroots();
-            
-            started = DateTime.Now;
 
             //Does not create new database, only opens it
             database = new Database();
-            
-            while (subroots.Count < possibleSubroots)
+
+            //while(subroots.Count < 1000)
+            while(subroots.Count < possibleSubroots)
             {
                 Node subroot = CreateNewSubroot();
+                subroots.Add(subroot);
+                Console.Clear();
+                Console.WriteLine("Created subroots: " +subroots.Count + "/" + possibleSubroots);
+            }
+
+            int subrootCtr = 0;
+
+            started = DateTime.Now;
+
+            Dictionary<Node, List<Node>> children = new Dictionary<Node, List<Node>>();
+
+            //Parallel.ForEach(subroots, new ParallelOptions { MaxDegreeOfParallelism = 1 }, (subroot) =>
+            foreach(var subroot in subroots)
+            {
+                 subrootCtr++;
 
                 //Add children of different actions (will be root of alphabeta)
-                List<Node> children = new List<Node>();
                 for (int i = 0; i < actionList.Count - 1; i++) //without cover
                 {
-                    Node child = new Node(subroot, subroot.state.Copy(), actionList[i], subroot.depth + 1);
-                    bool success = child.state.Step(child.state, actionList[i]);
-                    child.SetMaximizer();
+                     Node child = new Node(subroot, subroot.state.Copy(), actionList[i], subroot.depth + 1);
+                     bool success = child.state.Step(child.state, actionList[i]);
+                     child.SetMaximizer();
 
-                    if (success)
-                    {
-                        children.Add(child);
-                    }
-                }
+                     if (success)
+                     {
+                         if (!children.ContainsKey(subroot))
+                         {
+                             children[subroot] = new List<Node>();
+                         }
+                         children[subroot].Add(child);
+                     }
+                 }
 
-                for (int i = 0; i < children.Count; i++)
-                {
 
-                    children[i].AlphaBeta(-3, 3);
+                 for (int i = 0; i < children[subroot].Count; i++)
+                 {
 
-                    //Calculate data for labels
-                    AddEstimatedValue(children[i]);
-                    CalcAverages();
+                     children[subroot][i].AlphaBeta(-3, 3);
+
+                     lock (lockobject)
+                     {
+                        //Calculate data for labels
+                        AddEstimatedValue(children[subroot][i]);
+                         CalcAverages();
+                     }
 
                     //We wont need the children of the subroot
-                    children.RemoveAt(i);
-                    i--;
-                }
+                    children[subroot].RemoveAt(i);
+                     i--;
+                 }
 
                 //Writing data to console
                 Console.Clear();
-                Console.Write("Unknown card permutations: ");
-                Console.WriteLine(subroots.Count + "/" + possibleSubroots);
+                 Console.Write("Unknown card permutations: ");
+                 Console.WriteLine(subrootCtr + "/" + possibleSubroots);
 
-                double estimatedSpeed = subroots.Count/(DateTime.Now-started).TotalSeconds; //permutations per second
-                double finishduration = (possibleSubroots-subroots.Count)/estimatedSpeed;//finish will be after x seconds
+                 double estimatedSpeed = subrootCtr / (DateTime.Now - started).TotalSeconds; //permutations per second
+                double finishduration = (possibleSubroots - subrootCtr) / estimatedSpeed;//finish will be after x seconds
                 DateTime finishtime = DateTime.Now.AddSeconds(finishduration);
 
-                Console.WriteLine();
-                Console.WriteLine("Finish at: " + finishtime);
+                 Console.WriteLine();
+                 Console.WriteLine("Finish at: " + finishtime);
 
-                Console.WriteLine();
-                Console.WriteLine("Estimated values for cards:");
-                State s = subroots.Last().state;
+                 Console.WriteLine();
+                 Console.WriteLine("Estimated values for cards:");
+                 State s = subroots[0].state; //Can be any subroot
 
-                if (s.a1!=null)
-                {
-                    Console.WriteLine(s.a1.ID + " : " + Math.Round(averages[0], 2));
-                }
-                if (s.a2 != null)
-                {
-                    Console.WriteLine(s.a2.ID + " : " + Math.Round(averages[1], 2));
-                }
-                if (s.a3 != null)
-                {
-                    Console.WriteLine(s.a3.ID + " : " + Math.Round(averages[2], 2));
-                }
-                if (s.a4 != null)
-                {
-                    Console.WriteLine(s.a4.ID + " : " + Math.Round(averages[3], 2));
-                }
-                if (s.a5 != null)
-                {
-                    Console.WriteLine(s.a5.ID + " : " + Math.Round(averages[4], 2));
-                }
-            }
-            
+                if (s.a1 != null)
+                 {
+                     Console.WriteLine(s.a1.ID + " : " + Math.Round(averages[0], 2));
+                 }
+                 if (s.a2 != null)
+                 {
+                     Console.WriteLine(s.a2.ID + " : " + Math.Round(averages[1], 2));
+                 }
+                 if (s.a3 != null)
+                 {
+                     Console.WriteLine(s.a3.ID + " : " + Math.Round(averages[2], 2));
+                 }
+                 if (s.a4 != null)
+                 {
+                     Console.WriteLine(s.a4.ID + " : " + Math.Round(averages[3], 2));
+                 }
+                 if (s.a5 != null)
+                 {
+                     Console.WriteLine(s.a5.ID + " : " + Math.Round(averages[4], 2));
+                 }
+             }//);
+
             database.CloseDB();
         }
 
