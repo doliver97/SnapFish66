@@ -228,8 +228,8 @@ namespace SnapFish66_Console
             SetStaticCards();
 
             //State s = SetStateFromString("APUUAUUDAUUAUUUAUUUUAUXXXX");
-            //State s = SetStateFromString("APUUUUADAAAAUUUUUUUUUUXXXX"); //Best starting hand
-            State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
+            State s = SetStateFromString("APUUUUADAAAAUUUUUUUUUUXXXX"); //Best starting hand
+            //State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
             //State s = SetStateFromString("APHHHUADAAAAHHUUUUHHUHXXXX"); // Test 8 , result must be +2 for all
             //State s = SetStateFromString("AMHGGUHAHHGGGHGAUUHGGAXXXX"); //Test 5, result must be -1 for all
 
