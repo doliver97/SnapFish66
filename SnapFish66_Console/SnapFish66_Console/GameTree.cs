@@ -147,8 +147,7 @@ namespace SnapFish66_Console
             //while(subroots.Count < 1000)
             while(subroots.Count < possibleSubroots)
             {
-                Node subroot = CreateNewSubroot();
-                subroots.Add(subroot);
+                Node subroot = CreateNewSubroot(); //Adds it automatically to subroots
                 Console.Clear();
                 Console.WriteLine("Created subroots: " +subroots.Count + "/" + possibleSubroots);
             }
@@ -159,8 +158,7 @@ namespace SnapFish66_Console
 
             Dictionary<Node, List<Node>> children = new Dictionary<Node, List<Node>>();
 
-            //Parallel.ForEach(subroots, new ParallelOptions { MaxDegreeOfParallelism = 1 }, (subroot) =>
-            foreach(var subroot in subroots)
+            Parallel.ForEach(subroots, (subroot) =>
             {
                  subrootCtr++;
 
@@ -173,26 +171,23 @@ namespace SnapFish66_Console
 
                      if (success)
                      {
-                         if (!children.ContainsKey(subroot))
-                         {
-                             children[subroot] = new List<Node>();
-                         }
+                        lock (lockobject)
+                        {
+                            if (!children.ContainsKey(subroot))
+                            {
+                                children[subroot] = new List<Node>();
+                            } 
+                        }
                          children[subroot].Add(child);
                      }
-                 }
-
-
+                }
+                
                  for (int i = 0; i < children[subroot].Count; i++)
                  {
-
                      children[subroot][i].AlphaBeta(-3, 3);
 
-                     lock (lockobject)
-                     {
-                        //Calculate data for labels
-                        AddEstimatedValue(children[subroot][i]);
-                         CalcAverages();
-                     }
+                    AddEstimatedValue(children[subroot][i]);
+                    CalcAverages();
 
                     //We wont need the children of the subroot
                     children[subroot].RemoveAt(i);
@@ -235,7 +230,7 @@ namespace SnapFish66_Console
                  {
                      Console.WriteLine(s.a5.ID + " : " + Math.Round(averages[4], 2));
                  }
-             }//);
+             });
 
             database.CloseDB();
         }
@@ -264,7 +259,7 @@ namespace SnapFish66_Console
             }
         }
         
-        //Creates random root node by giving value to unknown cards
+        //Creates random root node by giving value to unknown cards, and adds it to subroots
         private Node CreateNewSubroot()
         {
             bool found = false;
