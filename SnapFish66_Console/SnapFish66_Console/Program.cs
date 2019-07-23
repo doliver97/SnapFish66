@@ -227,15 +227,37 @@ namespace SnapFish66_Console
 
             SetStaticCards();
 
-            //State s = SetStateFromString("APUUAUUDAUUAUUUAUUUUAUXXXX");
-            State s = SetStateFromString("APUUUUADAAAAUUUUUUUUUUXXXX"); //Best starting hand
-            //State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
+            //State s = SetStateFromString("APGGAGUUAHGAGHUAHUGHAUXXXX");
+            //State s = SetStateFromString("APUUUUADAAAAUUUUUUUUUUXXXX"); //Best starting hand
+            State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
             //State s = SetStateFromString("APHHHUADAAAAHHUUUUHHUHXXXX"); // Test 8 , result must be +2 for all
             //State s = SetStateFromString("AMHGGUHAHHGGGHGAUUHGGAXXXX"); //Test 5, result must be -1 for all
 
             GameTree tree = new GameTree(s);
 
-            tree.Calculate();
+            tree.Calculate(); //TODO write back
+
+            //TEST (this is now a D1 test)
+            //char[] tst = new char[] { 'A', 'A', 'A', 'A', 'A', 'G', 'G', 'G', 'G', 'H', 'H', 'H', 'H', 'G', 'G', 'U', 'U', 'U', 'U'};
+            //Random r = new Random();
+            //for (int i = 0; i < 1000; i++)
+            //{
+            //    //Generate random state
+            //    for (int j = 0; j < tst.Length; j++)
+            //    {
+            //        int x = r.Next(tst.Length);
+            //        char temp = tst[j];
+            //        tst[j] = tst[x];
+            //        tst[x] = temp;
+            //    }
+
+            //    string str = "AMU" + new string(tst) + "XXXX";
+
+            //    s = SetStateFromString(str);
+            //    tree = new GameTree(s);
+            //    tree.Calculate();
+            //}
+            //TEST END
 
             Console.WriteLine();
             Console.WriteLine("Exit with enter...");

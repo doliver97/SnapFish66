@@ -187,49 +187,55 @@ namespace SnapFish66_Console
                     {
                         children[subroot][i].AlphaBeta(-3, 3);
 
-                        AddEstimatedValue(children[subroot][i]);
-                        CalcAverages();
+                        lock (lockobject)
+                        {
+                            AddEstimatedValue(children[subroot][i]);
+                            CalcAverages(); 
+                        }
 
                     //We wont need the children of the subroot
                     children[subroot].RemoveAt(i);
                         i--;
                     }
 
-                //Writing data to console
-                Console.Clear();
-                    Console.Write("Unknown card permutations: ");
-                    Console.WriteLine(calculatedSubroots + "/" + possibleSubroots);
+                    //Writing data to console
+                    lock (lockobject2)
+                    {
+                        Console.Clear();
+                        Console.Write("Unknown card permutations: ");
+                        Console.WriteLine(calculatedSubroots + "/" + possibleSubroots);
 
-                    double estimatedSpeed = calculatedSubroots / (DateTime.Now - started).TotalSeconds; //permutations per second
-                double finishduration = (possibleSubroots - calculatedSubroots) / estimatedSpeed;//finish will be after x seconds
-                DateTime finishtime = DateTime.Now.AddSeconds(finishduration);
+                        double estimatedSpeed = calculatedSubroots / (DateTime.Now - started).TotalSeconds; //permutations per second
+                        double finishduration = (possibleSubroots - calculatedSubroots) / estimatedSpeed;//finish will be after x seconds
+                        DateTime finishtime = DateTime.Now.AddSeconds(finishduration);
 
-                    Console.WriteLine();
-                    Console.WriteLine("Finish at: " + finishtime);
+                        Console.WriteLine();
+                        Console.WriteLine("Finish at: " + finishtime);
 
-                    Console.WriteLine();
-                    Console.WriteLine("Estimated values for cards:");
-                    State s = subroots[0].state; //Can be any subroot
+                        Console.WriteLine();
+                        Console.WriteLine("Estimated values for cards:");
+                        State s = subroots[0].state; //Can be any subroot
 
-                if (s.a1 != null)
-                    {
-                        Console.WriteLine(s.a1.ID + " : " + Math.Round(averages[0], 2));
-                    }
-                    if (s.a2 != null)
-                    {
-                        Console.WriteLine(s.a2.ID + " : " + Math.Round(averages[1], 2));
-                    }
-                    if (s.a3 != null)
-                    {
-                        Console.WriteLine(s.a3.ID + " : " + Math.Round(averages[2], 2));
-                    }
-                    if (s.a4 != null)
-                    {
-                        Console.WriteLine(s.a4.ID + " : " + Math.Round(averages[3], 2));
-                    }
-                    if (s.a5 != null)
-                    {
-                        Console.WriteLine(s.a5.ID + " : " + Math.Round(averages[4], 2));
+                        if (s.a1 != null)
+                        {
+                            Console.WriteLine(s.a1.ID + " : " + Math.Round(averages[0], 2));
+                        }
+                        if (s.a2 != null)
+                        {
+                            Console.WriteLine(s.a2.ID + " : " + Math.Round(averages[1], 2));
+                        }
+                        if (s.a3 != null)
+                        {
+                            Console.WriteLine(s.a3.ID + " : " + Math.Round(averages[2], 2));
+                        }
+                        if (s.a4 != null)
+                        {
+                            Console.WriteLine(s.a4.ID + " : " + Math.Round(averages[3], 2));
+                        }
+                        if (s.a5 != null)
+                        {
+                            Console.WriteLine(s.a5.ID + " : " + Math.Round(averages[4], 2));
+                        } 
                     }
                 });
 
