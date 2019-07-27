@@ -5,6 +5,8 @@ namespace SnapFish66_Console
 {
     class Program
     {
+        private static readonly Random r = new Random();
+
         public static bool AllowReadDatabase { get; internal set; }
         public static bool AllowWriteDatabase { get; internal set; }
 
@@ -222,23 +224,31 @@ namespace SnapFish66_Console
 
         static void Main(string[] args)
         {
-            AllowReadDatabase = true;
-            AllowWriteDatabase = true;
+            AllowReadDatabase = false;
+            AllowWriteDatabase = false;
 
             SetStaticCards();
 
-            //State s = SetStateFromString("APGGAGUUAHGAGHUAHUGHAUXXXX");
+            //State s = SetStateFromString("APDUAGUUAGGAUHHAHUGHAUXXXX");
             //State s = SetStateFromString("APUUUUADAAAAUUUUUUUUUUXXXX"); //Best starting hand
-            State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
+            //State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
             //State s = SetStateFromString("APHHHUADAAAAHHUUUUHHUHXXXX"); // Test 8 , result must be +2 for all
             //State s = SetStateFromString("AMHGGUHAHHGGGHGAUUHGGAXXXX"); //Test 5, result must be -1 for all
 
-           s = SetStateFromString(RandomStateGenerator.Generate(19));
+            TrainingDataHandler.Init();
 
-            GameTree tree = new GameTree(s);
+            for (int i = 0; i < 10; i++)
+            {
+                string stateString = RandomStateGenerator.Generate(r.Next(10, 11)); // between 8 and (exclusive)16 is ideal
+                State s = SetStateFromString(stateString);
+                GameTree tree = new GameTree(s);
+                tree.Calculate();
 
-            tree.Calculate();
-            
+                TrainingDataHandler.Write(stateString, tree.averages.GetRange(0,5)); 
+            }
+
+            TrainingDataHandler.Close();
+
             Console.WriteLine();
             Console.WriteLine("Exit with enter...");
 
