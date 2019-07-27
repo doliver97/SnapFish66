@@ -237,14 +237,38 @@ namespace SnapFish66_Console
 
             TrainingDataHandler.Init();
 
-            for (int i = 0; i < 10; i++)
+            int dataCount = 1000;
+            for (int i = 0; i < dataCount; i++)
             {
-                string stateString = RandomStateGenerator.Generate(r.Next(10, 11)); // between 8 and (exclusive)16 is ideal
+                Console.Clear();
+                Console.WriteLine((i+1) + "/" + dataCount);
+
+                string stateString = RandomStateGenerator.Generate(r.Next(8, 16)); // between 8 and (exclusive)16 is ideal
                 State s = SetStateFromString(stateString);
+
+                //If game has ended, do not calculate, find new instead
+                s.CalculatePoints();
+                if(s.Apoints != 0 || s.Bpoints!=0)
+                {
+                    i--;
+                    continue;
+                }
+
                 GameTree tree = new GameTree(s);
                 tree.Calculate();
 
-                TrainingDataHandler.Write(stateString, tree.averages.GetRange(0,5)); 
+                List<double> values = tree.averages.GetRange(0, 5);
+                //Do some formatting
+                for (int j = 0; j < values.Count; j++)
+                {
+                    if(double.IsNaN(values[j]))
+                    {
+                        values[j] = 0;
+                    }
+                    values[j] = Math.Round(values[j], 2);
+                }
+
+                TrainingDataHandler.Write(stateString, values); 
             }
 
             TrainingDataHandler.Close();
