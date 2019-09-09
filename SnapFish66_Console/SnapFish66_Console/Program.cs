@@ -237,7 +237,7 @@ namespace SnapFish66_Console
 
             TrainingDataHandler.Init();
 
-            int dataCount = 1000;
+            int dataCount = 100000;
             for (int i = 0; i < dataCount; i++)
             {
                 Console.Clear();
