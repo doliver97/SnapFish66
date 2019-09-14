@@ -11,16 +11,19 @@ namespace SnapFish66_Console
     {
         public string ID;
         public string color;
-        public int value;
+        public byte value;
+        public int index;
 
         public Card(string id)
         {
             ID = id;
             color = id.Substring(0, 1);
-            if(ID!="unknown")
+            if (ID != "unknown")
             {
-                value = int.Parse(id.Substring(1));
+                value = byte.Parse(id.Substring(1));
             }
         }
+
+
     }
 }

@@ -247,15 +247,15 @@ namespace SnapFish66_Console
                 GameTree tree = new GameTree(s);
                 tree.Calculate();
 
-                List<double> values = tree.averages.GetRange(0, 5);
+                List<float> values = tree.averages.GetRange(0, 5);
                 //Do some formatting
                 for (int j = 0; j < values.Count; j++)
                 {
-                    if (double.IsNaN(values[j]))
+                    if (float.IsNaN(values[j]))
                     {
                         values[j] = 0;
                     }
-                    values[j] = Math.Round(values[j], 2);
+                    values[j] = (float)Math.Round(values[j], 2);
                 }
 
                 TrainingDataHandler.Write(stateString, values);

@@ -8,6 +8,34 @@ namespace SnapFish66_Console
 {
     public class State
     {
+        ////This enum represents the cards
+        ////The first digit represents the colour: 2-M 4-P 6-T 8-Z
+        ////The number modulo 20 is the value of the card
+        //public enum Card
+        //{
+        //    NONE = 0,
+        //    M2 = 22,
+        //    M3 = 23,
+        //    M4 = 24,
+        //    M10 = 30,
+        //    M11 = 31,
+        //    P2 = 42,
+        //    P3 = 43,
+        //    P4 = 44,
+        //    P10 = 50,
+        //    P11 = 51,
+        //    T2 = 62,
+        //    T3 = 63,
+        //    T4 = 64,
+        //    T10 = 70,
+        //    T11 = 71,
+        //    Z2 = 82,
+        //    Z3 = 83,
+        //    Z4 = 84,
+        //    Z10 = 90,
+        //    Z11 = 91
+        //};
+
         public List<Card> deck = new List<Card>();
         public Card dbottom;
         public Card a1;
@@ -38,17 +66,18 @@ namespace SnapFish66_Console
         
         public string next = "";
 
+        //TODO delete if possible
         public List<string> IDs = new List<string> { "M2", "M3", "M4", "M10", "M11", "P2", "P3", "P4", "P10", "P11", "T2", "T3", "T4", "T10", "T11", "Z2", "Z3", "Z4", "Z10", "Z11" };
 
         public string trump = "";
 
         //Collect 66
-        public int Ascore = 0;
-        public int Bscore = 0;
+        public byte Ascore = 0;
+        public byte Bscore = 0;
 
         //Points: {0-3}
-        public int Apoints = 0;
-        public int Bpoints = 0;
+        public byte Apoints = 0;
+        public byte Bpoints = 0;
         
         private List<Card> GetUnknownCards()
         {
@@ -155,8 +184,8 @@ namespace SnapFish66_Console
         private void CountScores()
         {
             
-            Ascore = atook.Sum(x => x.value);
-            Bscore = btook.Sum(x => x.value);
+            Ascore = (byte)atook.Sum(x => x.value);
+            Bscore = (byte)btook.Sum(x => x.value);
 
             if(Ascore!=0)
             {

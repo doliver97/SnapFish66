@@ -29,23 +29,23 @@ namespace SnapFish66_Console
         public static int[] SavedNodes = new int[21];
 
         //Estimated values of actions
-        public List<double> a1;
-        public List<double> a2;
-        public List<double> a3;
-        public List<double> a4;
-        public List<double> a5;
-        public List<double> b1;
-        public List<double> b2;
-        public List<double> b3;
-        public List<double> b4;
-        public List<double> b5;
-        public List<double> cover;
+        public List<float> a1;
+        public List<float> a2;
+        public List<float> a3;
+        public List<float> a4;
+        public List<float> a5;
+        public List<float> b1;
+        public List<float> b2;
+        public List<float> b3;
+        public List<float> b4;
+        public List<float> b5;
+        public List<float> cover;
 
         //Easy access to the lists above
-        public List<List<double>> estimatedLists;
+        public List<List<float>> estimatedLists;
 
         //The averages of the lists above repectively, CalcAverages() sets it
-        public List<double> averages;
+        public List<float> averages;
 
         List<string> actionList;
 
@@ -58,28 +58,28 @@ namespace SnapFish66_Console
         {
             started = DateTime.Now;
 
-            a1 = new List<double>();
-            a2 = new List<double>();
-            a3 = new List<double>();
-            a4 = new List<double>();
-            a5 = new List<double>();
-            b1 = new List<double>();
-            b2 = new List<double>();
-            b3 = new List<double>();
-            b4 = new List<double>();
-            b5 = new List<double>();
-            cover = new List<double>();
-            estimatedLists = new List<List<double>> { a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, cover };
+            a1 = new List<float>();
+            a2 = new List<float>();
+            a3 = new List<float>();
+            a4 = new List<float>();
+            a5 = new List<float>();
+            b1 = new List<float>();
+            b2 = new List<float>();
+            b3 = new List<float>();
+            b4 = new List<float>();
+            b5 = new List<float>();
+            cover = new List<float>();
+            estimatedLists = new List<List<float>> { a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, cover };
             actionList = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5", "cover" };
 
-            averages = new List<double>();
+            averages = new List<float>();
             for (int i = 0; i < estimatedLists.Count; i++)
             {
-                averages.Add(double.NaN);
+                averages.Add(float.NaN);
             }
             subroots = new List<Node>();
 
-            int round = CardToInt(s.adown) + CardToInt(s.bdown) + s.atook.Count + s.btook.Count;
+            byte round = (byte)(CardToInt(s.adown) + CardToInt(s.bdown) + s.atook.Count + s.btook.Count);
 
             root = new Node(null, s, "", round);
             root.SetMaximizer();
@@ -126,7 +126,7 @@ namespace SnapFish66_Console
             averages.Clear();
             for (int i = 0; i < estimatedLists.Count; i++)
             {
-                averages.Add(double.NaN);
+                averages.Add(float.NaN);
             }
             root = new Node(null, state, "", 0);
             root.SetMaximizer();
@@ -204,7 +204,7 @@ namespace SnapFish66_Console
                 //Add children of different actions (will be root of alphabeta)
                 for (int i = 0; i < actionList.Count - 1; i++) //without cover
                 {
-                        Node child = new Node(subroot, subroot.state.Copy(), actionList[i], subroot.depth + 1);
+                        Node child = new Node(subroot, subroot.state.Copy(), actionList[i], (byte)(subroot.depth + 1));
                         bool success = child.state.Step(child.state, actionList[i]);
                         child.SetMaximizer();
 
@@ -277,7 +277,7 @@ namespace SnapFish66_Console
         private Node CreateNewSubroot()
         {
             bool found = false;
-            int round = CardToInt(root.state.adown) + CardToInt(root.state.bdown) + root.state.atook.Count + root.state.btook.Count;
+            byte round = (byte)(CardToInt(root.state.adown) + CardToInt(root.state.bdown) + root.state.atook.Count + root.state.btook.Count);
             Node newNode = new Node(null,root.state.GenerateRandom(),"",round);
 
             //DateTime begin = DateTime.Now;

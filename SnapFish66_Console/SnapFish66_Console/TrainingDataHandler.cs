@@ -15,7 +15,7 @@ namespace SnapFish66_Console
             sw = new StreamWriter("TrainingData.csv");
         }
 
-        public static void Write(string stateString, List<double> values)
+        public static void Write(string stateString, List<float> values)
         {
             foreach (char ch in stateString)
             {

@@ -13,7 +13,7 @@ namespace SnapFish66_Console
         public State state;
         private Node parent;
 
-        public double value;
+        public float value;
         bool maximizer;
 
         public string actionBefore;
@@ -21,12 +21,12 @@ namespace SnapFish66_Console
         public List<Node> children = new List<Node>();
         private Random random = new Random();
 
-        public int depth;
+        public byte depth;
         
         public List<String> VisitedSteps;
         public List<String> UnvisitedSteps;
         
-        public Node(Node newparent, State nstate, string nactionBefore, int ndepth)
+        public Node(Node newparent, State nstate, string nactionBefore, byte ndepth)
         {
             state = nstate;
             actionBefore = nactionBefore;
@@ -62,7 +62,7 @@ namespace SnapFish66_Console
                     return;
                 }
 
-                Node child = new Node(this, state.Copy(), action, depth + 1);
+                Node child = new Node(this, state.Copy(), action, (byte)(depth+1));
                 bool success = child.state.Step(child.state, action);
                 child.SetMaximizer();
 
@@ -87,7 +87,7 @@ namespace SnapFish66_Console
             }
         }
 
-        private double Max(double a, double b)
+        private float Max(float a, float b)
         {
             if(a>b)
             {
@@ -99,7 +99,7 @@ namespace SnapFish66_Console
             }
         }
 
-        private double Min(double a, double b)
+        private float Min(float a, float b)
         {
             if(a>b)
             {
@@ -111,7 +111,7 @@ namespace SnapFish66_Console
             }
         }
 
-        public double AlphaBeta(double alpha, double beta)
+        public float AlphaBeta(float alpha, float beta)
         {
             //Increasing alpha and decreasing beta if we can
             if (state.Ascore >= 33 && alpha < -1)
