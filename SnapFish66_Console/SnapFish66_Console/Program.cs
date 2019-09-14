@@ -222,33 +222,23 @@ namespace SnapFish66_Console
             return state;
         }
 
-        static void Main(string[] args)
+        // Generating training data
+        private static void Training()
         {
-            AllowReadDatabase = false;
-            AllowWriteDatabase = false;
-
-            SetStaticCards();
-
-            //State s = SetStateFromString("APDUAGUUAGGAUHHAHUGHAUXXXX");
-            //State s = SetStateFromString("APUUUUADAAAAUUUUUUUUUUXXXX"); //Best starting hand
-            //State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
-            //State s = SetStateFromString("APHHHUADAAAAHHUUUUHHUHXXXX"); // Test 8 , result must be +2 for all
-            //State s = SetStateFromString("AMHGGUHAHHGGGHGAUUHGGAXXXX"); //Test 5, result must be -1 for all
-
             TrainingDataHandler.Init();
 
             int dataCount = 100000;
             for (int i = 0; i < dataCount; i++)
             {
                 Console.Clear();
-                Console.WriteLine((i+1) + "/" + dataCount);
+                Console.WriteLine((i + 1) + "/" + dataCount);
 
                 string stateString = RandomStateGenerator.Generate(r.Next(8, 16)); // between 8 and (exclusive)16 is ideal
                 State s = SetStateFromString(stateString);
 
                 //If game has ended, do not calculate, find new instead
                 s.CalculatePoints();
-                if(s.Apoints != 0 || s.Bpoints!=0)
+                if (s.Apoints != 0 || s.Bpoints != 0)
                 {
                     i--;
                     continue;
@@ -261,17 +251,42 @@ namespace SnapFish66_Console
                 //Do some formatting
                 for (int j = 0; j < values.Count; j++)
                 {
-                    if(double.IsNaN(values[j]))
+                    if (double.IsNaN(values[j]))
                     {
                         values[j] = 0;
                     }
                     values[j] = Math.Round(values[j], 2);
                 }
 
-                TrainingDataHandler.Write(stateString, values); 
+                TrainingDataHandler.Write(stateString, values);
             }
 
             TrainingDataHandler.Close();
+        }
+
+        // Calculating a single problem
+        private static void Single()
+        {
+            //State s = SetStateFromString("APDUAGUUAGGAUHHAHUGHAUXXXX");
+            //State s = SetStateFromString("APUUUUADAAAAUUUUUUUUUUXXXX"); //Best starting hand
+            State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
+            //State s = SetStateFromString("APHHHUADAAAAHHUUUUHHUHXXXX"); // Test 8 , result must be +2 for all
+            //State s = SetStateFromString("AMHGGUHAHHGGGHGAUUHGGAXXXX"); //Test 5, result must be -1 for all
+
+            GameTree tree = new GameTree(s);
+            tree.Calculate();
+        }
+
+        static void Main(string[] args)
+        {
+            AllowReadDatabase = false;
+            AllowWriteDatabase = false;
+
+            SetStaticCards();
+
+            //Setting mode
+            //Training();
+            Single();
 
             Console.WriteLine();
             Console.WriteLine("Exit with enter...");
