@@ -36,6 +36,7 @@ namespace SnapFish66_Console
         //    Z11 = 91
         //};
 
+
         public List<Card> deck = new List<Card>();
         public Card dbottom;
         public Card a1;
@@ -64,12 +65,13 @@ namespace SnapFish66_Console
 
         public bool covered = false;
         
+        //TODO be an enum
         public string next = "";
 
         //TODO delete if possible
         public List<string> IDs = new List<string> { "M2", "M3", "M4", "M10", "M11", "P2", "P3", "P4", "P10", "P11", "T2", "T3", "T4", "T10", "T11", "Z2", "Z3", "Z4", "Z10", "Z11" };
 
-        public string trump = "";
+        public char trump = '-';
 
         //Collect 66
         public byte Ascore = 0;
@@ -166,14 +168,14 @@ namespace SnapFish66_Console
             return newstate;
         }
 
-        private bool Check2040()
-        {
-            if (AM20 && BM20) return false;
-            if (AP20 && BP20) return false;
-            if (AT20 && BT20) return false;
-            if (AZ20 && BZ20) return false;
-            return true;
-        }
+        //private bool Check2040()
+        //{
+        //    if (AM20 && BM20) return false;
+        //    if (AP20 && BP20) return false;
+        //    if (AT20 && BT20) return false;
+        //    if (AZ20 && BZ20) return false;
+        //    return true;
+        //}
 
         //How many cards are in the list with given ID
         private int CardInList(List<Card> cards, string id)
@@ -191,7 +193,7 @@ namespace SnapFish66_Console
             {
                 if(AM20)
                 {
-                    if(trump == "M")
+                    if(trump == 'M')
                     {
                         Ascore += 40;
                     }
@@ -202,7 +204,7 @@ namespace SnapFish66_Console
                 }
                 if (AP20)
                 {
-                    if (trump == "P")
+                    if (trump == 'P')
                     {
                         Ascore += 40;
                     }
@@ -213,7 +215,7 @@ namespace SnapFish66_Console
                 }
                 if (AT20)
                 {
-                    if (trump == "T")
+                    if (trump == 'T')
                     {
                         Ascore += 40;
                     }
@@ -224,7 +226,7 @@ namespace SnapFish66_Console
                 }
                 if (AZ20)
                 {
-                    if (trump == "Z")
+                    if (trump == 'Z')
                     {
                         Ascore += 40;
                     }
@@ -239,7 +241,7 @@ namespace SnapFish66_Console
             {
                 if (BM20)
                 {
-                    if (trump == "M")
+                    if (trump == 'M')
                     {
                         Bscore += 40;
                     }
@@ -250,7 +252,7 @@ namespace SnapFish66_Console
                 }
                 if (BP20)
                 {
-                    if (trump == "P")
+                    if (trump == 'P')
                     {
                         Bscore += 40;
                     }
@@ -261,7 +263,7 @@ namespace SnapFish66_Console
                 }
                 if (BT20)
                 {
-                    if (trump == "T")
+                    if (trump == 'T')
                     {
                         Bscore += 40;
                     }
@@ -272,7 +274,7 @@ namespace SnapFish66_Console
                 }
                 if (BZ20)
                 {
-                    if (trump == "Z")
+                    if (trump == 'Z')
                     {
                         Bscore += 40;
                     }

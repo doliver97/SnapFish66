@@ -97,7 +97,7 @@ namespace SnapFish66_Console
 
             State s = node.state;
 
-            key[0] = s.trump[0];
+            key[0] = s.trump;
             key[1] = s.next[0];
 
             //for each card

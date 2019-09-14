@@ -213,7 +213,7 @@ namespace SnapFish66_Console
             //Trump
             string trumpLine = sr.ReadLine();
             string[] trumpSplit = trumpLine.Split(' ');
-            state.trump = trumpSplit[1];
+            state.trump = trumpSplit[1][0];
 
             sr.Close();
 

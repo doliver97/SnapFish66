@@ -10,14 +10,16 @@ namespace SnapFish66_Console
     public class Card
     {
         public string ID;
-        public string color;
+        public char color;
         public byte value;
+
+        //Works like an enum flag
         public int index;
 
         public Card(string id)
         {
             ID = id;
-            color = id.Substring(0, 1);
+            color = id[0];
             if (ID != "unknown")
             {
                 value = byte.Parse(id.Substring(1));
