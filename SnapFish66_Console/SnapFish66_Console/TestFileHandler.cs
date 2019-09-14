@@ -41,11 +41,11 @@ namespace SnapFish66_Console
         {
             if(ID=="U")
             {
-                place.Add(new Card("unknown"));
+                place.Add(Card.GetCard("unknown"));
             }
             else
             {
-                place.Add(new Card(ID));
+                place.Add(Card.GetCard(ID));
             }
         }
 
@@ -54,11 +54,11 @@ namespace SnapFish66_Console
         {
             if (ID == "U")
             {
-                place = new Card("unknown");
+                place = Card.GetCard("unknown");
             }
             else
             {
-                place = new Card(ID);
+                place = Card.GetCard(ID);
             }
         }
 

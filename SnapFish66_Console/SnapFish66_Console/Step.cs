@@ -233,7 +233,7 @@ namespace SnapFish66_Console
         private void PutDownCard(State state, ref Card from, ref Card to, string who, bool first)
         {
             //Put down
-            to = new Card(from.ID);
+            to = Card.GetCard(from.ID);
             from = null;
 
             //Before drawing cards
@@ -397,7 +397,7 @@ namespace SnapFish66_Console
                     {
                         if(hand[i] != null && hand[i].value==2 && hand[i].color == state.trump)
                         {
-                            Card temp = new Card(hand[i].ID);
+                            Card temp = Card.GetCard(hand[i].ID);
                             SetStateCard(state, "A", i, state.dbottom);
                             state.dbottom = temp;
                         }
@@ -412,7 +412,7 @@ namespace SnapFish66_Console
                     {
                         if (hand[i] != null && hand[i].value == 2 && hand[i].color == state.trump)
                         {
-                            Card temp = new Card(hand[i].ID);
+                            Card temp = Card.GetCard(hand[i].ID);
                             SetStateCard(state, "B", i, state.dbottom);
                             state.dbottom = temp;
                         }

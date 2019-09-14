@@ -9,14 +9,60 @@ namespace SnapFish66_Console
 {
     public class Card
     {
+        //Work like an enum
+        public static readonly Card M2 = new Card("M2");
+        public static readonly Card M3 = new Card("M3");
+        public static readonly Card M4 = new Card("M4");
+        public static readonly Card M10 = new Card("M10");
+        public static readonly Card M11 = new Card("M11");
+        public static readonly Card P2 = new Card("P2");
+        public static readonly Card P3 = new Card("P3");
+        public static readonly Card P4 = new Card("P4");
+        public static readonly Card P10 = new Card("P10");
+        public static readonly Card P11 = new Card("P11");
+        public static readonly Card T2 = new Card("T2");
+        public static readonly Card T3 = new Card("T3");
+        public static readonly Card T4 = new Card("T4");
+        public static readonly Card T10 = new Card("T10");
+        public static readonly Card T11 = new Card("T11");
+        public static readonly Card Z2 = new Card("Z2");
+        public static readonly Card Z3 = new Card("Z3");
+        public static readonly Card Z4 = new Card("Z4");
+        public static readonly Card Z10 = new Card("Z10");
+        public static readonly Card Z11 = new Card("Z11");
+        public static readonly Card unknown = new Card("unknown");
+
+        private static Dictionary<String, Card> dictionary = new Dictionary<string, Card>
+        {
+            {"M2", M2},
+            {"M3", M3},
+            {"M4", M4},
+            {"M10", M10},
+            {"M11", M11},
+            {"P2", P2},
+            {"P3", P3},
+            {"P4", P4},
+            {"P10", P10},
+            {"P11", P11},
+            {"T2", T2},
+            {"T3", T3},
+            {"T4", T4},
+            {"T10", T10},
+            {"T11", T11},
+            {"Z2", Z2},
+            {"Z3", Z3},
+            {"Z4", Z4},
+            {"Z10", Z10},
+            {"Z11", Z11},
+            {"unknown", unknown}
+        };
+
         public string ID;
         public char color;
         public byte value;
 
-        //Works like an enum flag
-        public int index;
-
-        public Card(string id)
+        //Private!!!
+        private Card(string id)
         {
             ID = id;
             color = id[0];
@@ -26,6 +72,9 @@ namespace SnapFish66_Console
             }
         }
 
-
+        public static Card GetCard(string id)
+        {
+            return dictionary[id];
+        }
     }
 }
