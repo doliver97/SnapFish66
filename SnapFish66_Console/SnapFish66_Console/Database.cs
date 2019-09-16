@@ -33,6 +33,9 @@ namespace SnapFish66_Console
             public byte Depth { get; set; }
         }
 
+        public static List<string> IDs = new List<string> { "M2", "M3", "M4", "M10", "M11", "P2", "P3", "P4", "P10", "P11", "T2", "T3", "T4", "T10", "T11", "Z2", "Z3", "Z4", "Z10", "Z11" };
+
+
         LiteDatabase database;
 
         //Opening the database
@@ -85,7 +88,7 @@ namespace SnapFish66_Console
         //Helper for stringify
         private void SetChar(ref char[] key, Card place, char val, State s, int i)
         {
-            if (place!=null && place.ID == s.IDs[i])
+            if (place!=null && place.ID == IDs[i])
             {
                 key[i + 2] = val;
             }
@@ -98,15 +101,15 @@ namespace SnapFish66_Console
             State s = node.state;
 
             key[0] = s.trump;
-            key[1] = s.next[0];
+            key[1] = s.isAnext ? 'A' : 'B';
 
             //for each card
-            for (int i = 0; i < s.IDs.Count; i++)
+            for (int i = 0; i < IDs.Count; i++)
             {
                 //deck
                 for (int j = 0; j < s.deck.Count; j++)
                 {
-                    if(s.deck[j].ID == s.IDs[i])
+                    if(s.deck[j].ID == IDs[i])
                     {
                         key[i + 2] = Convert.ToChar(j+'0');
                     }
@@ -134,14 +137,14 @@ namespace SnapFish66_Console
                 //taken
                 for (int j = 0; j < s.atook.Count; j++)
                 {
-                    if (s.atook[j].ID == s.IDs[i])
+                    if (s.atook[j].ID == IDs[i])
                     {
                         key[i + 2] = 'G';
                     }
                 }
                 for (int j = 0; j < s.btook.Count; j++)
                 {
-                    if (s.btook[j].ID == s.IDs[i])
+                    if (s.btook[j].ID == IDs[i])
                     {
                         key[i + 2] = 'H';
                     }

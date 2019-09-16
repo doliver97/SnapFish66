@@ -207,7 +207,7 @@ namespace SnapFish66_Console
             //Next
             string nextLine = sr.ReadLine();
             string[] nextSplit = nextLine.Split(' ');
-            state.next = nextSplit[1];
+            state.isAnext = nextSplit[1]=="A";
 
 
             //Trump

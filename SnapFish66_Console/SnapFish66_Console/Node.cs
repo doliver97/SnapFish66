@@ -16,17 +16,15 @@ namespace SnapFish66_Console
         public float value;
         bool maximizer;
 
-        public string actionBefore;
+        public byte actionBefore; //TODO ez kell?
 
         public List<Node> children = new List<Node>();
-        private Random random = new Random();
 
         public byte depth;
         
-        public List<String> VisitedSteps;
-        public List<String> UnvisitedSteps;
-        
-        public Node(Node newparent, State nstate, string nactionBefore, byte ndepth)
+        public static List<byte> UnvisitedSteps = new List<byte> { 0, 1, 2, 3, 4}; //TODO kell ez ha úgyis egyesével megyünk rekurzívan?
+
+    public Node(Node newparent, State nstate, byte nactionBefore, byte ndepth)
         {
             state = nstate;
             actionBefore = nactionBefore;
@@ -36,9 +34,6 @@ namespace SnapFish66_Console
             {
                 parent = newparent;
             }
-
-            VisitedSteps = new List<string>();
-            UnvisitedSteps = new List<string> { "A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5" };
 
             SetMaximizer();
         }
@@ -54,7 +49,7 @@ namespace SnapFish66_Console
         {
             children.Clear();
 
-            foreach (string action in UnvisitedSteps)
+            foreach (byte action in UnvisitedSteps)
             {
                 //If game ended, do not go further
                 if(IsEnd())
@@ -75,7 +70,7 @@ namespace SnapFish66_Console
 
         public void SetMaximizer()
         {
-            if (state.next == "A")
+            if (state.isAnext)
             {
                 maximizer = true;
                 value = -3;

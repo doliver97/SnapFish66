@@ -8,35 +8,34 @@ namespace SnapFish66_Console
 {
     public class State
     {
-        ////This enum represents the cards
-        ////The first digit represents the colour: 2-M 4-P 6-T 8-Z
-        ////The number modulo 20 is the value of the card
-        //public enum Card
-        //{
-        //    NONE = 0,
-        //    M2 = 22,
-        //    M3 = 23,
-        //    M4 = 24,
-        //    M10 = 30,
-        //    M11 = 31,
-        //    P2 = 42,
-        //    P3 = 43,
-        //    P4 = 44,
-        //    P10 = 50,
-        //    P11 = 51,
-        //    T2 = 62,
-        //    T3 = 63,
-        //    T4 = 64,
-        //    T10 = 70,
-        //    T11 = 71,
-        //    Z2 = 82,
-        //    Z3 = 83,
-        //    Z4 = 84,
-        //    Z10 = 90,
-        //    Z11 = 91
-        //};
+        //This enum represents the card list
+        //TODO find out how to make use of it
+        public enum CardSet : long
+        {
+            NONE = 0b00000000_00000000_00000000_00000000,
+            M2 =  0b00000000_00000000_00000000_00000001,
+            M3 =  0b00000000_00000000_00000000_00000010,
+            M4 =  0b00000000_00000000_00000000_00000100,
+            M10 = 0b00000000_00000000_00000000_00001000,
+            M11 = 0b00000000_00000000_00000000_00010000,
+            P2 =  0b00000000_00000000_00000000_00100000,
+            P3 =  0b00000000_00000000_00000000_01000000,
+            P4 =  0b00000000_00000000_00000000_10000000,
+            P10 = 0b00000000_00000000_00000001_00000000,
+            P11 = 0b00000000_00000000_00000010_00000000,
+            T2 =  0b00000000_00000000_00000100_00000000,
+            T3 =  0b00000000_00000000_00001000_00000000,
+            T4 =  0b00000000_00000000_00010000_00000000,
+            T10 = 0b00000000_00000000_00100000_00000000,
+            T11 = 0b00000000_00000000_01000000_00000000,
+            Z2 =  0b00000000_00000000_10000000_00000000,
+            Z3 =  0b00000000_00000001_00000000_00000000,
+            Z4 =  0b00000000_00000010_00000000_00000000,
+            Z10 = 0b00000000_00000100_00000000_00000000,
+            Z11 = 0b00000000_00001000_00000000_00000000
+        };
 
-
+        //This could be a CardSet
         public List<Card> deck = new List<Card>();
         public Card dbottom;
         public Card a1;
@@ -65,11 +64,7 @@ namespace SnapFish66_Console
 
         public bool covered = false;
         
-        //TODO be an enum
-        public string next = "";
-
-        //TODO delete if possible
-        public List<string> IDs = new List<string> { "M2", "M3", "M4", "M10", "M11", "P2", "P3", "P4", "P10", "P11", "T2", "T3", "T4", "T10", "T11", "Z2", "Z3", "Z4", "Z10", "Z11" };
+        public bool isAnext = false;
 
         public char trump = '-';
 
@@ -168,15 +163,6 @@ namespace SnapFish66_Console
             return newstate;
         }
 
-        //private bool Check2040()
-        //{
-        //    if (AM20 && BM20) return false;
-        //    if (AP20 && BP20) return false;
-        //    if (AT20 && BT20) return false;
-        //    if (AZ20 && BZ20) return false;
-        //    return true;
-        //}
-
         //How many cards are in the list with given ID
         private int CardInList(List<Card> cards, string id)
         {
@@ -185,11 +171,19 @@ namespace SnapFish66_Console
         
         private void CountScores()
         {
-            
-            Ascore = (byte)atook.Sum(x => x.value);
-            Bscore = (byte)btook.Sum(x => x.value);
+            //3x faster than lambda
+            Ascore = 0;
+            foreach (Card c in atook)
+            {
+                Ascore += c.value;
+            }
+            Bscore = 0;
+            foreach (Card c in btook)
+            {
+                Bscore += c.value;
+            }
 
-            if(Ascore!=0)
+            if (Ascore!=0)
             {
                 if(AM20)
                 {
@@ -237,7 +231,7 @@ namespace SnapFish66_Console
                 }
             }
 
-            if (Bscore != 0)
+            if(Bscore != 0)
             {
                 if (BM20)
                 {
@@ -325,7 +319,7 @@ namespace SnapFish66_Console
             //No more cards in play, the player who won the last cards (and would come next) won
             else if(atook.Count+btook.Count==20)
             {
-                if(next == "A")
+                if(isAnext)
                 {
                     Apoints = 1;
                 }
@@ -336,83 +330,36 @@ namespace SnapFish66_Console
             }
         }
 
-        public bool Step(State st,string action)
+        public bool Step(State st, byte action)
         {
 
             Step step = new Step();
             return step.Do(st, action);
         }
-
-        private List<Card> CopyCardList(List<Card> list)
-        {
-            List<Card> copy = new List<Card>();
-            foreach (var item in list)
-            {
-                copy.Add(item);
-            }
-
-            return copy;
-        }
-
+        
         public State Copy()
         {
             State copy = new State();
 
-            copy.deck = CopyCardList(deck);
-            if(dbottom!=null)
-            {
-                copy.dbottom = Card.GetCard(dbottom.ID);
-            }
-            if(a1!=null)
-            {
-                copy.a1 = Card.GetCard(a1.ID);
-            }
-            if (a2 != null)
-            {
-                copy.a2 = Card.GetCard(a2.ID);
-            }
-            if (a3 != null)
-            {
-                copy.a3 = Card.GetCard(a3.ID);
-            }
-            if (a4 != null)
-            {
-                copy.a4 = Card.GetCard(a4.ID);
-            }
-            if (a5 != null)
-            {
-                copy.a5 = Card.GetCard(a5.ID);
-            }
-            if (b1 != null)
-            {
-                copy.b1 = Card.GetCard(b1.ID);
-            }
-            if (b2 != null)
-            {
-                copy.b2 = Card.GetCard(b2.ID);
-            }
-            if (b3 != null)
-            {
-                copy.b3 = Card.GetCard(b3.ID);
-            }
-            if (b4 != null)
-            {
-                copy.b4 = Card.GetCard(b4.ID);
-            }
-            if (b5 != null)
-            {
-                copy.b5 = Card.GetCard(b5.ID);
-            }
-            copy.atook = CopyCardList(atook);
-            copy.btook = CopyCardList(btook);
-            if (adown != null)
-            {
-                copy.adown = Card.GetCard(adown.ID);
-            }
-            if (bdown != null)
-            {
-                copy.bdown = Card.GetCard(bdown.ID);
-            }
+            copy.deck = new List<Card>(deck);
+
+            copy.dbottom = dbottom;
+            copy.a1 = a1;
+            copy.a2 = a2;
+            copy.a3 = a3;
+            copy.a4 = a4;
+            copy.a5 = a5;
+            copy.b1 = b1;
+            copy.b2 = b2;
+            copy.b3 = b3;
+            copy.b4 = b4;
+            copy.b5 = b5;
+
+            copy.atook = new List<Card>(atook);
+            copy.btook = new List<Card>(btook);
+            
+            copy.adown = adown;
+            copy.bdown = bdown;
 
             copy.AM20 = AM20;
             copy.AP20 = AP20;
@@ -424,7 +371,7 @@ namespace SnapFish66_Console
             copy.BZ20 = BZ20;
 
             copy.covered = covered;
-            copy.next = next;
+            copy.isAnext = isAnext;
             copy.trump = trump;
 
             copy.CountScores();
@@ -521,7 +468,7 @@ namespace SnapFish66_Console
                 return false;
             }
 
-            if(next!=other.next)
+            if(isAnext!=other.isAnext)
             {
                 return false;
             }

@@ -9,7 +9,7 @@ namespace SnapFish66_Console
 {
     public class Card
     {
-        //Work like an enum
+        //Works like an enum
         public static readonly Card M2 = new Card("M2");
         public static readonly Card M3 = new Card("M3");
         public static readonly Card M4 = new Card("M4");
@@ -60,6 +60,7 @@ namespace SnapFish66_Console
         public string ID;
         public char color;
         public byte value;
+        public int index;
 
         //Private!!!
         private Card(string id)
@@ -70,6 +71,28 @@ namespace SnapFish66_Console
             {
                 value = byte.Parse(id.Substring(1));
             }
+
+            //It runs only 21 times at the beginning
+            if (id == "M2") index = 1;
+            if (id == "M3") index = 1 << 1;
+            if (id == "M4") index = 1 << 2;
+            if (id == "M10") index = 1 << 3;
+            if (id == "M11") index = 1 << 4;
+            if (id == "P2") index = 1 << 5;
+            if (id == "P3") index = 1 << 6;
+            if (id == "P4") index = 1 << 7;
+            if (id == "P10") index = 1 << 8;
+            if (id == "P11") index = 1 << 9;
+            if (id == "T2") index = 1 << 10;
+            if (id == "T3") index = 1 << 11;
+            if (id == "T4") index = 1 << 12;
+            if (id == "T10") index = 1 << 13;
+            if (id == "T11") index = 1 << 14;
+            if (id == "Z2") index = 1 << 15;
+            if (id == "Z3") index = 1 << 16;
+            if (id == "Z4") index = 1 << 17;
+            if (id == "Z10") index = 1 << 18;
+            if (id == "Z11") index = 1 << 19;
         }
 
         public static Card GetCard(string id)

@@ -315,14 +315,14 @@ namespace SnapFish66_Console
                 state.atook.Add(state.adown);
                 state.atook.Add(state.bdown);
                 Draw(state, "A");
-                state.next = "A";
+                state.isAnext = true;
             }
             else
             {
                 state.btook.Add(state.adown);
                 state.btook.Add(state.bdown);
                 Draw(state, "B");
-                state.next = "B";
+                state.isAnext = false;
             }
 
             state.adown = null;
@@ -337,7 +337,7 @@ namespace SnapFish66_Console
                 return false;
             }
 
-            if (state.next == "A")
+            if (state.isAnext)
             {
                 //B put down a card, a "answers" it
                 if (state.bdown!=null)
@@ -350,7 +350,7 @@ namespace SnapFish66_Console
                 else
                 {
                     PutDownCard(state, ref from, ref state.adown, "A",true);
-                    state.next = "B";
+                    state.isAnext = false;
                 }
             }
             else
@@ -366,7 +366,7 @@ namespace SnapFish66_Console
                 else
                 {
                     PutDownCard(state, ref from, ref state.bdown, "B",true);
-                    state.next = "A";
+                    state.isAnext = true;
                 }
             }
 
@@ -379,17 +379,17 @@ namespace SnapFish66_Console
             if(state.dbottom != null && state.deck.Count>=3)
             {
                 //Cannot switch if not coming first
-                if(state.next == "A" && state.bdown != null)
+                if(state.isAnext && state.bdown != null)
                 {
                     return;
                 }
-                if (state.next == "B" && state.adown != null)
+                if (!state.isAnext && state.adown != null)
                 {
                     return;
                 }
                 
                 //Try to switch, if has trump 2
-                if(state.next =="A")
+                if(state.isAnext)
                 {
                     Card[] hand = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5 };
 
@@ -404,7 +404,7 @@ namespace SnapFish66_Console
                     }
                 }
 
-                if (state.next == "B")
+                if (!state.isAnext)
                 {
                     Card[] hand = new Card[] { state.b1, state.b2, state.b3, state.b4, state.b5 };
 
@@ -422,7 +422,7 @@ namespace SnapFish66_Console
         }
 
         //We have a trump
-        private bool HasTrump(State state, Card opcard, Card[] hand)
+        private bool HasTrump(State state, Card[] hand)
         {
             foreach (Card card in hand)
             {
@@ -464,32 +464,23 @@ namespace SnapFish66_Console
         }
 
         //Endgame (same color and hitting is obligatory)
-        private bool EndgameOK(State state, string action)
+        private bool EndgameOK(State state, byte action)
         {
-            //Helpers
-            Dictionary<string, Card> handDict = new Dictionary<string, Card>();
-            Card opponentCard;
-            if(state.next == "A")
+            //If there are cards in the deck, it is not endgame
+            if (state.deck.Count > 0)
             {
-                opponentCard = state.bdown;
-                handDict.Add("A1", state.a1);
-                handDict.Add("A2", state.a2);
-                handDict.Add("A3", state.a3);
-                handDict.Add("A4", state.a4);
-                handDict.Add("A5", state.a5);
+                return true;
             }
-            else
+
+            //If coming first, we can put anything
+            Card opponentCard = state.isAnext ? state.bdown : state.adown;
+            if (opponentCard == null)
             {
-                opponentCard = state.adown;
-                handDict.Add("B1", state.b1);
-                handDict.Add("B2", state.b2);
-                handDict.Add("B3", state.b3);
-                handDict.Add("B4", state.b4);
-                handDict.Add("B5", state.b5);
+                return true;
             }
 
             Card[] hand;
-            if (state.next == "A")
+            if (state.isAnext)
             {
                 hand = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5 };
             }
@@ -497,22 +488,10 @@ namespace SnapFish66_Console
             {
                 hand = new Card[] { state.b1, state.b2, state.b3, state.b4, state.b5 };
             }
-
-            //If there are cards in the deck, it is not endgame
-            if (state.deck.Count>0)
-            {
-                return true;
-            }
-
-            //If coming first, we can put anything
-            if(opponentCard == null)
-            {
-                return true;
-            }
             
-            if(handDict.ContainsKey(action) && handDict[action] != null)
+            if(hand[action] != null)
             {
-                Card putCard = handDict[action];
+                Card putCard = hand[action];
                 Card opCard = opponentCard;
 
                 //If we have bigger of the same colour, then must put it down
@@ -543,7 +522,7 @@ namespace SnapFish66_Console
                 }
 
                 //Else if we have a trump, we must put it down
-                if (HasTrump(state, opCard, hand))
+                if (HasTrump(state, hand))
                 {
                     if(putCard.color == state.trump)
                     {
@@ -567,7 +546,7 @@ namespace SnapFish66_Console
         }
 
         //Modifies the given state by the given action, returns whether the step is valid
-        public bool Do(State state, string action)
+        public bool Do(State state, byte action)
         {
             TrySwitchDBottom(state);
 
@@ -575,130 +554,62 @@ namespace SnapFish66_Console
             {
                 return false;
             }
-
-            if (action == "A1")
+            
+            if (action == 0)
             {
-                if (state.next == "A")
+                if (state.isAnext)
                 {
                     return PerformStep(state, ref state.a1);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            if (action == "A2")
-            {
-                if (state.next == "A")
-                {
-                    return PerformStep(state, ref state.a2);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            if (action == "A3")
-            {
-                if (state.next == "A")
-                {
-                    return PerformStep(state, ref state.a3);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            if (action == "A4")
-            {
-                if (state.next == "A")
-                {
-                    return PerformStep(state, ref state.a4);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            if (action == "A5")
-            {
-                if (state.next == "A")
-                {
-                    return PerformStep(state, ref state.a5);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            if (action == "B1")
-            {
-                if(state.next=="A")
-                {
-                    return false;
                 }
                 else
                 {
                     return PerformStep(state, ref state.b1);
                 }
             }
-            if (action == "B2")
+            if (action == 1)
             {
-                if (state.next == "A")
+                if (state.isAnext)
                 {
-                    return false;
+                    return PerformStep(state, ref state.a2);
                 }
                 else
                 {
                     return PerformStep(state, ref state.b2);
                 }
             }
-            if (action == "B3")
+            if (action == 2)
             {
-                if (state.next == "A")
+                if (state.isAnext)
                 {
-                    return false;
+                    return PerformStep(state, ref state.a3);
                 }
                 else
                 {
                     return PerformStep(state, ref state.b3);
                 }
             }
-            if (action == "B4")
+            if (action == 3)
             {
-                if (state.next == "A")
+                if (state.isAnext)
                 {
-                    return false;
+                    return PerformStep(state, ref state.a4);
                 }
                 else
                 {
                     return PerformStep(state, ref state.b4);
                 }
             }
-            if (action == "B5")
+            if (action == 4)
             {
-                if (state.next == "A")
+                if (state.isAnext)
                 {
-                    return false;
+                    return PerformStep(state, ref state.a5);
                 }
                 else
                 {
                     return PerformStep(state, ref state.b5);
                 }
             }
-            if(action == "cover")
-            {
-                if(state.covered==true || state.deck.Count<=2)
-                {
-                    return false;
-                }
-                else
-                {
-                    state.covered = true;
-                    return true;
-                }
-            }
-
             return false;
         }
 

@@ -54,7 +54,7 @@ namespace SnapFish66_Console
 
             State state = new State();
 
-            state.next = s[0].ToString();
+            state.isAnext = s[0].ToString()=="A";
             state.trump = s[1];
 
             //Card[] singlePlaces = new Card[] { state.dbottom, state.adown, state.bdown};
