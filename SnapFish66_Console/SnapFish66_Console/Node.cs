@@ -11,12 +11,11 @@ namespace SnapFish66_Console
     public class Node
     {
         public State state;
-        private Node parent;
 
         public float value;
         bool maximizer;
 
-        public byte actionBefore; //TODO ez kell?
+        public byte actionBefore;
 
         public List<Node> children = new List<Node>();
 
@@ -24,16 +23,11 @@ namespace SnapFish66_Console
         
         public static List<byte> UnvisitedSteps = new List<byte> { 0, 1, 2, 3, 4}; //TODO kell ez ha úgyis egyesével megyünk rekurzívan?
 
-    public Node(Node newparent, State nstate, byte nactionBefore, byte ndepth)
+    public Node(State nstate, byte nactionBefore, byte ndepth)
         {
             state = nstate;
             actionBefore = nactionBefore;
             depth = ndepth;
-
-            if(newparent!=null)
-            {
-                parent = newparent;
-            }
 
             SetMaximizer();
         }
@@ -57,7 +51,7 @@ namespace SnapFish66_Console
                     return;
                 }
 
-                Node child = new Node(this, state.Copy(), action, (byte)(depth+1));
+                Node child = new Node(state.Copy(), action, (byte)(depth+1));
                 bool success = child.state.Step(child.state, action);
                 child.SetMaximizer();
 

@@ -96,7 +96,7 @@ namespace SnapFish66_Console
 
             byte round = (byte)(CardToInt(s.adown) + CardToInt(s.bdown) + s.atook.Count + s.btook.Count);
 
-            root = new Node(null, s, 0, round);
+            root = new Node(s, 0, round);
             root.SetMaximizer();
 
             allNodes = new List<Node> { root };
@@ -143,7 +143,7 @@ namespace SnapFish66_Console
             {
                 averages.Add(float.NaN);
             }
-            root = new Node(null, state, 0, 0);
+            root = new Node(state, 0, 0);
             root.SetMaximizer();
             allNodes.Add(root);
             VisitedNodes = new int[21];
@@ -219,7 +219,7 @@ namespace SnapFish66_Console
                 //Add children of different actions (will be root of alphabeta)
                 for (byte i = 0; i < 5; i++) //without cover
                 {
-                        Node child = new Node(subroot, subroot.state.Copy(), i, (byte)(subroot.depth + 1));
+                        Node child = new Node(subroot.state.Copy(), i, (byte)(subroot.depth + 1));
                         bool success = child.state.Step(child.state, i);
                         child.SetMaximizer();
 
@@ -293,13 +293,13 @@ namespace SnapFish66_Console
         {
             bool found = false;
             byte round = (byte)(CardToInt(root.state.adown) + CardToInt(root.state.bdown) + root.state.atook.Count + root.state.btook.Count);
-            Node newNode = new Node(null, root.state.GenerateRandom(), 0, round);
+            Node newNode = new Node(root.state.GenerateRandom(), 0, round);
 
             //DateTime begin = DateTime.Now;
 
             while(!found)
             {
-                newNode = new Node(null, root.state.GenerateRandom(), 0, round);
+                newNode = new Node(root.state.GenerateRandom(), 0, round);
                 found = true;
                 foreach (Node n in subroots)
                 {
