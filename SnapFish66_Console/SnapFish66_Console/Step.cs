@@ -436,7 +436,7 @@ namespace SnapFish66_Console
         }
 
         //We have card with the same color
-        private bool HasSameColor(State state, Card opcard, Card[] hand)
+        private bool HasSameColor(Card opcard, Card[] hand)
         {
             foreach (Card card in hand)
             {
@@ -450,7 +450,7 @@ namespace SnapFish66_Console
         }
 
         //We have bigger card in the same color
-        private bool HasBiggerSame(State state, Card opcard, Card[] hand)
+        private bool HasBiggerSame(Card opcard, Card[] hand)
         {
             foreach (Card card in hand)
             {
@@ -495,7 +495,7 @@ namespace SnapFish66_Console
                 Card opCard = opponentCard;
 
                 //If we have bigger of the same colour, then must put it down
-                if (HasBiggerSame(state, opCard, hand))
+                if (HasBiggerSame(opCard, hand))
                 {
                     if (putCard.color == opCard.color && putCard.value > opCard.value)
                     {
@@ -509,7 +509,7 @@ namespace SnapFish66_Console
 
 
                 //Else if we have same color, we must put it down
-                if (HasSameColor(state, opCard, hand))
+                if (HasSameColor(opCard, hand))
                 {
                     if (putCard.color == opCard.color)
                     {

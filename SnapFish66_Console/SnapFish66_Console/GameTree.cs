@@ -61,8 +61,7 @@ namespace SnapFish66_Console
 
         //The averages of the lists above repectively, CalcAverages() sets it
         public List<float> averages;
-
-        List<byte> actionList;
+        readonly List<byte> actionList;
 
         public static List<Node> allNodes;
 

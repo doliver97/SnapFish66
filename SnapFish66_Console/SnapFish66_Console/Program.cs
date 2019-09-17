@@ -52,10 +52,11 @@ namespace SnapFish66_Console
             //   H : taken by B
             //[22-25] - 20/40 for each color (A,B,X)
 
-            State state = new State();
-
-            state.isAnext = s[0].ToString()=="A";
-            state.trump = s[1];
+            State state = new State
+            {
+                isAnext = s[0].ToString() == "A",
+                trump = s[1]
+            };
 
             //Card[] singlePlaces = new Card[] { state.dbottom, state.adown, state.bdown};
 

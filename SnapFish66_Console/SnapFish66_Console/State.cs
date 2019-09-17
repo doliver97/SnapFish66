@@ -110,11 +110,6 @@ namespace SnapFish66_Console
             return cards;
         }
 
-        public State()
-        {
-            CalculatePoints();
-        }
-
         //Makes a new valid state by giving value to unkonwn cards
         public State GenerateRandom()
         {
@@ -374,7 +369,8 @@ namespace SnapFish66_Console
             copy.isAnext = isAnext;
             copy.trump = trump;
 
-            copy.CountScores();
+            copy.Ascore = Ascore;
+            copy.Bscore = Bscore;
 
             return copy;
         }
