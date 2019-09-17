@@ -103,19 +103,19 @@ namespace SnapFish66_Console
         public float AlphaBeta(float alpha, float beta)
         {
             //Increasing alpha and decreasing beta if we can
-            if (state.Ascore >= 33 && alpha < -1)
+            if (state.AscoreFull >= 33 && alpha < -1)
             {
                 alpha = -1;
             }
-            else if (state.Ascore > 0 && alpha < -2)
+            else if (state.AscoreFull > 0 && alpha < -2)
             {
                 alpha = -2;
             }
-            if (state.Bscore >= 33 && beta > 1)
+            if (state.BscoreFull >= 33 && beta > 1)
             {
                 beta = 1;
             }
-            else if (state.Bscore > 0 && beta > 2)
+            else if (state.BscoreFull > 0 && beta > 2)
             {
                 beta = 2;
             }

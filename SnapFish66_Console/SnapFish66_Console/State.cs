@@ -69,8 +69,12 @@ namespace SnapFish66_Console
         public char trump = '-';
 
         //Collect 66
-        public byte Ascore = 0;
-        public byte Bscore = 0;
+        public byte AscoreBasic = 0;
+        public byte BscoreBasic = 0;
+        public byte AscoreMarriages = 0;
+        public byte BscoreMarriages = 0;
+        public byte AscoreFull = 0;
+        public byte BscoreFull = 0;
 
         //Points: {0-3}
         public byte Apoints = 0;
@@ -157,16 +161,32 @@ namespace SnapFish66_Console
 
             return newstate;
         }
-        
-        private void CountScores()
+
+        public void CalculateFullScore()
         {
-            //TODO only test
+            AscoreFull = AscoreBasic;
+            if(AscoreBasic!=0)
+            {
+                AscoreFull += AscoreMarriages;
+            }
+
+            BscoreFull = BscoreBasic;
+            if (BscoreBasic != 0)
+            {
+                BscoreFull += BscoreMarriages;
+            }
+        }
+
+        //Call only from root
+        public void InitPoints()
+        {
+            //TODO it can be a lot faster (but runs only once)
             List<Card> atook2 = new List<Card>();
             List<Card> btook2 = new List<Card>();
 
-            foreach(Card c in Card.dictionary.Values)
+            foreach (Card c in Card.dictionary.Values)
             {
-                if(atook.HasFlag((CardSet)c.index))
+                if (atook.HasFlag((CardSet)c.index))
                 {
                     atook2.Add(c);
                 }
@@ -177,127 +197,119 @@ namespace SnapFish66_Console
             }
 
             //3x faster than lambda
-            Ascore = 0;
             foreach (Card c in atook2)
             {
-                Ascore += c.value;
+                AscoreBasic += c.value;
             }
-            Bscore = 0;
             foreach (Card c in btook2)
             {
-                Bscore += c.value;
+                BscoreBasic += c.value;
             }
 
-            if (Ascore!=0)
+
+
+            if (AM20)
             {
-                if(AM20)
+                if (trump == 'M')
                 {
-                    if(trump == 'M')
-                    {
-                        Ascore += 40;
-                    }
-                    else
-                    {
-                        Ascore += 20;
-                    }
+                    AscoreMarriages += 40;
                 }
-                if (AP20)
+                else
                 {
-                    if (trump == 'P')
-                    {
-                        Ascore += 40;
-                    }
-                    else
-                    {
-                        Ascore += 20;
-                    }
-                }
-                if (AT20)
-                {
-                    if (trump == 'T')
-                    {
-                        Ascore += 40;
-                    }
-                    else
-                    {
-                        Ascore += 20;
-                    }
-                }
-                if (AZ20)
-                {
-                    if (trump == 'Z')
-                    {
-                        Ascore += 40;
-                    }
-                    else
-                    {
-                        Ascore += 20;
-                    }
+                    AscoreMarriages += 20;
                 }
             }
-
-            if(Bscore != 0)
+            if (AP20)
             {
-                if (BM20)
+                if (trump == 'P')
                 {
-                    if (trump == 'M')
-                    {
-                        Bscore += 40;
-                    }
-                    else
-                    {
-                        Bscore += 20;
-                    }
+                    AscoreMarriages += 40;
                 }
-                if (BP20)
+                else
                 {
-                    if (trump == 'P')
-                    {
-                        Bscore += 40;
-                    }
-                    else
-                    {
-                        Bscore += 20;
-                    }
+                    AscoreMarriages += 20;
                 }
-                if (BT20)
+            }
+            if (AT20)
+            {
+                if (trump == 'T')
                 {
-                    if (trump == 'T')
-                    {
-                        Bscore += 40;
-                    }
-                    else
-                    {
-                        Bscore += 20;
-                    }
+                    AscoreMarriages += 40;
                 }
-                if (BZ20)
+                else
                 {
-                    if (trump == 'Z')
-                    {
-                        Bscore += 40;
-                    }
-                    else
-                    {
-                        Bscore += 20;
-                    }
+                    AscoreMarriages += 20;
+                }
+            }
+            if (AZ20)
+            {
+                if (trump == 'Z')
+                {
+                    AscoreMarriages += 40;
+                }
+                else
+                {
+                    AscoreMarriages += 20;
                 }
             }
 
+            if (BM20)
+            {
+                if (trump == 'M')
+                {
+                    BscoreMarriages += 40;
+                }
+                else
+                {
+                    BscoreMarriages += 20;
+                }
+            }
+            if (BP20)
+            {
+                if (trump == 'P')
+                {
+                    BscoreMarriages += 40;
+                }
+                else
+                {
+                    BscoreMarriages += 20;
+                }
+            }
+            if (BT20)
+            {
+                if (trump == 'T')
+                {
+                    BscoreMarriages += 40;
+                }
+                else
+                {
+                    BscoreMarriages += 20;
+                }
+            }
+            if (BZ20)
+            {
+                if (trump == 'Z')
+                {
+                    BscoreMarriages += 40;
+                }
+                else
+                {
+                    BscoreMarriages += 20;
+                }
+            }
 
+            CalculateFullScore();
         }
 
         public void CalculatePoints()
         {
-            CountScores();
-
-            if(Ascore>=66)
+            if(AscoreFull>=66)
             {
-                if(Bscore==0)
+                if(BscoreFull==0)
                 {
                     Apoints = 3;
                 }
-                else if(Bscore<33)
+                else if(BscoreFull<33)
                 {
                     Apoints = 2;
                 }
@@ -306,13 +318,13 @@ namespace SnapFish66_Console
                     Apoints = 1;
                 }
             }
-            else if (Bscore >= 66)
+            else if (BscoreFull >= 66)
             {
-                if (Ascore == 0)
+                if (AscoreFull == 0)
                 {
                     Bpoints = 3;
                 }
-                else if (Ascore < 33)
+                else if (AscoreFull < 33)
                 {
                     Bpoints = 2;
                 }
@@ -379,8 +391,12 @@ namespace SnapFish66_Console
             copy.isAnext = isAnext;
             copy.trump = trump;
 
-            copy.Ascore = Ascore;
-            copy.Bscore = Bscore;
+            copy.AscoreBasic = AscoreBasic;
+            copy.BscoreBasic = BscoreBasic;
+            copy.AscoreMarriages = AscoreMarriages;
+            copy.BscoreMarriages = BscoreMarriages;
+
+            copy.CalculateFullScore();
 
             return copy;
         }

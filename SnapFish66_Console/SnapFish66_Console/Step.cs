@@ -50,18 +50,50 @@ namespace SnapFish66_Console
                 if ((state.adown.ID == "M3" && CardInHand(state, "A", "M4")) || (state.adown.ID == "M4" && CardInHand(state, "A", "M3")))
                 {
                     state.AM20 = true;
+                    if(state.trump == 'M')
+                    {
+                        state.AscoreMarriages += 40;
+                    }
+                    else
+                    {
+                        state.AscoreMarriages += 20;
+                    }
                 }
                 if ((state.adown.ID == "P3" && CardInHand(state, "A", "P4")) || (state.adown.ID == "P4" && CardInHand(state, "A", "P3")))
                 {
                     state.AP20 = true;
+                    if (state.trump == 'P')
+                    {
+                        state.AscoreMarriages += 40;
+                    }
+                    else
+                    {
+                        state.AscoreMarriages += 20;
+                    }
                 }
                 if ((state.adown.ID == "T3" && CardInHand(state, "A", "T4")) || (state.adown.ID == "T4" && CardInHand(state, "A", "T3")))
                 {
                     state.AT20 = true;
+                    if (state.trump == 'T')
+                    {
+                        state.AscoreMarriages += 40;
+                    }
+                    else
+                    {
+                        state.AscoreMarriages += 20;
+                    }
                 }
                 if ((state.adown.ID == "Z3" && CardInHand(state, "A", "Z4")) || (state.adown.ID == "Z4" && CardInHand(state, "A", "Z3")))
                 {
                     state.AZ20 = true;
+                    if (state.trump == 'Z')
+                    {
+                        state.AscoreMarriages += 40;
+                    }
+                    else
+                    {
+                        state.AscoreMarriages += 20;
+                    }
                 }
 
             }
@@ -70,18 +102,50 @@ namespace SnapFish66_Console
                 if ((state.bdown.ID == "M3" && CardInHand(state, "B", "M4")) || (state.bdown.ID == "M4" && CardInHand(state, "B", "M3")))
                 {
                     state.BM20 = true;
+                    if (state.trump == 'M')
+                    {
+                        state.BscoreMarriages += 40;
+                    }
+                    else
+                    {
+                        state.BscoreMarriages += 20;
+                    }
                 }
                 if ((state.bdown.ID == "P3" && CardInHand(state, "B", "P4")) || (state.bdown.ID == "P4" && CardInHand(state, "B", "P3")))
                 {
                     state.BP20 = true;
+                    if (state.trump == 'P')
+                    {
+                        state.BscoreMarriages += 40;
+                    }
+                    else
+                    {
+                        state.BscoreMarriages += 20;
+                    }
                 }
                 if ((state.bdown.ID == "T3" && CardInHand(state, "B", "T4")) || (state.bdown.ID == "T4" && CardInHand(state, "B", "T3")))
                 {
                     state.BT20 = true;
+                    if (state.trump == 'T')
+                    {
+                        state.BscoreMarriages += 40;
+                    }
+                    else
+                    {
+                        state.BscoreMarriages += 20;
+                    }
                 }
                 if ((state.bdown.ID == "Z3" && CardInHand(state, "B", "Z4")) || (state.bdown.ID == "Z4" && CardInHand(state, "B", "Z3")))
                 {
                     state.BZ20 = true;
+                    if (state.trump == 'Z')
+                    {
+                        state.BscoreMarriages += 40;
+                    }
+                    else
+                    {
+                        state.BscoreMarriages += 20;
+                    }
                 }
             }
         }
@@ -309,9 +373,11 @@ namespace SnapFish66_Console
                 awon = true;
             }
 
-
             if(awon)
             {
+                state.AscoreBasic += state.adown.value;
+                state.AscoreBasic += state.bdown.value;
+
                 state.atook += state.adown.index;
                 state.atook += state.bdown.index;
                 Draw(state, "A");
@@ -319,6 +385,9 @@ namespace SnapFish66_Console
             }
             else
             {
+                state.BscoreBasic += state.adown.value;
+                state.BscoreBasic += state.bdown.value;
+
                 state.btook += state.adown.index;
                 state.btook += state.bdown.index;
                 Draw(state, "B");

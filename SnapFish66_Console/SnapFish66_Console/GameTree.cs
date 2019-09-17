@@ -97,6 +97,7 @@ namespace SnapFish66_Console
 
             root = new Node(s, 0, round);
             root.SetMaximizer();
+            root.state.InitPoints();
 
             allNodes = new List<Node> { root };
         }
