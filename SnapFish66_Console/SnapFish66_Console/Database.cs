@@ -135,19 +135,13 @@ namespace SnapFish66_Console
                 SetChar(ref key, s.bdown, 'F', s, i);
 
                 //taken
-                for (int j = 0; j < s.atook.Count; j++)
+                if(s.atook.HasFlag((State.CardSet)Card.GetCard(IDs[i]).value))
                 {
-                    if (s.atook[j].ID == IDs[i])
-                    {
-                        key[i + 2] = 'G';
-                    }
+                    key[i + 2] = 'G';
                 }
-                for (int j = 0; j < s.btook.Count; j++)
+                if (s.btook.HasFlag((State.CardSet)Card.GetCard(IDs[i]).value))
                 {
-                    if (s.btook[j].ID == IDs[i])
-                    {
-                        key[i + 2] = 'H';
-                    }
+                    key[i + 2] = 'H';
                 }
             }
 

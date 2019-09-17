@@ -93,12 +93,23 @@ namespace SnapFish66_Console
             }
             subroots = new List<Node>();
 
-            byte round = (byte)(CardToInt(s.adown) + CardToInt(s.bdown) + s.atook.Count + s.btook.Count);
+            byte round = (byte)(CardToInt(s.adown) + CardToInt(s.bdown) + GetSetBitCount((long)s.atook) + GetSetBitCount((long)s.btook));
 
             root = new Node(s, 0, round);
             root.SetMaximizer();
 
             allNodes = new List<Node> { root };
+        }
+
+        public static int GetSetBitCount(long lValue)
+        {
+            int iCount = 0;
+            while (lValue != 0)
+            {
+                lValue &= lValue - 1;
+                iCount++;
+            }
+            return iCount;
         }
 
         private int CardToInt(Card c)
@@ -116,7 +127,7 @@ namespace SnapFish66_Console
         private int CalcPossibleSubroots()
         {
             int cardsInBHand = CardToInt(root.state.b1) + CardToInt(root.state.b2) + CardToInt(root.state.b3) + CardToInt(root.state.b4) + CardToInt(root.state.b5);
-            int cardsInDeck = 20 - cardsInBHand - CardToInt(root.state.dbottom) - CardToInt(root.state.adown) - CardToInt(root.state.bdown) - root.state.atook.Count - root.state.btook.Count - CardToInt(root.state.a1) - CardToInt(root.state.a2) - CardToInt(root.state.a3) - CardToInt(root.state.a4) - CardToInt(root.state.a5);
+            int cardsInDeck = 20 - cardsInBHand - CardToInt(root.state.dbottom) - CardToInt(root.state.adown) - CardToInt(root.state.bdown) - GetSetBitCount((long)root.state.atook) - GetSetBitCount((long)root.state.btook) - CardToInt(root.state.a1) - CardToInt(root.state.a2) - CardToInt(root.state.a3) - CardToInt(root.state.a4) - CardToInt(root.state.a5);
 
             // count is sum unknown factorial per in hand factorial
             int count = 1;
@@ -291,7 +302,7 @@ namespace SnapFish66_Console
         private Node CreateNewSubroot()
         {
             bool found = false;
-            byte round = (byte)(CardToInt(root.state.adown) + CardToInt(root.state.bdown) + root.state.atook.Count + root.state.btook.Count);
+            byte round = (byte)(CardToInt(root.state.adown) + CardToInt(root.state.bdown) + GetSetBitCount((long)root.state.atook) + GetSetBitCount((long)root.state.btook));
             Node newNode = new Node(root.state.GenerateRandom(), 0, round);
 
             //DateTime begin = DateTime.Now;

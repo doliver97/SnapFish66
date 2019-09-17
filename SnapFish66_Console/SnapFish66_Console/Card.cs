@@ -32,7 +32,8 @@ namespace SnapFish66_Console
         public static readonly Card Z11 = new Card("Z11");
         public static readonly Card unknown = new Card("unknown");
 
-        private static Dictionary<String, Card> dictionary = new Dictionary<string, Card>
+        //TODO be private
+        public static Dictionary<string, Card> dictionary = new Dictionary<string, Card>
         {
             {"M2", M2},
             {"M3", M3},

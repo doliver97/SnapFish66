@@ -37,20 +37,13 @@ namespace SnapFish66_Console
         }
 
         //Adds a card to the given multi place
-        private static void AddToCardPlace(List<Card> cards, List<Card> place, string ID)
+        private static void AddToCardPlace(ref State.CardSet place, string ID)
         {
-            if(ID=="U")
-            {
-                place.Add(Card.GetCard("unknown"));
-            }
-            else
-            {
-                place.Add(Card.GetCard(ID));
-            }
+            place += Card.GetCard(ID).value;
         }
 
         //Adds a card to the given single place
-        private static void AddToCardPlace(List<Card> cards, Card place, string ID)
+        private static void AddToCardPlace(ref Card place, string ID)
         {
             if (ID == "U")
             {
@@ -75,7 +68,7 @@ namespace SnapFish66_Console
             string[] DBottomSplit = DBottomLine.Split(' ');
             if(DBottomSplit.Length>1)
             {
-                AddToCardPlace(cards, state.dbottom, DBottomSplit[1]);
+                AddToCardPlace(ref state.dbottom, DBottomSplit[1]);
             }
 
             //AHand
@@ -83,23 +76,23 @@ namespace SnapFish66_Console
             string[] AHandSplit = AHandLine.Split(' ');
             if(AHandSplit.Length>1)
             {
-                AddToCardPlace(cards, state.a1, AHandSplit[1]);
+                AddToCardPlace(ref state.a1, AHandSplit[1]);
             }
             if (AHandSplit.Length > 2)
             {
-                AddToCardPlace(cards, state.a2, AHandSplit[2]);
+                AddToCardPlace(ref state.a2, AHandSplit[2]);
             }
             if (AHandSplit.Length > 3)
             {
-                AddToCardPlace(cards, state.a3, AHandSplit[3]);
+                AddToCardPlace(ref state.a3, AHandSplit[3]);
             }
             if (AHandSplit.Length > 4)
             {
-                AddToCardPlace(cards, state.a4, AHandSplit[4]);
+                AddToCardPlace(ref state.a4, AHandSplit[4]);
             }
             if (AHandSplit.Length > 5)
             {
-                AddToCardPlace(cards, state.a5, AHandSplit[5]);
+                AddToCardPlace(ref state.a5, AHandSplit[5]);
             }
 
 
@@ -108,7 +101,7 @@ namespace SnapFish66_Console
             string[] ADownSplit = ADownLine.Split(' ');
             if (ADownSplit.Length > 1)
             {
-                AddToCardPlace(cards, state.adown, ADownSplit[1]);
+                AddToCardPlace(ref state.adown, ADownSplit[1]);
             }
 
 
@@ -117,7 +110,7 @@ namespace SnapFish66_Console
             string[] ATookSplit = ATookLine.Split(' ');
             for (int i = 1; i < ATookSplit.Length; i++)
             {
-                AddToCardPlace(cards, state.atook, ATookSplit[i]);
+                AddToCardPlace(ref state.atook, ATookSplit[i]);
             }
 
 
@@ -126,23 +119,23 @@ namespace SnapFish66_Console
             string[] BHandSplit = BHandLine.Split(' ');
             if (BHandSplit.Length > 1)
             {
-                AddToCardPlace(cards, state.b1, BHandSplit[1]);
+                AddToCardPlace(ref state.b1, BHandSplit[1]);
             }
             if (BHandSplit.Length > 2)
             {
-                AddToCardPlace(cards, state.b2, BHandSplit[2]);
+                AddToCardPlace(ref state.b2, BHandSplit[2]);
             }
             if (BHandSplit.Length > 3)
             {
-                AddToCardPlace(cards, state.b3, BHandSplit[3]);
+                AddToCardPlace(ref state.b3, BHandSplit[3]);
             }
             if (BHandSplit.Length > 4)
             {
-                AddToCardPlace(cards, state.b4, BHandSplit[4]);
+                AddToCardPlace(ref state.b4, BHandSplit[4]);
             }
             if (BHandSplit.Length > 5)
             {
-                AddToCardPlace(cards, state.b5, BHandSplit[5]);
+                AddToCardPlace(ref state.b5, BHandSplit[5]);
             }
 
 
@@ -151,7 +144,7 @@ namespace SnapFish66_Console
             string[] BDownSplit = BDownLine.Split(' ');
             if (BDownSplit.Length > 1)
             {
-                AddToCardPlace(cards, state.bdown, BDownSplit[1]);
+                AddToCardPlace(ref state.bdown, BDownSplit[1]);
             }
 
 
@@ -160,7 +153,7 @@ namespace SnapFish66_Console
             string[] BTookSplit = BTookLine.Split(' ');
             for (int i = 1; i < BTookSplit.Length; i++)
             {
-                AddToCardPlace(cards, state.btook, BTookSplit[i]);
+                AddToCardPlace(ref state.btook, BTookSplit[i]);
             }
 
             //20/40

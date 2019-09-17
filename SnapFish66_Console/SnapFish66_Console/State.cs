@@ -48,8 +48,8 @@ namespace SnapFish66_Console
         public Card b3;
         public Card b4;
         public Card b5;
-        public List<Card> atook = new List<Card>();
-        public List<Card> btook = new List<Card>();
+        public CardSet atook = CardSet.NONE;
+        public CardSet btook = CardSet.NONE;
         public Card adown;
         public Card bdown;
 
@@ -84,13 +84,13 @@ namespace SnapFish66_Console
                 cards.Add(c);
             }
 
-            foreach(var c in Program.cards)
+            foreach(Card c in Program.cards)
             {
-                List<Card>[] MultiCardPlaces = new List<Card>[] {atook, btook};
+                CardSet[] MultiCardPlaces = new CardSet[] {atook, btook};
 
                 for (int i = 0; i < MultiCardPlaces.Length; i++)
                 {
-                    if(CardInList(MultiCardPlaces[i],c.ID)>0)
+                    if(MultiCardPlaces[i].HasFlag((CardSet)c.index))
                     {
                         cards.RemoveAll(x => x.ID == c.ID);
                     }
@@ -157,23 +157,33 @@ namespace SnapFish66_Console
 
             return newstate;
         }
-
-        //How many cards are in the list with given ID
-        private int CardInList(List<Card> cards, string id)
-        {
-            return cards.Count(x => x.ID == id);
-        }
         
         private void CountScores()
         {
+            //TODO only test
+            List<Card> atook2 = new List<Card>();
+            List<Card> btook2 = new List<Card>();
+
+            foreach(Card c in Card.dictionary.Values)
+            {
+                if(atook.HasFlag((CardSet)c.index))
+                {
+                    atook2.Add(c);
+                }
+                if (btook.HasFlag((CardSet)c.index))
+                {
+                    btook2.Add(c);
+                }
+            }
+
             //3x faster than lambda
             Ascore = 0;
-            foreach (Card c in atook)
+            foreach (Card c in atook2)
             {
                 Ascore += c.value;
             }
             Bscore = 0;
-            foreach (Card c in btook)
+            foreach (Card c in btook2)
             {
                 Bscore += c.value;
             }
@@ -312,7 +322,7 @@ namespace SnapFish66_Console
                 }
             }
             //No more cards in play, the player who won the last cards (and would come next) won
-            else if(atook.Count+btook.Count==20)
+            else if(GameTree.GetSetBitCount((long)atook)+GameTree.GetSetBitCount((long)btook)==20)
             {
                 if(isAnext)
                 {
@@ -350,8 +360,8 @@ namespace SnapFish66_Console
             copy.b4 = b4;
             copy.b5 = b5;
 
-            copy.atook = new List<Card>(atook);
-            copy.btook = new List<Card>(btook);
+            copy.atook = atook;
+            copy.btook = btook;
             
             copy.adown = adown;
             copy.bdown = bdown;
@@ -429,8 +439,13 @@ namespace SnapFish66_Console
             List<Card> oaHand = new List<Card>{other.a1,other.a2,other.a3,other.a4,other.a5};
             List<Card> obHand = new List<Card>{other.b1,other.b2,other.b3, other.b4,other.b5};
 
-            List<List<Card>> MultiPlaces = new List<List<Card>> { aHand, bHand, atook, btook};
-            List<List<Card>> OtherMultiPlaces = new List<List<Card>> { oaHand, obHand, other.atook, other.btook};
+            List<List<Card>> MultiPlaces = new List<List<Card>> { aHand, bHand};
+            List<List<Card>> OtherMultiPlaces = new List<List<Card>> { oaHand, obHand };
+
+            if(atook!=other.atook || btook!=other.btook)
+            {
+                return false;
+            }
 
             for (int i = 0; i < MultiPlaces.Count; i++)
             {

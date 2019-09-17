@@ -312,15 +312,15 @@ namespace SnapFish66_Console
 
             if(awon)
             {
-                state.atook.Add(state.adown);
-                state.atook.Add(state.bdown);
+                state.atook += state.adown.index;
+                state.atook += state.bdown.index;
                 Draw(state, "A");
                 state.isAnext = true;
             }
             else
             {
-                state.btook.Add(state.adown);
-                state.btook.Add(state.bdown);
+                state.btook += state.adown.index;
+                state.btook += state.bdown.index;
                 Draw(state, "B");
                 state.isAnext = false;
             }
