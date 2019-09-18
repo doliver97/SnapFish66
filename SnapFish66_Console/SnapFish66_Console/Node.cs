@@ -20,8 +20,6 @@ namespace SnapFish66_Console
         public List<Node> children = new List<Node>();
 
         public byte depth;
-        
-        public static List<byte> UnvisitedSteps = new List<byte> { 0, 1, 2, 3, 4}; //TODO kell ez ha úgyis egyesével megyünk rekurzívan?
 
     public Node(State nstate, byte nactionBefore, byte ndepth)
         {
@@ -43,7 +41,7 @@ namespace SnapFish66_Console
         {
             children.Clear();
 
-            foreach (byte action in UnvisitedSteps)
+            for(byte i = 0; i < 5; i++)
             {
                 //If game ended, do not go further
                 if(IsEnd())
@@ -51,8 +49,8 @@ namespace SnapFish66_Console
                     return;
                 }
 
-                Node child = new Node(state.Copy(), action, (byte)(depth+1));
-                bool success = child.state.Step(child.state, action);
+                Node child = new Node(state.Copy(), i, (byte)(depth+1));
+                bool success = child.state.Step(child.state, i);
                 child.SetMaximizer();
 
                 if(success)

@@ -9,7 +9,6 @@ namespace SnapFish66_Console
     public class State
     {
         //This enum represents the card list
-        //TODO find out how to make use of it
         public enum CardSet : long
         {
             NONE = 0b00000000_00000000_00000000_00000000,
@@ -52,6 +51,9 @@ namespace SnapFish66_Console
         public CardSet btook = CardSet.NONE;
         public Card adown;
         public Card bdown;
+
+        public int atookCount = 0;
+        public int btookCount = 0;
 
         public bool AM20;
         public bool AP20;
@@ -180,7 +182,7 @@ namespace SnapFish66_Console
         //Call only from root
         public void InitPoints()
         {
-            //TODO it can be a lot faster (but runs only once)
+            //it could be faster, but runs only once
             List<Card> atook2 = new List<Card>();
             List<Card> btook2 = new List<Card>();
 
@@ -334,7 +336,7 @@ namespace SnapFish66_Console
                 }
             }
             //No more cards in play, the player who won the last cards (and would come next) won
-            else if(GameTree.GetSetBitCount((long)atook)+GameTree.GetSetBitCount((long)btook)==20)
+            else if(atookCount + btookCount==20)
             {
                 if(isAnext)
                 {
@@ -374,6 +376,9 @@ namespace SnapFish66_Console
 
             copy.atook = atook;
             copy.btook = btook;
+
+            copy.atookCount = atookCount;
+            copy.btookCount = btookCount;
             
             copy.adown = adown;
             copy.bdown = bdown;

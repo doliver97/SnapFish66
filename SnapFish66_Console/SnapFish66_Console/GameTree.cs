@@ -61,7 +61,6 @@ namespace SnapFish66_Console
 
         //The averages of the lists above repectively, CalcAverages() sets it
         public List<float> averages;
-        readonly List<byte> actionList;
 
         public static List<Node> allNodes;
 
@@ -84,7 +83,6 @@ namespace SnapFish66_Console
             b5 = new List<float>();
             cover = new List<float>();
             estimatedLists = new List<List<float>> { a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, cover };
-            actionList = new List<byte> { 0, 1, 2, 3, 4, 5};
 
             averages = new List<float>();
             for (int i = 0; i < estimatedLists.Count; i++)
@@ -93,24 +91,13 @@ namespace SnapFish66_Console
             }
             subroots = new List<Node>();
 
-            byte round = (byte)(CardToInt(s.adown) + CardToInt(s.bdown) + GetSetBitCount((long)s.atook) + GetSetBitCount((long)s.btook));
+            byte round = (byte)(CardToInt(s.adown) + CardToInt(s.bdown) + s.atookCount + s.btookCount);
 
             root = new Node(s, 0, round);
             root.SetMaximizer();
             root.state.InitPoints();
 
             allNodes = new List<Node> { root };
-        }
-
-        public static int GetSetBitCount(long lValue)
-        {
-            int iCount = 0;
-            while (lValue != 0)
-            {
-                lValue &= lValue - 1;
-                iCount++;
-            }
-            return iCount;
         }
 
         private int CardToInt(Card c)
@@ -128,7 +115,7 @@ namespace SnapFish66_Console
         private int CalcPossibleSubroots()
         {
             int cardsInBHand = CardToInt(root.state.b1) + CardToInt(root.state.b2) + CardToInt(root.state.b3) + CardToInt(root.state.b4) + CardToInt(root.state.b5);
-            int cardsInDeck = 20 - cardsInBHand - CardToInt(root.state.dbottom) - CardToInt(root.state.adown) - CardToInt(root.state.bdown) - GetSetBitCount((long)root.state.atook) - GetSetBitCount((long)root.state.btook) - CardToInt(root.state.a1) - CardToInt(root.state.a2) - CardToInt(root.state.a3) - CardToInt(root.state.a4) - CardToInt(root.state.a5);
+            int cardsInDeck = 20 - cardsInBHand - CardToInt(root.state.dbottom) - CardToInt(root.state.adown) - CardToInt(root.state.bdown) - root.state.atookCount - root.state.btookCount - CardToInt(root.state.a1) - CardToInt(root.state.a2) - CardToInt(root.state.a3) - CardToInt(root.state.a4) - CardToInt(root.state.a5);
 
             // count is sum unknown factorial per in hand factorial
             int count = 1;
@@ -277,9 +264,9 @@ namespace SnapFish66_Console
 
         private void AddEstimatedValue(Node child)
         {
-            for (int i = 0; i < actionList.Count; i++)
+            for (int i = 0; i < 5; i++)
             {
-                if(actionList[i]==child.actionBefore)
+                if(child.actionBefore == i)
                 {
                     estimatedLists[i].Add(child.value);
                     break;
@@ -303,7 +290,7 @@ namespace SnapFish66_Console
         private Node CreateNewSubroot()
         {
             bool found = false;
-            byte round = (byte)(CardToInt(root.state.adown) + CardToInt(root.state.bdown) + GetSetBitCount((long)root.state.atook) + GetSetBitCount((long)root.state.btook));
+            byte round = (byte)(CardToInt(root.state.adown) + CardToInt(root.state.bdown) + root.state.atookCount + root.state.btookCount);
             Node newNode = new Node(root.state.GenerateRandom(), 0, round);
 
             //DateTime begin = DateTime.Now;

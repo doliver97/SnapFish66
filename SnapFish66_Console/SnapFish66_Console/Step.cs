@@ -380,6 +380,7 @@ namespace SnapFish66_Console
 
                 state.atook += state.adown.index;
                 state.atook += state.bdown.index;
+                state.atookCount += 2;
                 Draw(state, "A");
                 state.isAnext = true;
             }
@@ -390,6 +391,7 @@ namespace SnapFish66_Console
 
                 state.btook += state.adown.index;
                 state.btook += state.bdown.index;
+                state.btookCount += 2;
                 Draw(state, "B");
                 state.isAnext = false;
             }
