@@ -245,10 +245,9 @@ namespace SnapFish66_Console
 
             if(firstToDraw=="A")
             {
-                if (state.deck.Count > 0)
+                if (state.deck > 0)
                 {
-                    SetStateCard(state, "A", place1, state.deck[0]);
-                    state.deck.RemoveAt(0);
+                    SetStateCard(state, "A", place1, Card.PopCardFromDeck(ref state.deck));
                 }
                 else if (state.dbottom != null)
                 {
@@ -256,10 +255,9 @@ namespace SnapFish66_Console
                     state.dbottom = null;
                 }
 
-                if (state.deck.Count > 0)
+                if (state.deck > 0)
                 {
-                    SetStateCard(state, "B", place2, state.deck[0]);
-                    state.deck.RemoveAt(0);
+                    SetStateCard(state, "B", place2, Card.PopCardFromDeck(ref state.deck));
                 }
                 else if (state.dbottom != null)
                 {
@@ -269,10 +267,9 @@ namespace SnapFish66_Console
             }
             else
             {
-                if (state.deck.Count > 0)
+                if (state.deck > 0)
                 {
-                    SetStateCard(state, "B", place1, state.deck[0]);
-                    state.deck.RemoveAt(0);
+                    SetStateCard(state, "B", place1, Card.PopCardFromDeck(ref state.deck));
                 }
                 else if (state.dbottom != null)
                 {
@@ -280,10 +277,9 @@ namespace SnapFish66_Console
                     state.dbottom = null;
                 }
 
-                if (state.deck.Count > 0)
+                if (state.deck > 0)
                 {
-                    SetStateCard(state, "A", place2, state.deck[0]);
-                    state.deck.RemoveAt(0);
+                    SetStateCard(state, "A", place2, Card.PopCardFromDeck(ref state.deck));
                 }
                 else if (state.dbottom != null)
                 {
@@ -378,8 +374,8 @@ namespace SnapFish66_Console
                 state.AscoreBasic += state.adown.value;
                 state.AscoreBasic += state.bdown.value;
 
-                state.atook += state.adown.index;
-                state.atook += state.bdown.index;
+                state.atook += state.adown.cardSetIndex;
+                state.atook += state.bdown.cardSetIndex;
                 state.atookCount += 2;
                 Draw(state, "A");
                 state.isAnext = true;
@@ -389,8 +385,8 @@ namespace SnapFish66_Console
                 state.BscoreBasic += state.adown.value;
                 state.BscoreBasic += state.bdown.value;
 
-                state.btook += state.adown.index;
-                state.btook += state.bdown.index;
+                state.btook += state.adown.cardSetIndex;
+                state.btook += state.bdown.cardSetIndex;
                 state.btookCount += 2;
                 Draw(state, "B");
                 state.isAnext = false;
@@ -447,7 +443,8 @@ namespace SnapFish66_Console
         //Tries to switch the dbottom with card in hand
         private void TrySwitchDBottom(State state)
         {
-            if(state.dbottom != null && state.deck.Count>=3)
+            int deck3 = 22 * 22 * 22;
+            if(state.dbottom != null && state.deck / deck3 > 0) //Deck has more than 3 cards
             {
                 //Cannot switch if not coming first
                 if(state.isAnext && state.bdown != null)
@@ -537,12 +534,6 @@ namespace SnapFish66_Console
         //Endgame (same color and hitting is obligatory)
         private bool EndgameOK(State state, byte action)
         {
-            //If there are cards in the deck, it is not endgame
-            if (state.deck.Count > 0)
-            {
-                return true;
-            }
-
             //If coming first, we can put anything
             Card opponentCard = state.isAnext ? state.bdown : state.adown;
             if (opponentCard == null)
@@ -621,7 +612,7 @@ namespace SnapFish66_Console
         {
             TrySwitchDBottom(state);
 
-            if(!EndgameOK(state, action))
+            if(state.deck == 0 && !EndgameOK(state, action))
             {
                 return false;
             }

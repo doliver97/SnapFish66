@@ -57,10 +57,21 @@ namespace SnapFish66_Console
             {"unknown", unknown}
         };
 
+        private static Card[] cardsForDeck = new Card[]
+        {
+            null,
+            M2, M3, M4, M10, M11,
+            P2, P3, P4, P10, P11,
+            T2, T3, T4, T10, T11,
+            Z2, Z3, Z4, Z10, Z11,
+            unknown
+        };
+
         public string ID;
         public char color;
         public byte value;
-        public int index;
+        public int cardSetIndex;
+        public int deckIndex;
 
         //Private!!!
         private Card(string id)
@@ -70,34 +81,50 @@ namespace SnapFish66_Console
             if (ID != "unknown")
             {
                 value = byte.Parse(id.Substring(1));
+                deckIndex = 21;
             }
 
             //It runs only 21 times at the beginning
-            if (id == "M2") index = 1;
-            if (id == "M3") index = 1 << 1;
-            if (id == "M4") index = 1 << 2;
-            if (id == "M10") index = 1 << 3;
-            if (id == "M11") index = 1 << 4;
-            if (id == "P2") index = 1 << 5;
-            if (id == "P3") index = 1 << 6;
-            if (id == "P4") index = 1 << 7;
-            if (id == "P10") index = 1 << 8;
-            if (id == "P11") index = 1 << 9;
-            if (id == "T2") index = 1 << 10;
-            if (id == "T3") index = 1 << 11;
-            if (id == "T4") index = 1 << 12;
-            if (id == "T10") index = 1 << 13;
-            if (id == "T11") index = 1 << 14;
-            if (id == "Z2") index = 1 << 15;
-            if (id == "Z3") index = 1 << 16;
-            if (id == "Z4") index = 1 << 17;
-            if (id == "Z10") index = 1 << 18;
-            if (id == "Z11") index = 1 << 19;
+            if (id == "M2") deckIndex = 1;
+            if (id == "M3") deckIndex = 2;
+            if (id == "M4") deckIndex = 3;
+            if (id == "M10") deckIndex = 4;
+            if (id == "M11") deckIndex = 5;
+            if (id == "P2") deckIndex = 6;
+            if (id == "P3") deckIndex = 7;
+            if (id == "P4") deckIndex = 8;
+            if (id == "P10") deckIndex = 9;
+            if (id == "P11") deckIndex = 10;
+            if (id == "T2") deckIndex = 11;
+            if (id == "T3") deckIndex = 12;
+            if (id == "T4") deckIndex = 13;
+            if (id == "T10") deckIndex = 14;
+            if (id == "T11") deckIndex = 15;
+            if (id == "Z2") deckIndex = 16;
+            if (id == "Z3") deckIndex = 17;
+            if (id == "Z4") deckIndex = 18;
+            if (id == "Z10") deckIndex = 19;
+            if (id == "Z11") deckIndex = 20;
+
+            cardSetIndex = 1 << (deckIndex - 1);
         }
 
         public static Card GetCard(string id)
         {
             return dictionary[id];
+        }
+
+        public static void PushCardToDeck(ref long deck, Card card)
+        {
+            deck *= 22;
+            deck += card.deckIndex;
+        }
+
+        public static Card PopCardFromDeck(ref long deck)
+        {
+            long i = deck % 22;
+            deck /= 22;
+            return cardsForDeck[i];
         }
     }
 }

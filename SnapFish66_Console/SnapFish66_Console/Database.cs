@@ -107,12 +107,16 @@ namespace SnapFish66_Console
             for (int i = 0; i < IDs.Count; i++)
             {
                 //deck
-                for (int j = 0; j < s.deck.Count; j++)
+                long deck = s.deck;
+                int j = 0;
+                while (deck>0)
                 {
-                    if(s.deck[j].ID == IDs[i])
+                    if(Card.PopCardFromDeck(ref deck).ID == IDs[i])
                     {
                         key[i + 2] = Convert.ToChar(j+'0');
                     }
+
+                    j++;
                 }
 
                 //dbottom

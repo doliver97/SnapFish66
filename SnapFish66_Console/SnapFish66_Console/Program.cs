@@ -141,12 +141,12 @@ namespace SnapFish66_Console
                 }
                 else if (s[i+2] == 'G')
                 {
-                    state.atook += Card.GetCard(cards[i].ID).index;
+                    state.atook += Card.GetCard(cards[i].ID).cardSetIndex;
                     state.atookCount++;
                 }
                 else if (s[i + 2] == 'H')
                 {
-                    state.btook += Card.GetCard(cards[i].ID).index;
+                    state.btook += Card.GetCard(cards[i].ID).cardSetIndex;
                     state.btookCount++;
                 }
                 else if(s[i+2] == 'U')
@@ -186,7 +186,7 @@ namespace SnapFish66_Console
 
             for(int i =0; i< unknown-bHandUnknown;i++)
             {
-                state.deck.Add(Card.GetCard("unknown"));
+                Card.PushCardToDeck(ref state.deck,Card.GetCard("unknown"));
             }
 
             if(s[22]=='A')
@@ -272,8 +272,8 @@ namespace SnapFish66_Console
         {
             //State s = SetStateFromString("APDUAGUUAGGAUHHAHUGHAUXXXX");
             //State s = SetStateFromString("APUUUUADAAAAUUUUUUUUUUXXXX"); //Best starting hand
-            State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
-            //State s = SetStateFromString("APAUAUUDUUHGHGUUAAAUUUXXXX");  // A 5 deck state
+            //State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
+            State s = SetStateFromString("APAUAUUDUUHGHGUUAAAUUUXXXX");  // A 5 deck state
             //State s = SetStateFromString("APAUAUUDUUUGUGUUAAAUUUXXXX");  // A 7 deck state
             //State s = SetStateFromString("APAUAUUDUUUUUUUUAAAUUUXXXX");  // A 9 deck state
             //State s = SetStateFromString("APHHHUADAAAAHHUUUUHHUHXXXX"); // Test 8 , result must be +2 for all

@@ -35,7 +35,7 @@ namespace SnapFish66_Console
         };
 
         //This could be a CardSet
-        public List<Card> deck = new List<Card>();
+        public long deck;
         public Card dbottom;
         public Card a1;
         public Card a2;
@@ -96,7 +96,7 @@ namespace SnapFish66_Console
 
                 for (int i = 0; i < MultiCardPlaces.Length; i++)
                 {
-                    if(MultiCardPlaces[i].HasFlag((CardSet)c.index))
+                    if(MultiCardPlaces[i].HasFlag((CardSet)c.cardSetIndex))
                     {
                         cards.RemoveAll(x => x.ID == c.ID);
                     }
@@ -151,11 +151,11 @@ namespace SnapFish66_Console
             newstate.b4 = newSinglePlaces[11];
             newstate.b5 = newSinglePlaces[12];
 
-            newstate.deck.Clear();
+            newstate.deck = 0;
             while(remaining.Count>0)
             {
                 int r = rand.Next(remaining.Count);
-                newstate.deck.Add(remaining[r]);
+                Card.PushCardToDeck(ref newstate.deck, remaining[r]);
                 remaining.RemoveAt(r);
             }
 
@@ -188,11 +188,11 @@ namespace SnapFish66_Console
 
             foreach (Card c in Card.dictionary.Values)
             {
-                if (atook.HasFlag((CardSet)c.index))
+                if (atook.HasFlag((CardSet)c.cardSetIndex))
                 {
                     atook2.Add(c);
                 }
-                if (btook.HasFlag((CardSet)c.index))
+                if (btook.HasFlag((CardSet)c.cardSetIndex))
                 {
                     btook2.Add(c);
                 }
@@ -360,7 +360,7 @@ namespace SnapFish66_Console
         {
             State copy = new State();
 
-            copy.deck = new List<Card>(deck);
+            copy.deck = deck;
 
             copy.dbottom = dbottom;
             copy.a1 = a1;
@@ -404,20 +404,6 @@ namespace SnapFish66_Console
             copy.CalculateFullScore();
 
             return copy;
-        }
-
-        //Order does matter
-        private bool IsSameDeck(List<Card> one, List<Card> other)
-        {
-            for (int i = 0; i < one.Count; i++)
-            {
-                if(one[i].ID != other[i].ID)
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         //Order does not matter
@@ -495,7 +481,7 @@ namespace SnapFish66_Console
                 }
             }
 
-            if(!IsSameDeck(deck,other.deck))
+            if(deck != other.deck)
             {
                 return false;
             }
