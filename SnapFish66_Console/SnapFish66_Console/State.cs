@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SnapFish66_Console
 {
-    public class State
+    public class State : IEquatable<State>
     {
         //This enum represents the card list
         public enum CardSet : long
@@ -351,7 +351,6 @@ namespace SnapFish66_Console
 
         public bool Step(State st, byte action)
         {
-
             Step step = new Step();
             return step.Do(st, action);
         }
@@ -439,8 +438,44 @@ namespace SnapFish66_Console
             return true;
         }
 
-        public bool IsSame(State other)
+        public bool Equals(State other)
         {
+            if(other==null)
+            {
+                return false;
+            }
+
+            if (atook != other.atook || btook != other.btook)
+            {
+                return false;
+            }
+
+            if (deck != other.deck)
+            {
+                return false;
+            }
+
+            if (isAnext != other.isAnext)
+            {
+                return false;
+            }
+
+            if (trump != other.trump)
+            {
+                return false;
+            }
+
+            if (AM20 != other.AM20 || AP20 != other.AP20 || AT20 != other.AT20 || AZ20 != other.AZ20 || BM20 != other.BM20 || BP20 != other.BP20 || BT20 != other.BT20 || BZ20 != other.BZ20)
+            {
+                return false;
+            }
+
+            if (covered != other.covered)
+            {
+                return false;
+            }
+
+            //TODO replace lists
             List<Card> aHand = new List<Card>{a1,a2,a3,a4,a5};
             List<Card> bHand = new List<Card>{b1,b2,b3,b4,b5};
             List<Card> oaHand = new List<Card>{other.a1,other.a2,other.a3,other.a4,other.a5};
@@ -448,11 +483,6 @@ namespace SnapFish66_Console
 
             List<List<Card>> MultiPlaces = new List<List<Card>> { aHand, bHand};
             List<List<Card>> OtherMultiPlaces = new List<List<Card>> { oaHand, obHand };
-
-            if(atook!=other.atook || btook!=other.btook)
-            {
-                return false;
-            }
 
             for (int i = 0; i < MultiPlaces.Count; i++)
             {
@@ -471,7 +501,7 @@ namespace SnapFish66_Console
                 {
                     continue;
                 }
-                else if((SinglePlaces[i]==null && OtherSinglePlaces[i]!= null) || (SinglePlaces[i]!=null && OtherSinglePlaces==null))
+                else if((SinglePlaces[i]==null && OtherSinglePlaces[i]!= null) || (SinglePlaces[i]!=null && OtherSinglePlaces[i]==null))
                 {
                     return false;
                 }
@@ -481,33 +511,19 @@ namespace SnapFish66_Console
                 }
             }
 
-            if(deck != other.deck)
-            {
-                return false;
-            }
-
-            if(isAnext!=other.isAnext)
-            {
-                return false;
-            }
-
-            if(trump!=other.trump)
-            {
-                return false;
-            }
-
-            if(AM20!=other.AM20 || AP20!=other.AP20 || AT20!=other.AT20 || AZ20!=other.AZ20 || BM20!=other.BM20 || BP20!=other.BP20 || BT20!=other.BT20 || BZ20!=other.BZ20)
-            {
-                return false;
-            }
-
-            if(covered!=other.covered)
-            {
-                return false;
-            }
-
             return true;
         }
 
+        public override int GetHashCode()
+        {
+            unchecked //Let it overflow
+            {
+                int hash = 17;
+                hash = hash * 23 + deck.GetHashCode();
+                hash = hash * 23 + atook.GetHashCode();
+                hash = hash * 23 + btook.GetHashCode();
+                return hash;
+            }
+        }
     }
 }

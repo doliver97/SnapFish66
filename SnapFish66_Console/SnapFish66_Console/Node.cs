@@ -133,6 +133,8 @@ namespace SnapFish66_Console
 
             GenerateChildren();
 
+            int maxDepth = 12;
+
             //Trivial end case
             if(IsEnd())
             {
@@ -153,14 +155,15 @@ namespace SnapFish66_Console
                 value = -3; //Minimum value possible is -3
                 foreach (Node child in children)
                 {
-                    if(Program.AllowWriteDatabase && depth<=10 && depth%2==0)
+                    if (depth < maxDepth && GameTree.TranspositionTable.ContainsKey(state))
                     {
-                        value = Max(value,child.AlphaBeta(-3,3));
+                        value = GameTree.TranspositionTable[state];
                     }
                     else
                     {
                         value = Max(value, child.AlphaBeta(alpha, beta));
                     }
+
                     alpha = Max(alpha, value);
                     if (alpha >= beta)
                     {
@@ -179,7 +182,6 @@ namespace SnapFish66_Console
                         GameTree.SavedNodes[depth]++;
                     }
                 }
-                return value;
             }
             //This node is a minimizer
             else
@@ -187,14 +189,15 @@ namespace SnapFish66_Console
                 value = 3; //Maximum value possible is +3
                 foreach (Node child in children)
                 {
-                    if(Program.AllowWriteDatabase && depth<=10 && depth%2==0)
+                    if (depth < maxDepth && GameTree.TranspositionTable.ContainsKey(state))
                     {
-                        value = Min(value, child.AlphaBeta(-3, 3));
+                        value = GameTree.TranspositionTable[state];
                     }
                     else
                     {
                         value = Min(value, child.AlphaBeta(alpha, beta));
                     }
+
                     beta = Min(beta, value);
                     if (alpha >= beta)
                     {
@@ -213,8 +216,14 @@ namespace SnapFish66_Console
                         GameTree.SavedNodes[depth]++;
                     }
                 }
-                return value;
             }
+            
+            if(depth < maxDepth)
+            {
+                GameTree.TranspositionTable[state] = value;
+            }
+            
+            return value;
         }
     }
 }

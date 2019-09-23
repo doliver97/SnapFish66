@@ -14,6 +14,8 @@ namespace SnapFish66_Console
     {
         //public static int GenerateTimeSum;
 
+        public static ConcurrentDictionary<State, float> TranspositionTable = new ConcurrentDictionary<State, float>();
+
         [Flags]
         public enum PossibleSteps
         {
@@ -152,7 +154,7 @@ namespace SnapFish66_Console
         private void WriteDataToConsole(int calculatedSubroots)
         {
             Console.Clear();
-            Console.Write("Unknown card permutations: ");
+            Console.Write("Card permutations: ");
             Console.WriteLine(calculatedSubroots + "/" + possibleSubroots);
 
             double estimatedSpeed = calculatedSubroots / (DateTime.Now - started).TotalSeconds; //permutations per second
@@ -236,11 +238,13 @@ namespace SnapFish66_Console
 
                     for (int i = 0; i < children[subroot].Count; i++)
                     {
-                        children[subroot][i].AlphaBeta(-3, 3);
+                        Node child = children[subroot][i];
+                        
+                        float value = child.AlphaBeta(-3, 3);
 
                         lock (lockobject)
                         {
-                            AddEstimatedValue(children[subroot][i]);
+                            estimatedLists[child.actionBefore].Add(value);
                             CalcAverages(); 
                         }
 
@@ -260,19 +264,6 @@ namespace SnapFish66_Console
             }
 
             database.CloseDB();
-        }
-
-        private void AddEstimatedValue(Node child)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                if(child.actionBefore == i)
-                {
-                    estimatedLists[i].Add(child.value);
-                    break;
-                }
-            }
-            
         }
 
         private void CalcAverages()
@@ -301,7 +292,7 @@ namespace SnapFish66_Console
                 found = true;
                 foreach (Node n in subroots)
                 {
-                    if(newNode.state.IsSame(n.state))
+                    if(newNode.state.Equals(n.state))
                     {
                         found = false;
                         break;
