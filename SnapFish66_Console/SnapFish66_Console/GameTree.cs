@@ -211,14 +211,14 @@ namespace SnapFish66_Console
                 started = DateTime.Now;
 
                 Dictionary<Node, List<Node>> children = new Dictionary<Node, List<Node>>();
-
+                
                 Parallel.ForEach(subroots, (subroot) =>
                 {
                     calculatedSubroots++;
 
-                //Add children of different actions (will be root of alphabeta)
-                for (byte i = 0; i < 5; i++) //without cover
-                {
+                    //Add children of different actions (will be root of alphabeta)
+                    for (byte i = 0; i < 5; i++) //without cover
+                    {
                         Node child = new Node(subroot.state.Copy(), i, (byte)(subroot.depth + 1));
                         bool success = child.state.Step(child.state, i);
                         child.SetMaximizer();
@@ -239,21 +239,22 @@ namespace SnapFish66_Console
                     for (int i = 0; i < children[subroot].Count; i++)
                     {
                         Node child = children[subroot][i];
-                        
+
                         float value = child.AlphaBeta(-3, 3);
 
                         lock (lockobject)
                         {
                             estimatedLists[child.actionBefore].Add(value);
-                            CalcAverages(); 
+                            CalcAverages();
                         }
 
-                    //We wont need the children of the subroot
-                    children[subroot].RemoveAt(i);
+                        //We wont need the children of the subroot
+                        children[subroot].RemoveAt(i);
                         i--;
                     }
 
                     //Writing data to console
+                    //TODO itt miert ver sokat?
                     lock (lockobject2)
                     {
                         WriteDataToConsole(calculatedSubroots);

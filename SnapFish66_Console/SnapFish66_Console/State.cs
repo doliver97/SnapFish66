@@ -52,6 +52,9 @@ namespace SnapFish66_Console
         public Card adown;
         public Card bdown;
 
+        public CardSet aHand;
+        public CardSet bHand;
+
         public int atookCount = 0;
         public int btookCount = 0;
 
@@ -162,6 +165,23 @@ namespace SnapFish66_Console
             newstate.CalculatePoints();
 
             return newstate;
+        }
+
+        private void SetHands()
+        {
+            aHand = CardSet.NONE;
+            if (a1 != null) aHand += a1.cardSetIndex;
+            if (a2 != null) aHand += a2.cardSetIndex;
+            if (a3 != null) aHand += a3.cardSetIndex;
+            if (a4 != null) aHand += a4.cardSetIndex;
+            if (a5 != null) aHand += a5.cardSetIndex;
+
+            bHand = CardSet.NONE;
+            if (b1 != null) bHand += b1.cardSetIndex;
+            if (b2 != null) bHand += b2.cardSetIndex;
+            if (b3 != null) bHand += b3.cardSetIndex;
+            if (b4 != null) bHand += b4.cardSetIndex;
+            if (b5 != null) bHand += b5.cardSetIndex;
         }
 
         public void CalculateFullScore()
@@ -352,7 +372,8 @@ namespace SnapFish66_Console
         public bool Step(State st, byte action)
         {
             Step step = new Step();
-            return step.Do(st, action);
+            bool success = step.Do(st, action);
+            return success;
         }
         
         public State Copy()
@@ -405,39 +426,6 @@ namespace SnapFish66_Console
             return copy;
         }
 
-        //Order does not matter
-        private bool IsSameCardSet(List<Card> one, List<Card> other)
-        {
-            if(one.Count!=other.Count)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < one.Count; i++)
-            {
-                bool found = false;
-
-                for (int j = 0; j < other.Count; j++)
-                {
-                    if(one[i]==null && other[j]==null)
-                    {
-                        found = true;
-                    }
-                    else if(one[i]!=null && other[j] != null && one[i].ID == other[j].ID)
-                    {
-                        found = true;
-                    }
-                }
-
-                if(!found)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         public bool Equals(State other)
         {
             if(other==null)
@@ -475,21 +463,13 @@ namespace SnapFish66_Console
                 return false;
             }
 
-            //TODO replace lists
-            List<Card> aHand = new List<Card>{a1,a2,a3,a4,a5};
-            List<Card> bHand = new List<Card>{b1,b2,b3,b4,b5};
-            List<Card> oaHand = new List<Card>{other.a1,other.a2,other.a3,other.a4,other.a5};
-            List<Card> obHand = new List<Card>{other.b1,other.b2,other.b3, other.b4,other.b5};
+            //TODO check
+            SetHands();
+            other.SetHands();
 
-            List<List<Card>> MultiPlaces = new List<List<Card>> { aHand, bHand};
-            List<List<Card>> OtherMultiPlaces = new List<List<Card>> { oaHand, obHand };
-
-            for (int i = 0; i < MultiPlaces.Count; i++)
+            if (aHand != other.aHand || bHand != other.bHand)
             {
-                if(!IsSameCardSet(MultiPlaces[i],OtherMultiPlaces[i]))
-                {
-                    return false;
-                }
+                return false;
             }
 
             Card[] SinglePlaces = new Card[] { dbottom, adown, bdown};
