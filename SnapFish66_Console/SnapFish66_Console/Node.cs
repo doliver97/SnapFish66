@@ -21,8 +21,6 @@ namespace SnapFish66_Console
 
         public byte actionBefore;
 
-        public List<Node> children;
-
         public byte depth;
 
     public Node(State nstate, byte nactionBefore, byte ndepth)
@@ -41,27 +39,24 @@ namespace SnapFish66_Console
         }
         
         //Generate all possible children from this node, store in "children" variable
-        public void GenerateChildren()
+        public Node GenerateChild(byte action)
         {
-            children = new List<Node>();
-
-            for(byte i = 0; i < 5; i++)
-            {
                 //If game ended, do not go further
                 if(IsEnd())
                 {
-                    return;
+                    return null;
                 }
 
-                Node child = new Node(state.Copy(), i, (byte)(depth+1));
-                bool success = child.state.Step(child.state, i);
+                Node child = new Node(state.Copy(), action, (byte)(depth+1));
+                bool success = child.state.Step(child.state, action);
                 child.SetMaximizer();
 
                 if(success)
                 {
-                    children.Add(child);
+                    return child;
                 }
-            }
+
+                return null;
         }
 
         public void SetMaximizer()
@@ -161,38 +156,28 @@ namespace SnapFish66_Console
                 }
                 return value;
             }
-
-            GenerateChildren();
-
-            //This node is a maximizer
-            if(maximizer)
+            
+            for(byte i = 0; i < 5; i++)
             {
-                //If not in table
-                foreach (Node child in children)
+                Node child = GenerateChild(i);
+
+                if (child != null)
                 {
-                    alpha = Max(alpha, child.AlphaBeta(alpha, beta));
+                    if (maximizer)
+                    {
+                        alpha = Max(alpha, child.AlphaBeta(alpha, beta));
+                    }
+                    else
+                    {
+                        beta = Min(beta, child.AlphaBeta(alpha, beta));
+                    }
+
                     if (alpha >= beta)
                     {
                         break;
-                    }
+                    } 
                 }
             }
-            //This node is a minimizer
-            else
-            {
-                //If not in table
-                foreach (Node child in children)
-                {
-                    beta = Min(beta, child.AlphaBeta(alpha, beta));
-                    if (alpha >= beta)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            //Wont need anymore
-            children = null;
 
             //Write to database
             if (Program.AllowWriteDatabase)
