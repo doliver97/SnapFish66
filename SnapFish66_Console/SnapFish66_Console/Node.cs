@@ -10,7 +10,9 @@ namespace SnapFish66_Console
 {
     public class Node
     {
-        private static object lockObject = new object();
+        private static readonly int maxDepth = 12;
+
+        private static readonly object lockObject = new object();
 
         public State state;
 
@@ -19,7 +21,7 @@ namespace SnapFish66_Console
 
         public byte actionBefore;
 
-        public List<Node> children = new List<Node>();
+        public List<Node> children;
 
         public byte depth;
 
@@ -41,7 +43,7 @@ namespace SnapFish66_Console
         //Generate all possible children from this node, store in "children" variable
         public void GenerateChildren()
         {
-            children.Clear();
+            children = new List<Node>();
 
             for(byte i = 0; i < 5; i++)
             {
@@ -102,8 +104,6 @@ namespace SnapFish66_Console
 
         public sbyte AlphaBeta(sbyte alpha, sbyte beta)
         {
-            Transposition transposition = new Transposition(state, alpha, beta);
-
             sbyte oAlpha = alpha;
             sbyte oBeta = beta;
 
@@ -138,12 +138,10 @@ namespace SnapFish66_Console
                 }
             }
 
-            int maxDepth = 10;
-
             sbyte retVal = 0;
             if(depth < maxDepth)
             {
-                GameTree.TranspositionTable.TryGetValue(transposition, out retVal);
+                GameTree.TranspositionTable.TryGetValue(new Transposition(state, oAlpha, oBeta), out retVal);
             }
             if(retVal != 0)
             {
@@ -192,6 +190,9 @@ namespace SnapFish66_Console
                     }
                 }
             }
+
+            //Wont need anymore
+            children = null;
 
             //Write to database
             if (Program.AllowWriteDatabase)
