@@ -10,6 +10,8 @@ namespace SnapFish66_Console
 {
     public class Node
     {
+        private static object lockObject = new object();
+
         public State state;
 
         public float value;
@@ -100,6 +102,11 @@ namespace SnapFish66_Console
 
         public float AlphaBeta(float alpha, float beta)
         {
+            Transposition transposition = new Transposition(state, alpha, beta);
+
+            float oAlpha = alpha;
+            float oBeta = beta;
+
             //Increasing alpha and decreasing beta if we can
             if (state.AscoreFull >= 33 && alpha < -1)
             {
@@ -131,12 +138,20 @@ namespace SnapFish66_Console
                 }
             }
 
-            GenerateChildren();
+            int maxDepth = 10;
 
-            int maxDepth = 12;
+            float retVal = 0;
+            if(depth < maxDepth)
+            {
+                GameTree.TranspositionTable.TryGetValue(transposition, out retVal);
+            }
+            if(retVal != 0)
+            {
+                return retVal;
+            }
 
             //Trivial end case
-            if(IsEnd())
+            if (IsEnd())
             {
                 if (state.Apoints > 0)
                 {
@@ -147,83 +162,67 @@ namespace SnapFish66_Console
                     value = state.Bpoints * (-1);
                 }
                 return value;
-
             }
+
+            GenerateChildren();
+
             //This node is a maximizer
-            else if(maximizer)
+            if(maximizer)
             {
-                value = -3; //Minimum value possible is -3
+                //If not in table
                 foreach (Node child in children)
                 {
-                    if (depth < maxDepth && GameTree.TranspositionTable.ContainsKey(state))
-                    {
-                        value = GameTree.TranspositionTable[state];
-                    }
-                    else
-                    {
-                        value = Max(value, child.AlphaBeta(alpha, beta));
-                    }
-
-                    alpha = Max(alpha, value);
+                    alpha = Max(alpha, child.AlphaBeta(alpha, beta));
                     if (alpha >= beta)
                     {
                         break;
-                    }
-                }
-
-                children = new List<Node>(); //Faster than clear
-
-                //Write to database
-                if(Program.AllowWriteDatabase)
-                {
-                    if(depth<=10 && depth%2==0)
-                    {
-                        GameTree.database.AddToDB(this);
-                        GameTree.SavedNodes[depth]++;
                     }
                 }
             }
             //This node is a minimizer
             else
             {
-                value = 3; //Maximum value possible is +3
+                //If not in table
                 foreach (Node child in children)
                 {
-                    if (depth < maxDepth && GameTree.TranspositionTable.ContainsKey(state))
-                    {
-                        value = GameTree.TranspositionTable[state];
-                    }
-                    else
-                    {
-                        value = Min(value, child.AlphaBeta(alpha, beta));
-                    }
-
-                    beta = Min(beta, value);
+                    beta = Min(beta, child.AlphaBeta(alpha, beta));
                     if (alpha >= beta)
                     {
                         break;
                     }
                 }
+            }
 
-                children = new List<Node>(); //Faster than clear
-
-                //Write to database
-                if (Program.AllowWriteDatabase)
+            //Write to database
+            if (Program.AllowWriteDatabase)
+            {
+                if (depth <= 10 && depth % 2 == 0)
                 {
-                    if (depth <= 10 && depth % 2 == 0)
-                    {
-                        GameTree.database.AddToDB(this);
-                        GameTree.SavedNodes[depth]++;
-                    }
+                    GameTree.database.AddToDB(this);
+                    GameTree.SavedNodes[depth]++;
                 }
             }
-            
-            if(depth < maxDepth)
+
+            if (depth < maxDepth)
             {
-                GameTree.TranspositionTable[state] = value;
+                if(maximizer)
+                {
+                    GameTree.TranspositionTable[new Transposition(state, oAlpha, oBeta)] = alpha;
+                }
+                else
+                {
+                    GameTree.TranspositionTable[new Transposition(state, oAlpha, oBeta)] = beta;
+                }
             }
-            
-            return value;
+
+            if (maximizer)
+            {
+                return alpha;
+            }
+            else
+            {
+                return beta;
+            }
         }
     }
 }

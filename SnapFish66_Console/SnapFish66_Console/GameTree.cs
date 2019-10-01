@@ -14,7 +14,7 @@ namespace SnapFish66_Console
     {
         //public static int GenerateTimeSum;
 
-        public static ConcurrentDictionary<State, float> TranspositionTable = new ConcurrentDictionary<State, float>();
+        public static ConcurrentDictionary<Transposition, float> TranspositionTable = new ConcurrentDictionary<Transposition, float>();
 
         [Flags]
         public enum PossibleSteps
@@ -150,7 +150,7 @@ namespace SnapFish66_Console
             ReadNodes = new int[21];
             SavedNodes = new int[21];
         }
-
+        
         private void WriteDataToConsole(int calculatedSubroots)
         {
             Console.Clear();
@@ -211,6 +211,8 @@ namespace SnapFish66_Console
                 started = DateTime.Now;
 
                 Dictionary<Node, List<Node>> children = new Dictionary<Node, List<Node>>();
+
+                DateTime last = DateTime.Now;
                 
                 Parallel.ForEach(subroots, (subroot) =>
                 {
@@ -254,12 +256,17 @@ namespace SnapFish66_Console
                     }
 
                     //Writing data to console
-                    //TODO itt miert ver sokat?
                     lock (lockobject2)
                     {
-                        WriteDataToConsole(calculatedSubroots);
+                        if ((DateTime.Now - last).TotalMilliseconds > 1000)
+                        {
+                            WriteDataToConsole(calculatedSubroots);
+                            last = DateTime.Now;
+                        }
                     }
                 });
+
+                WriteDataToConsole(calculatedSubroots);
 
                 subroots.Clear();
             }

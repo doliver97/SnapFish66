@@ -273,7 +273,8 @@ namespace SnapFish66_Console
             //State s = SetStateFromString("APDUAGUUAGGAUHHAHUGHAUXXXX");
             //State s = SetStateFromString("APUUUUADAAAAUUUUUUUUUUXXXX"); //Best starting hand
             State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
-            //State s = SetStateFromString("APAUAUUDUUHGHGUUAAAUUUXXXX");  // A 5 deck state
+            //State s = SetStateFromString("AMAAAUADUUHGHUUGAUUHUHXXXX"); //other 3deck
+            //State s = SetStateFromString("APAUAUGDUUHGUUUUAAAUUHAXAB");  // A 5 deck state
             //State s = SetStateFromString("APAUAUUDUUUGUGUUAAAUUUXXXX");  // A 7 deck state
             //State s = SetStateFromString("APAUAUUDUUUUUUUUAAAUUUXXXX");  // A 9 deck state
             //State s = SetStateFromString("APHHHUADAAAAHHUUUUHHUHXXXX"); // Test 8 , result must be +2 for all

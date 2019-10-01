@@ -462,8 +462,7 @@ namespace SnapFish66_Console
             {
                 return false;
             }
-
-            //TODO check
+            
             SetHands();
             other.SetHands();
 
