@@ -82,8 +82,8 @@ namespace SnapFish66_Console
         public byte BscoreFull = 0;
 
         //Points: {0-3}
-        public byte Apoints = 0;
-        public byte Bpoints = 0;
+        public sbyte Apoints = 0;
+        public sbyte Bpoints = 0;
         
         private List<Card> GetUnknownCards()
         {

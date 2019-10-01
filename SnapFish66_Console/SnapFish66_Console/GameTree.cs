@@ -14,7 +14,7 @@ namespace SnapFish66_Console
     {
         //public static int GenerateTimeSum;
 
-        public static ConcurrentDictionary<Transposition, float> TranspositionTable = new ConcurrentDictionary<Transposition, float>();
+        public static ConcurrentDictionary<Transposition, sbyte> TranspositionTable = new ConcurrentDictionary<Transposition, sbyte>();
 
         [Flags]
         public enum PossibleSteps

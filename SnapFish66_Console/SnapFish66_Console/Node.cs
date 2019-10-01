@@ -14,7 +14,7 @@ namespace SnapFish66_Console
 
         public State state;
 
-        public float value;
+        public sbyte value;
         bool maximizer;
 
         public byte actionBefore;
@@ -76,7 +76,7 @@ namespace SnapFish66_Console
             }
         }
 
-        private float Max(float a, float b)
+        private sbyte Max(sbyte a, sbyte b)
         {
             if(a>b)
             {
@@ -88,7 +88,7 @@ namespace SnapFish66_Console
             }
         }
 
-        private float Min(float a, float b)
+        private sbyte Min(sbyte a, sbyte b)
         {
             if(a>b)
             {
@@ -100,12 +100,12 @@ namespace SnapFish66_Console
             }
         }
 
-        public float AlphaBeta(float alpha, float beta)
+        public sbyte AlphaBeta(sbyte alpha, sbyte beta)
         {
             Transposition transposition = new Transposition(state, alpha, beta);
 
-            float oAlpha = alpha;
-            float oBeta = beta;
+            sbyte oAlpha = alpha;
+            sbyte oBeta = beta;
 
             //Increasing alpha and decreasing beta if we can
             if (state.AscoreFull >= 33 && alpha < -1)
@@ -130,7 +130,7 @@ namespace SnapFish66_Console
             //If found in database, we can cut it here
             if (Program.AllowReadDatabase && depth%2==0 && depth<=10)
             {
-                int val = GameTree.database.ReadFromDB(this);
+                sbyte val = (sbyte)GameTree.database.ReadFromDB(this);
                 if (val != -100) // -100 means not found
                 {
                     GameTree.ReadNodes[depth]++;
@@ -140,7 +140,7 @@ namespace SnapFish66_Console
 
             int maxDepth = 10;
 
-            float retVal = 0;
+            sbyte retVal = 0;
             if(depth < maxDepth)
             {
                 GameTree.TranspositionTable.TryGetValue(transposition, out retVal);
@@ -159,7 +159,7 @@ namespace SnapFish66_Console
                 }
                 else
                 {
-                    value = state.Bpoints * (-1);
+                    value = (sbyte)(-state.Bpoints);
                 }
                 return value;
             }
