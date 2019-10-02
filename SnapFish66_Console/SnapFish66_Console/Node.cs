@@ -31,18 +31,12 @@ namespace SnapFish66_Console
 
             SetMaximizer();
         }
-
-        public bool IsEnd()
-        {
-            state.CalculatePoints();
-            return (state.Apoints!=0 || state.Bpoints!=0);
-        }
         
         //Generate all possible children from this node, store in "children" variable
         public Node GenerateChild(byte action)
         {
                 //If game ended, do not go further
-                if(IsEnd())
+                if(state.isEnd)
                 {
                     return null;
                 }
@@ -144,7 +138,7 @@ namespace SnapFish66_Console
             }
 
             //Trivial end case
-            if (IsEnd())
+            if (state.isEnd)
             {
                 if (state.Apoints > 0)
                 {

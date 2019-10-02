@@ -64,10 +64,10 @@ namespace SnapFish66_Console
         //The averages of the lists above repectively, CalcAverages() sets it
         public List<float> averages;
 
-        public static List<Node> allNodes;
+        //public static List<Node> allNodes;
 
         public int possibleSubroots;
-        public List<Node> subroots;
+        public ConcurrentStack<Node> subroots;
 
         public GameTree(State s)
         {
@@ -91,7 +91,7 @@ namespace SnapFish66_Console
             {
                 averages.Add(float.NaN);
             }
-            subroots = new List<Node>();
+            subroots = new ConcurrentStack<Node>();
 
             byte round = (byte)(CardToInt(s.adown) + CardToInt(s.bdown) + s.atookCount + s.btookCount);
 
@@ -99,7 +99,7 @@ namespace SnapFish66_Console
             root.SetMaximizer();
             root.state.InitPoints();
 
-            allNodes = new List<Node> { root };
+            //allNodes = new List<Node> { root };
         }
 
         private int CardToInt(Card c)
@@ -136,7 +136,7 @@ namespace SnapFish66_Console
             {
                 item.Clear();
             }
-            allNodes.Clear();
+            //allNodes.Clear();
             subroots.Clear();
             averages.Clear();
             for (int i = 0; i < estimatedLists.Count; i++)
@@ -145,7 +145,7 @@ namespace SnapFish66_Console
             }
             root = new Node(state, 0, 0);
             root.SetMaximizer();
-            allNodes.Add(root);
+            //allNodes.Add(root);
             VisitedNodes = new int[21];
             ReadNodes = new int[21];
             SavedNodes = new int[21];
@@ -166,7 +166,7 @@ namespace SnapFish66_Console
 
             Console.WriteLine();
             Console.WriteLine("Estimated values for cards:");
-            State s = subroots[0].state; //Can be any subroot
+            State s = subroots.Last().state; //Can be any subroot
 
             if (s.a1 != null)
             {
@@ -316,7 +316,7 @@ namespace SnapFish66_Console
 
             //Console.WriteLine(GenerateTimeSum);
 
-            subroots.Add(newNode);
+            subroots.Push(newNode);
             return newNode;
         }
     }

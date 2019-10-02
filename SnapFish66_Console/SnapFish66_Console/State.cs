@@ -84,6 +84,8 @@ namespace SnapFish66_Console
         //Points: {0-3}
         public sbyte Apoints = 0;
         public sbyte Bpoints = 0;
+
+        public bool isEnd;
         
         private List<Card> GetUnknownCards()
         {
@@ -323,10 +325,12 @@ namespace SnapFish66_Console
             CalculateFullScore();
         }
 
+        //Also sets isEnd flag
         public void CalculatePoints()
         {
             if(AscoreFull>=66)
             {
+                isEnd = true;
                 if(BscoreFull==0)
                 {
                     Apoints = 3;
@@ -342,6 +346,7 @@ namespace SnapFish66_Console
             }
             else if (BscoreFull >= 66)
             {
+                isEnd = true;
                 if (AscoreFull == 0)
                 {
                     Bpoints = 3;
@@ -358,6 +363,7 @@ namespace SnapFish66_Console
             //No more cards in play, the player who won the last cards (and would come next) won
             else if(atookCount + btookCount==20)
             {
+                isEnd = true;
                 if(isAnext)
                 {
                     Apoints = 1;
@@ -373,6 +379,10 @@ namespace SnapFish66_Console
         {
             Step step = new Step();
             bool success = step.Do(st, action);
+            if(success)
+            {
+                CalculatePoints();
+            }
             return success;
         }
         
