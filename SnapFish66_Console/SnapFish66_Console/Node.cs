@@ -12,8 +12,6 @@ namespace SnapFish66_Console
     {
         private static readonly int maxDepth = 12;
 
-        private static readonly object lockObject = new object();
-
         public State state;
 
         public sbyte value;
@@ -42,7 +40,7 @@ namespace SnapFish66_Console
                 }
 
                 Node child = new Node(state.Copy(), action, (byte)(depth+1));
-                bool success = child.state.Step(child.state, action);
+                bool success = child.state.StepOne(child.state, action);
                 child.SetMaximizer();
 
                 if(success)

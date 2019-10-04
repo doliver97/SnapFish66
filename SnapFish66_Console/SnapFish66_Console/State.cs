@@ -375,10 +375,9 @@ namespace SnapFish66_Console
             }
         }
 
-        public bool Step(State st, byte action)
+        public bool StepOne(State s, byte action)
         {
-            Step step = new Step();
-            bool success = step.Do(st, action);
+            bool success = Step.Do(s, action);
             if(success)
             {
                 CalculatePoints();
@@ -388,48 +387,49 @@ namespace SnapFish66_Console
         
         public State Copy()
         {
-            State copy = new State();
+            State copy = new State
+            {
+                deck = deck,
 
-            copy.deck = deck;
+                dbottom = dbottom,
+                a1 = a1,
+                a2 = a2,
+                a3 = a3,
+                a4 = a4,
+                a5 = a5,
+                b1 = b1,
+                b2 = b2,
+                b3 = b3,
+                b4 = b4,
+                b5 = b5,
 
-            copy.dbottom = dbottom;
-            copy.a1 = a1;
-            copy.a2 = a2;
-            copy.a3 = a3;
-            copy.a4 = a4;
-            copy.a5 = a5;
-            copy.b1 = b1;
-            copy.b2 = b2;
-            copy.b3 = b3;
-            copy.b4 = b4;
-            copy.b5 = b5;
+                atook = atook,
+                btook = btook,
 
-            copy.atook = atook;
-            copy.btook = btook;
+                atookCount = atookCount,
+                btookCount = btookCount,
 
-            copy.atookCount = atookCount;
-            copy.btookCount = btookCount;
-            
-            copy.adown = adown;
-            copy.bdown = bdown;
+                adown = adown,
+                bdown = bdown,
 
-            copy.AM20 = AM20;
-            copy.AP20 = AP20;
-            copy.AT20 = AT20;
-            copy.AZ20 = AZ20;
-            copy.BM20 = BM20;
-            copy.BP20 = BP20;
-            copy.BT20 = BT20;
-            copy.BZ20 = BZ20;
+                AM20 = AM20,
+                AP20 = AP20,
+                AT20 = AT20,
+                AZ20 = AZ20,
+                BM20 = BM20,
+                BP20 = BP20,
+                BT20 = BT20,
+                BZ20 = BZ20,
 
-            copy.covered = covered;
-            copy.isAnext = isAnext;
-            copy.trump = trump;
+                covered = covered,
+                isAnext = isAnext,
+                trump = trump,
 
-            copy.AscoreBasic = AscoreBasic;
-            copy.BscoreBasic = BscoreBasic;
-            copy.AscoreMarriages = AscoreMarriages;
-            copy.BscoreMarriages = BscoreMarriages;
+                AscoreBasic = AscoreBasic,
+                BscoreBasic = BscoreBasic,
+                AscoreMarriages = AscoreMarriages,
+                BscoreMarriages = BscoreMarriages
+            };
 
             copy.CalculateFullScore();
 

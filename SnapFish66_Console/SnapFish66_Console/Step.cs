@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace SnapFish66_Console
 {
-    class Step
+    static class Step
     {
         //Whether the player has the card in hand
-        private bool CardInHand(State state, string who, string cardID)
+        private static bool CardInHand(State state, string who, string cardID)
         {
             if(who == "A")
             {
@@ -42,7 +42,7 @@ namespace SnapFish66_Console
         }
 
         //Count 20 or 40 automatically
-        private void Saying20(State state, string who)
+        private static void Saying20(State state, string who)
         {
 
             if (state.adown != null && who=="A")
@@ -151,7 +151,7 @@ namespace SnapFish66_Console
         }
 
         //Helper for Draw() and TrySwitchBottom(), sets the i-th card of hand
-        private void SetStateCard(State state, string who, int i, Card card)
+        private static void SetStateCard(State state, string who, int i, Card card)
         {
             if(who == "A")
             {
@@ -202,7 +202,7 @@ namespace SnapFish66_Console
         }
 
         //Drawing a card
-        private void Draw(State state, string firstToDraw)
+        private static void Draw(State state, string firstToDraw)
         {
             int place1 = -1; //Index of first drawn card
             int place2 = -1; //Index of second drawn card
@@ -290,7 +290,7 @@ namespace SnapFish66_Console
         }
 
         //Puts down a card
-        private void PutDownCard(State state, ref Card from, ref Card to, string who, bool first)
+        private static void PutDownCard(State state, ref Card from, ref Card to, string who, bool first)
         {
             //Put down
             to = Card.GetCard(from.ID);
@@ -304,7 +304,7 @@ namespace SnapFish66_Console
         }
 
         //Calculates who takes the 2 cards
-        private string Winner(State state, string first)
+        private static string Winner(State state, string first)
         {
             if(first == "A")
             {
@@ -360,7 +360,7 @@ namespace SnapFish66_Console
         }
 
         //Compares the two cards down, moves them to Atook or Btook, draws cards, and sets next
-        private void HitAndTake(State state, string first)
+        private static void HitAndTake(State state, string first)
         {
             bool awon = false;
 
@@ -397,7 +397,7 @@ namespace SnapFish66_Console
         }
 
         //Perform a step (excluding covering)
-        private bool PerformStep(State state, ref Card from)
+        private static bool PerformStep(State state, ref Card from)
         {
             if(from == null)
             {
@@ -441,7 +441,7 @@ namespace SnapFish66_Console
         }
 
         //Tries to switch the dbottom with card in hand
-        private void TrySwitchDBottom(State state)
+        private static void TrySwitchDBottom(State state)
         {
             int deck3 = 22 * 22 * 22;
             if(state.dbottom != null && state.deck / deck3 > 0) //Deck has more than 3 cards
@@ -490,7 +490,7 @@ namespace SnapFish66_Console
         }
 
         //We have a trump
-        private bool HasTrump(State state, Card[] hand)
+        private static bool HasTrump(State state, Card[] hand)
         {
             foreach (Card card in hand)
             {
@@ -504,7 +504,7 @@ namespace SnapFish66_Console
         }
 
         //We have card with the same color
-        private bool HasSameColor(Card opcard, Card[] hand)
+        private static bool HasSameColor(Card opcard, Card[] hand)
         {
             foreach (Card card in hand)
             {
@@ -518,7 +518,7 @@ namespace SnapFish66_Console
         }
 
         //We have bigger card in the same color
-        private bool HasBiggerSame(Card opcard, Card[] hand)
+        private static bool HasBiggerSame(Card opcard, Card[] hand)
         {
             foreach (Card card in hand)
             {
@@ -532,7 +532,7 @@ namespace SnapFish66_Console
         }
 
         //Endgame (same color and hitting is obligatory)
-        private bool EndgameOK(State state, byte action)
+        private static bool EndgameOK(State state, byte action)
         {
             //If coming first, we can put anything
             Card opponentCard = state.isAnext ? state.bdown : state.adown;
@@ -608,7 +608,7 @@ namespace SnapFish66_Console
         }
 
         //Modifies the given state by the given action, returns whether the step is valid
-        public bool Do(State state, byte action)
+        public static bool Do(State state, byte action)
         {
             TrySwitchDBottom(state);
 

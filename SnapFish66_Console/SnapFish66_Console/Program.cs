@@ -279,6 +279,7 @@ namespace SnapFish66_Console
             //State s = SetStateFromString("APAUAUUDUUUUUUUUAAAUUUXXXX");  // A 9 deck state
             //State s = SetStateFromString("APHHHUADAAAAHHUUUUHHUHXXXX"); // Test 8 , result must be +2 for all
             //State s = SetStateFromString("AMHGGUHAHHGGGHGAUUHGGAXXXX"); //Test 5, result must be -1 for all
+            //State s = SetStateFromString("APUAGHUDHAUAFUUUGUAUAUXXXX"); //A has 20 -> CONFIRMED: bigger card of 20 is always best option!
 
             GameTree tree = new GameTree(s);
             tree.Calculate();

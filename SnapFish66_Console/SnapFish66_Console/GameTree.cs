@@ -222,7 +222,7 @@ namespace SnapFish66_Console
                     for (byte i = 0; i < 5; i++) //without cover
                     {
                         Node child = new Node(subroot.state.Copy(), i, (byte)(subroot.depth + 1));
-                        bool success = child.state.Step(child.state, i);
+                        bool success = child.state.StepOne(child.state, i);
                         child.SetMaximizer();
 
                         if (success)
