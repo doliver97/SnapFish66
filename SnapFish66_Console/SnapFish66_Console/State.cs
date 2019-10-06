@@ -186,6 +186,61 @@ namespace SnapFish66_Console
             if (b5 != null) bHand += b5.cardSetIndex;
         }
 
+        internal byte HigherSamePosition()
+        {
+            return 255;
+        }
+
+        internal byte Smallest()
+        {
+            return 0;
+        }
+
+        internal byte TrumpPosition()
+        {
+            return 255;
+        }
+
+        internal byte NonTrump11Position()
+        {
+            return 255;
+        }
+
+        internal byte MarriagePosition()
+        {
+            Card[] hand;
+            if (isAnext)
+            {
+                hand = new Card[] { a1, a2, a3, a4, a5 };
+            }
+            else
+            {
+                hand = new Card[] { b1, b2, b3, b4, b5 };
+            }
+
+            Card[] kings = new Card[] { Card.M4, Card.P4, Card.T4, Card.Z4 };
+            Card[] queens = new Card[] { Card.M3, Card.P3, Card.T3, Card.Z3 };
+
+            for (byte handCard = 0; handCard < hand.Length; handCard++)
+            {
+                for (byte king = 0; king < kings.Length; king++)
+                {
+                    if (hand[handCard] == kings[king])
+                    {
+                        for (byte handCard2 = 0; handCard2 < hand.Length; handCard2++)
+                        {
+                            if (hand[handCard2] == queens[king])
+                            {
+                                return handCard;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return 0;
+        }
+
         public void CalculateFullScore()
         {
             AscoreFull = AscoreBasic;
@@ -384,7 +439,7 @@ namespace SnapFish66_Console
             }
             return success;
         }
-        
+
         public State Copy()
         {
             State copy = new State

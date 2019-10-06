@@ -199,11 +199,15 @@ namespace SnapFish66_Console
             //Does not create new database, only opens it
             database = new Database();
 
-            while (calculatedSubroots < possibleSubroots)
+            ConcurrentStack<Node> partialSubroots = new ConcurrentStack<Node>();
+
+            while (subroots.Count < possibleSubroots)
             {
-                for (int i = 0; i < 1000 && subroots.Count<possibleSubroots; i++)
+                for (int i = 0; i < 1000 && subroots.Count < possibleSubroots; i++)
                 {
-                    Node subroot = CreateNewSubroot(); //Adds it automatically to subroots
+                    Node n = CreateNewSubroot();
+                    subroots.Push(n);
+                    partialSubroots.Push(n);
                     //Console.Clear();
                     //Console.WriteLine("Created subroots: " + subroots.Count + "/" + possibleSubroots);
                 }
@@ -213,62 +217,62 @@ namespace SnapFish66_Console
                 Dictionary<Node, List<Node>> children = new Dictionary<Node, List<Node>>();
 
                 DateTime last = DateTime.Now;
-                
-                Parallel.ForEach(subroots, (subroot) =>
-                {
-                    calculatedSubroots++;
 
-                    //Add children of different actions (will be root of alphabeta)
-                    for (byte i = 0; i < 5; i++) //without cover
-                    {
-                        Node child = new Node(subroot.state.Copy(), i, (byte)(subroot.depth + 1));
-                        bool success = child.state.StepOne(child.state, i);
-                        child.SetMaximizer();
+                Parallel.ForEach(partialSubroots, (subroot) =>
+                 {
+                     calculatedSubroots++;
 
-                        if (success)
-                        {
-                            lock (lockobject)
-                            {
-                                if (!children.ContainsKey(subroot))
-                                {
-                                    children[subroot] = new List<Node>();
-                                }
-                            }
-                            children[subroot].Add(child);
-                        }
-                    }
+                     //Add children of different actions (will be root of alphabeta)
+                     for (byte i = 0; i < 5; i++) //without cover
+                     {
+                         Node child = new Node(subroot.state.Copy(), i, (byte)(subroot.depth + 1));
+                         bool success = child.state.StepOne(child.state, i);
+                         child.SetMaximizer();
 
-                    for (int i = 0; i < children[subroot].Count; i++)
-                    {
-                        Node child = children[subroot][i];
+                         if (success)
+                         {
+                             lock (lockobject)
+                             {
+                                 if (!children.ContainsKey(subroot))
+                                 {
+                                     children[subroot] = new List<Node>();
+                                 }
+                             }
+                             children[subroot].Add(child);
+                         }
+                     }
 
-                        float value = child.AlphaBeta(-3, 3);
+                     for (int i = 0; i < children[subroot].Count; i++)
+                     {
+                         Node child = children[subroot][i];
 
-                        lock (lockobject)
-                        {
-                            estimatedLists[child.actionBefore].Add(value);
-                            CalcAverages();
-                        }
+                         float value = child.AlphaBeta(-3, 3);
 
-                        //We wont need the children of the subroot
-                        children[subroot].RemoveAt(i);
-                        i--;
-                    }
+                         lock (lockobject)
+                         {
+                             estimatedLists[child.actionBefore].Add(value);
+                             CalcAverages();
+                         }
 
-                    //Writing data to console
-                    lock (lockobject2)
-                    {
-                        if ((DateTime.Now - last).TotalMilliseconds > 1000)
-                        {
-                            WriteDataToConsole(calculatedSubroots);
-                            last = DateTime.Now;
-                        }
-                    }
-                });
+                         //We wont need the children of the subroot
+                         children[subroot].RemoveAt(i);
+                         i--;
+                     }
 
-                WriteDataToConsole(calculatedSubroots);
+                     //Writing data to console
+                     lock (lockobject2)
+                     {
+                         if ((DateTime.Now - last).TotalMilliseconds > 1000)
+                         {
+                             WriteDataToConsole(calculatedSubroots);
+                             last = DateTime.Now;
+                         }
+                     }
+                 }) ;
 
-                subroots.Clear();
+                WriteDataToConsole(subroots.Count);
+
+                partialSubroots.Clear();
             }
 
             database.CloseDB();
@@ -290,7 +294,7 @@ namespace SnapFish66_Console
         {
             bool found = false;
             byte round = (byte)(CardToInt(root.state.adown) + CardToInt(root.state.bdown) + root.state.atookCount + root.state.btookCount);
-            Node newNode = new Node(root.state.GenerateRandom(), 0, round);
+            Node newNode = null;
 
             //DateTime begin = DateTime.Now;
 
@@ -315,8 +319,6 @@ namespace SnapFish66_Console
             //GenerateTimeSum += span.Milliseconds;
 
             //Console.WriteLine(GenerateTimeSum);
-
-            subroots.Push(newNode);
             return newNode;
         }
     }

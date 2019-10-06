@@ -10,7 +10,8 @@ namespace SnapFish66_Console
 {
     public class Node
     {
-        private static readonly int maxDepth = 12;
+        private static readonly int maxDepth = -1;
+        private static readonly int mostLikelyTreshold = 10;
 
         public State state;
 
@@ -148,8 +149,17 @@ namespace SnapFish66_Console
                 }
                 return value;
             }
-            
-            for(byte i = 0; i < 5; i++)
+
+            byte[] childIndices = { 0,1,2,3,4};
+
+            //if (depth <= mostLikelyTreshold)
+            //{
+            //    byte mostLikely = CalculateMostLikely();
+            //    childIndices[mostLikely] = 0;
+            //    childIndices[0] = mostLikely;
+            //}
+
+            for (byte i = 0; i < childIndices.Length; i++)
             {
                 Node child = GenerateChild(i);
 
@@ -202,5 +212,51 @@ namespace SnapFish66_Console
                 return beta;
             }
         }
+
+        private byte CalculateMostLikely()
+        {
+            //coming first
+            if(state.adown == null && state.bdown == null)
+            {
+                //Put down king of 20/40
+                byte marriagePos = state.MarriagePosition();
+                if(marriagePos!=255)
+                {
+                    return marriagePos;
+                }
+
+                //Put nontrump 11
+                byte nonTrump11 = state.NonTrump11Position();
+                if (nonTrump11 != 255)
+                {
+                    return nonTrump11;
+                }
+
+                //Put smallest
+                return state.Smallest();
+            }
+            //coming second
+            else
+            {
+                //Hit with same color
+                byte higherSamePos = state.HigherSamePosition();
+                if(higherSamePos != 255)
+                {
+                    return higherSamePos;
+                }
+
+                //Hit any 10 or 11 with trump
+                byte trumpBig = state.TrumpPosition();
+                if(trumpBig != 255)
+                {
+                    return trumpBig;
+                }
+
+                //Put smallest
+                return state.Smallest();
+            }
+        }
+
+
     }
 }

@@ -57,7 +57,7 @@ namespace SnapFish66_Console
             {"unknown", unknown}
         };
 
-        private static Card[] cardsForDeck = new Card[]
+        private static readonly Card[] cardsForDeck = new Card[]
         {
             null,
             M2, M3, M4, M10, M11,
