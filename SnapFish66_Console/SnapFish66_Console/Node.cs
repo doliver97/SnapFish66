@@ -150,18 +150,21 @@ namespace SnapFish66_Console
                 return value;
             }
 
-            byte[] childIndices = { 0,1,2,3,4};
+            byte mostLikely = CalculateMostLikely();
 
-            //if (depth <= mostLikelyTreshold)
-            //{
-            //    byte mostLikely = CalculateMostLikely();
-            //    childIndices[mostLikely] = 0;
-            //    childIndices[0] = mostLikely;
-            //}
-
-            for (byte i = 0; i < childIndices.Length; i++)
+            for (byte i = 0; i < 5; i++)
             {
-                Node child = GenerateChild(i);
+                byte childIdx = i;
+                if(i==0)
+                {
+                    childIdx = mostLikely;
+                }
+                else if(i == mostLikely)
+                {
+                    childIdx = 0;
+                }
+
+                Node child = GenerateChild(childIdx);
 
                 if (child != null)
                 {
@@ -215,45 +218,60 @@ namespace SnapFish66_Console
 
         private byte CalculateMostLikely()
         {
+            if(depth > mostLikelyTreshold)
+            {
+                return 0;
+            }
+
+            Card[] hand;
+            if(state.isAnext)
+            {
+                hand = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5};
+            }
+            else
+            {
+                hand = new Card[] { state.a1, state.a2, state.a3, state.a4, state.a5 };
+            }
+
             //coming first
             if(state.adown == null && state.bdown == null)
             {
                 //Put down king of 20/40
-                byte marriagePos = state.MarriagePosition();
+                byte marriagePos = state.MarriagePosition(hand);
                 if(marriagePos!=255)
                 {
                     return marriagePos;
                 }
 
                 //Put nontrump 11
-                byte nonTrump11 = state.NonTrump11Position();
+                byte nonTrump11 = state.NonTrump11Position(hand);
                 if (nonTrump11 != 255)
                 {
                     return nonTrump11;
                 }
 
                 //Put smallest
-                return state.Smallest();
+                return state.SmallestPosition(hand);
             }
             //coming second
             else
             {
                 //Hit with same color
-                byte higherSamePos = state.HigherSamePosition();
+                byte higherSamePos = state.HigherSamePosition(hand);
                 if(higherSamePos != 255)
                 {
                     return higherSamePos;
                 }
 
                 //Hit any 10 or 11 with trump
-                byte trumpBig = state.TrumpPosition();
+                byte trumpBig = state.TrumpPosition(hand);
                 if(trumpBig != 255)
                 {
                     return trumpBig;
                 }
 
                 //Put smallest
-                return state.Smallest();
+                return state.SmallestPosition(hand);
             }
         }
 

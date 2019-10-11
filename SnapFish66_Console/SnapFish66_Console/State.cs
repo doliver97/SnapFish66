@@ -186,38 +186,71 @@ namespace SnapFish66_Console
             if (b5 != null) bHand += b5.cardSetIndex;
         }
 
-        internal byte HigherSamePosition()
+        internal byte HigherSamePosition(Card[] hand)
         {
-            return 255;
-        }
-
-        internal byte Smallest()
-        {
-            return 0;
-        }
-
-        internal byte TrumpPosition()
-        {
-            return 255;
-        }
-
-        internal byte NonTrump11Position()
-        {
-            return 255;
-        }
-
-        internal byte MarriagePosition()
-        {
-            Card[] hand;
-            if (isAnext)
+            Card down;
+            if(isAnext)
             {
-                hand = new Card[] { a1, a2, a3, a4, a5 };
+                down = bdown;
             }
             else
             {
-                hand = new Card[] { b1, b2, b3, b4, b5 };
+                down = adown;
             }
 
+            for (byte i = 0; i < hand.Length; i++)
+            {
+                if (hand[i] != null && hand[i].color == down.color && hand[i].value > down.value)
+                {
+                    return i;
+                }
+            }
+            return 255;
+        }
+
+        internal byte SmallestPosition(Card[] hand)
+        {
+            byte position = 0;
+            byte value = 255;
+
+            for (byte i = 0; i < hand.Length; i++)
+            {
+                if (hand[i] != null && hand[i].value < value)
+                {
+                    position = i;
+                    value = hand[i].value;
+                }
+            }
+
+            return position;
+        }
+
+        internal byte TrumpPosition(Card[] hand)
+        {
+            for (byte i = 0; i < hand.Length; i++)
+            {
+                if(hand[i]!= null && hand[i].color == trump)
+                {
+                    return i;
+                }
+            }
+            return 255;
+        }
+
+        internal byte NonTrump11Position(Card[] hand)
+        {
+            for (byte i = 0; i < hand.Length; i++)
+            {
+                if (hand[i] != null && hand[i].value == 11 && hand[i].color != trump)
+                {
+                    return i;
+                }
+            }
+            return 255;
+        }
+
+        internal byte MarriagePosition(Card[] hand)
+        {
             Card[] kings = new Card[] { Card.M4, Card.P4, Card.T4, Card.Z4 };
             Card[] queens = new Card[] { Card.M3, Card.P3, Card.T3, Card.Z3 };
 
@@ -225,11 +258,11 @@ namespace SnapFish66_Console
             {
                 for (byte king = 0; king < kings.Length; king++)
                 {
-                    if (hand[handCard] == kings[king])
+                    if (hand[handCard]!= null && hand[handCard] == kings[king])
                     {
                         for (byte handCard2 = 0; handCard2 < hand.Length; handCard2++)
                         {
-                            if (hand[handCard2] == queens[king])
+                            if (hand[handCard2] != null && hand[handCard2] == queens[king])
                             {
                                 return handCard;
                             }
