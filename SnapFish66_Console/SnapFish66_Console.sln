@@ -4,8 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnapFish66_Console", "SnapFish66_Console\SnapFish66_Console.csproj", "{C759350D-EC2D-48E0-B1C4-6AD4172AA48D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9F66ACA1-FE41-4FB3-8E27-01F71E96E743} = {9F66ACA1-FE41-4FB3-8E27-01F71E96E743}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculate", "Calculate\Calculate.csproj", "{9F66ACA1-FE41-4FB3-8E27-01F71E96E743}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calculate", "Calculate\Calculate.csproj", "{9F66ACA1-FE41-4FB3-8E27-01F71E96E743}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{7C10E169-BBAA-4360-8438-6E575888626A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,10 @@ Global
 		{9F66ACA1-FE41-4FB3-8E27-01F71E96E743}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F66ACA1-FE41-4FB3-8E27-01F71E96E743}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F66ACA1-FE41-4FB3-8E27-01F71E96E743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C10E169-BBAA-4360-8438-6E575888626A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C10E169-BBAA-4360-8438-6E575888626A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C10E169-BBAA-4360-8438-6E575888626A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C10E169-BBAA-4360-8438-6E575888626A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

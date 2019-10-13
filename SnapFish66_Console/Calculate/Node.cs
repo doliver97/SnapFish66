@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnapFish66_Console
+namespace Calculate
 {
     public class Node
     {
-        private static readonly int maxDepth = -1;
+        private static readonly int maxDepth = 12;
         private static readonly int mostLikelyTreshold = 10;
 
         public State state;
@@ -116,15 +116,15 @@ namespace SnapFish66_Console
             GameTree.VisitedNodes[depth]++;
             
             //If found in database, we can cut it here
-            if (Program.AllowReadDatabase && depth%2==0 && depth<=10)
-            {
-                sbyte val = (sbyte)GameTree.database.ReadFromDB(this);
-                if (val != -100) // -100 means not found
-                {
-                    GameTree.ReadNodes[depth]++;
-                    return val;
-                }
-            }
+            //if (Calculator.AllowReadDatabase && depth%2==0 && depth<=10)
+            //{
+            //    sbyte val = (sbyte)GameTree.database.ReadFromDB(this);
+            //    if (val != -100) // -100 means not found
+            //    {
+            //        GameTree.ReadNodes[depth]++;
+            //        return val;
+            //    }
+            //}
 
             sbyte retVal = 0;
             if(depth < maxDepth)
@@ -185,14 +185,14 @@ namespace SnapFish66_Console
             }
 
             //Write to database
-            if (Program.AllowWriteDatabase)
-            {
-                if (depth <= 10 && depth % 2 == 0)
-                {
-                    GameTree.database.AddToDB(this);
-                    GameTree.SavedNodes[depth]++;
-                }
-            }
+            //if (Calculator.AllowWriteDatabase)
+            //{
+            //    if (depth <= 10 && depth % 2 == 0)
+            //    {
+            //        GameTree.database.AddToDB(this);
+            //        GameTree.SavedNodes[depth]++;
+            //    }
+            //}
 
             if (depth < maxDepth)
             {

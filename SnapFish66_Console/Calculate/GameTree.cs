@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SnapFish66_Console
+namespace Calculate
 {
     public class GameTree
     {
@@ -36,7 +36,7 @@ namespace SnapFish66_Console
 
         public Node root;
 
-        public static Database database;
+        //public static Database database;
 
         public static DateTime started;
 
@@ -197,7 +197,7 @@ namespace SnapFish66_Console
             int calculatedSubroots = 0;
 
             //Does not create new database, only opens it
-            database = new Database();
+            //database = new Database();
 
             ConcurrentStack<Node> partialSubroots = new ConcurrentStack<Node>();
 
@@ -275,7 +275,7 @@ namespace SnapFish66_Console
                 partialSubroots.Clear();
             }
 
-            database.CloseDB();
+            //database.CloseDB();
         }
 
         private void CalcAverages()

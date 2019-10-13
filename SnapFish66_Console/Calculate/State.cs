@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SnapFish66_Console
+namespace Calculate
 {
     public class State : IEquatable<State>
     {
@@ -90,12 +90,12 @@ namespace SnapFish66_Console
         private List<Card> GetUnknownCards()
         {
             List<Card> cards = new List<Card>();
-            foreach (var c in Program.cards)
+            foreach (var c in Calculator.cards)
             {
                 cards.Add(c);
             }
 
-            foreach(Card c in Program.cards)
+            foreach(Card c in Calculator.cards)
             {
                 CardSet[] MultiCardPlaces = new CardSet[] {atook, btook};
 

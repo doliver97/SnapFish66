@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace SnapFish66_Console
+namespace Calculate
 {
     class TrainingDataHandler
     {
