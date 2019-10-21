@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Calculate
@@ -11,10 +12,11 @@ namespace Calculate
         public static bool AllowReadDatabase { get; internal set; }
         public static bool AllowWriteDatabase { get; internal set; }
 
-        public static List<Card> cards = new List<Card>();
+        public static List<Card> cards;
 
         public static void SetStaticCards()
         {
+            cards = new List<Card>();
             cards.Add(Card.M2);
             cards.Add(Card.M3);
             cards.Add(Card.M4);
@@ -227,64 +229,62 @@ namespace Calculate
         }
 
         // Generating training data
-        public static void Training()
-        {
-            TrainingDataHandler.Init();
+        //public static void Training()
+        //{
+        //    TrainingDataHandler.Init();
 
-            int dataCount = 100000;
-            for (int i = 0; i < dataCount; i++)
-            {
-                Console.Clear();
-                Console.WriteLine((i + 1) + "/" + dataCount);
+        //    int dataCount = 100000;
+        //    for (int i = 0; i < dataCount; i++)
+        //    {
+        //        Console.Clear();
+        //        Console.WriteLine((i + 1) + "/" + dataCount);
 
-                string stateString = RandomStateGenerator.Generate(r.Next(8, 16)); // between 8 and (exclusive)16 is ideal
-                State s = SetStateFromString(stateString);
+        //        string stateString = RandomStateGenerator.Generate(r.Next(8, 16)); // between 8 and (exclusive)16 is ideal
+        //        State s = SetStateFromString(stateString);
 
-                //If game has ended, do not calculate, find new instead
-                s.CalculatePoints();
-                if (s.Apoints != 0 || s.Bpoints != 0)
-                {
-                    i--;
-                    continue;
-                }
+        //        //If game has ended, do not calculate, find new instead
+        //        s.CalculatePoints();
+        //        if (s.Apoints != 0 || s.Bpoints != 0)
+        //        {
+        //            i--;
+        //            continue;
+        //        }
 
-                GameTree tree = new GameTree(s);
-                tree.Calculate();
+        //        GameTree tree = new GameTree(s);
+        //        tree.Calculate();
 
-                List<float> values = tree.averages.GetRange(0, 5);
-                //Do some formatting
-                for (int j = 0; j < values.Count; j++)
-                {
-                    if (float.IsNaN(values[j]))
-                    {
-                        values[j] = 0;
-                    }
-                    values[j] = (float)Math.Round(values[j], 2);
-                }
+        //        List<float> values = tree.averages.GetRange(0, 5);
+        //        //Do some formatting
+        //        for (int j = 0; j < values.Count; j++)
+        //        {
+        //            if (float.IsNaN(values[j]))
+        //            {
+        //                values[j] = 0;
+        //            }
+        //            values[j] = (float)Math.Round(values[j], 2);
+        //        }
 
-                TrainingDataHandler.Write(stateString, values);
-            }
+        //        TrainingDataHandler.Write(stateString, values);
+        //    }
 
-            TrainingDataHandler.Close();
-        }
+        //    TrainingDataHandler.Close();
+        //}
 
         // Calculating a single problem
-        public static void Single()
+        public static void Single(string s, BackgroundWorker worker)
         {
-            //State s = SetStateFromString("APDUAGUUAGGAUHHAHUGHAUXXXX");
-            //State s = SetStateFromString("APUUUUADAAAAUUUUUUUUUUXXXX"); //Best starting hand
-            //State s = SetStateFromString("APAUAUUDUUHGHGUUAAAGUGXXXX"); //test 3deck
-            //State s = SetStateFromString("AMAAAUADUUHGHUUGAUUHUHXXXX"); //other 3deck
-            //State s = SetStateFromString("APAUAUGDUUHGUUUUAAAUUHAXAB");  // A 5 deck state
-            State s = SetStateFromString("APAUAUUDUUUGUGUUAAAUUUXXXX");  // A 7 deck state
-            //State s = SetStateFromString("APAUAUUDUUUUUUUUAAAUUUXXXX");  // A 9 deck state
-            //State s = SetStateFromString("APHHHUADAAAAHHUUUUHHUHXXXX"); // Test 8 , result must be +2 for all
-            //State s = SetStateFromString("AMHGGUHAHHGGGHGAUUHGGAXXXX"); //Test 5, result must be -1 for all
-            //State s = SetStateFromString("APHGHGADAUUUUUAUUFUAUAXXXX"); //A has 20 -> CONFIRMED: bigger card of 20 is always best option!
-            //State s = SetStateFromString("APHHHUADAAAAHHUUFUHHUHXXXX");
+            SetStaticCards();
 
-            GameTree tree = new GameTree(s);
-            tree.Calculate();
+            State state = SetStateFromString(s);
+
+            GameTree tree = new GameTree(state);
+
+            worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
+            worker.DoWork += new DoWorkEventHandler(tree.Calculate);
+
+
+            //tree.Calculate(worker, e);
         }
     }
 }

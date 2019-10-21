@@ -55,7 +55,7 @@ namespace Calculate
             }
         }
 
-        public static State CreateState(List<Card> cards, string trimmedFileName)
+        public static State CreateState(string trimmedFileName)
         {
             string fullName = testsDirectory + "\\" + trimmedFileName;
 

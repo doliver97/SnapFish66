@@ -8,6 +8,8 @@ namespace Calculate
 {
     public class State : IEquatable<State>
     {
+        Random rand = new Random();
+
         //This enum represents the card list
         public enum CardSet : long
         {
@@ -131,7 +133,6 @@ namespace Calculate
             Card[] singlePlaces = new Card[] { dbottom, adown, bdown, a1, a2, a3, a4, a5, b1, b2, b3, b4, b5 };
             Card[] newSinglePlaces = new Card[] { newstate.dbottom, newstate.adown, newstate.bdown, newstate.a1, newstate.a2, newstate.a3, newstate.a4, newstate.a5, newstate.b1, newstate.b2, newstate.b3, newstate.b4, newstate.b5 };
 
-            Random rand = new Random();
             for (int i = 0; i < singlePlaces.Length; i++)
             {
                 if(singlePlaces[i]!=null && singlePlaces[i].ID=="unknown")

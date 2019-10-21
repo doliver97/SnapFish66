@@ -11,14 +11,13 @@ namespace Calculate
         private static int RandomEmptyPlace(char[] charray)
         {
             bool found = false;
-            int rand = 0;
+            int rand;
 
             while(!found)
             {
                 rand = r.Next(charray.Length);
                 if(charray[rand]==0)
                 {
-                    found = true;
                     return rand;
                 }
             }

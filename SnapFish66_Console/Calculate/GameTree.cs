@@ -150,6 +150,64 @@ namespace Calculate
             ReadNodes = new int[21];
             SavedNodes = new int[21];
         }
+
+        private ReturnObject GenerateReturnObject(int calculatedSubroots)
+        {
+            State s = subroots.Last().state; //Can be any subroot
+
+            ReturnObject returnObject = new ReturnObject();
+
+            if(s.a1!= null)
+            {
+                returnObject.a1Name = s.a1.ID;
+                returnObject.a1Value = (float)Math.Round(averages[0], 2);
+            }
+            else
+            {
+                returnObject.a1Name = "";
+            }
+            if (s.a2 != null)
+            {
+                returnObject.a2Name = s.a2.ID;
+                returnObject.a2Value = (float)Math.Round(averages[1], 2);
+            }
+            else
+            {
+                returnObject.a2Name = "";
+            }
+            if (s.a3 != null)
+            {
+                returnObject.a3Name = s.a3.ID;
+                returnObject.a3Value = (float)Math.Round(averages[2], 2);
+            }
+            else
+            {
+                returnObject.a3Name = "";
+            }
+            if (s.a4 != null)
+            {
+                returnObject.a4Name = s.a4.ID;
+                returnObject.a4Value = (float)Math.Round(averages[3], 2);
+            }
+            else
+            {
+                returnObject.a4Name = "";
+            }
+            if (s.a5 != null)
+            {
+                returnObject.a5Name = s.a5.ID;
+                returnObject.a5Value = (float)Math.Round(averages[4], 2);
+            }
+            else
+            {
+                returnObject.a5Name = "";
+            }
+
+            returnObject.calculatedGames = calculatedSubroots;
+            returnObject.allGames = possibleSubroots;
+
+            return returnObject;
+        }
         
         private void WriteDataToConsole(int calculatedSubroots)
         {
@@ -190,8 +248,10 @@ namespace Calculate
             }
         }
 
-        public void Calculate()
+        public void Calculate(object sender, DoWorkEventArgs e)
         {
+            BackgroundWorker worker = (BackgroundWorker)sender;
+
             possibleSubroots = CalcPossibleSubroots();
 
             int calculatedSubroots = 0;
@@ -220,6 +280,12 @@ namespace Calculate
 
                 Parallel.ForEach(partialSubroots, (subroot) =>
                  {
+                     if(worker.CancellationPending)
+                     {
+                         e.Cancel = true;
+                         return;
+                     }
+
                      calculatedSubroots++;
 
                      //Add children of different actions (will be root of alphabeta)
@@ -264,13 +330,15 @@ namespace Calculate
                      {
                          if ((DateTime.Now - last).TotalMilliseconds > 1000)
                          {
-                             WriteDataToConsole(calculatedSubroots);
+                             //WriteDataToConsole(calculatedSubroots);
+                             worker.ReportProgress(0, GenerateReturnObject(calculatedSubroots));
                              last = DateTime.Now;
                          }
                      }
                  }) ;
 
-                WriteDataToConsole(subroots.Count);
+                //WriteDataToConsole(subroots.Count);
+                worker.ReportProgress(100, GenerateReturnObject(calculatedSubroots));
 
                 partialSubroots.Clear();
             }
