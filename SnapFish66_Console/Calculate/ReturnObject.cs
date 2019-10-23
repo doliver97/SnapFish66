@@ -19,5 +19,7 @@ namespace Calculate
 
         public int calculatedGames;
         public int allGames;
+
+        public bool isFinished;
     }
 }

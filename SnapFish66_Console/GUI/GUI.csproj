@@ -55,7 +55,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CardSelectWindow.xaml.cs">
+      <DependentUpon>CardSelectWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Validator.cs" />
+    <Page Include="CardSelectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -103,6 +110,35 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\Empty.png" />
+    <Resource Include="images\M10.jpg" />
+    <Resource Include="images\M11.jpg" />
+    <Resource Include="images\M2.jpg" />
+    <Resource Include="images\M3.jpg" />
+    <Resource Include="images\M4.jpg" />
+    <Resource Include="images\P10.jpg" />
+    <Resource Include="images\P11.jpg" />
+    <Resource Include="images\P2.jpg" />
+    <Resource Include="images\P3.jpg" />
+    <Resource Include="images\P4.jpg" />
+    <Resource Include="images\T10.jpg" />
+    <Resource Include="images\T11.jpg" />
+    <Resource Include="images\T2.jpg" />
+    <Resource Include="images\T3.jpg" />
+    <Resource Include="images\T4.jpg" />
+    <Resource Include="images\Z10.jpg" />
+    <Resource Include="images\Z11.jpg" />
+    <Resource Include="images\Z2.jpg" />
+    <Resource Include="images\Z3.jpg" />
+    <Resource Include="images\Z4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\M.png" />
+    <Resource Include="images\P.png" />
+    <Resource Include="images\T.png" />
+    <Resource Include="images\Z.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

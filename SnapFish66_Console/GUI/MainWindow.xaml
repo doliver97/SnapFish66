@@ -5,47 +5,93 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="768" Width="1024">
+        Title="MainWindow" Height="768" Width="1024" ResizeMode="NoResize">
     <Grid Margin="0,0,-0.4,0.4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="525*"/>
+            <ColumnDefinition Width="493*"/>
+        </Grid.ColumnDefinitions>
         <Grid.Background>
             <ImageBrush ImageSource="C:\Users\doliv\Desktop\SnapFish66\1.jpg" Stretch="UniformToFill"/>
         </Grid.Background>
-        <TextBox Name="txtState" Margin="10,0,0,10.4" TextWrapping="Wrap" Text="" ToolTip="Set state from text" HorizontalAlignment="Left" Width="250" Height="23" VerticalAlignment="Bottom"/>
-        <Button Name="btnSet" Content="Set" HorizontalAlignment="Left" Margin="265,0,0,10.4" Width="75" Click="btnSet_Click" Height="23" VerticalAlignment="Bottom"/>
-        <Button Name="btnStart" Content="Start" Margin="0,0,9.6,10.4" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom" Click="btnStart_Click"/>
-        <Image x:Name="a1_pic" HorizontalAlignment="Left" Height="125" Margin="225,490,0,0" VerticalAlignment="Top" Width="80" Source="C:\Users\doliv\Desktop\SnapFish66\Kartyak\back.jpg"/>
-        <Image x:Name="a2_pic" HorizontalAlignment="Left" Height="125" Margin="345,490,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
-        <Image x:Name="a3_pic" HorizontalAlignment="Left" Height="125" Margin="465,490,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
-        <Image x:Name="a4_pic" HorizontalAlignment="Left" Height="125" Margin="585,490,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
-        <Image x:Name="a5_pic" HorizontalAlignment="Left" Height="125" Margin="705,490,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
-        <Image HorizontalAlignment="Left" Height="125" Margin="225,130,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
-        <Image HorizontalAlignment="Left" Height="125" Margin="345,130,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
-        <Image HorizontalAlignment="Left" Height="125" Margin="465,130,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
-        <Image HorizontalAlignment="Left" Height="125" Margin="585,130,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
-        <Image HorizontalAlignment="Left" Height="125" Margin="705,130,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
-        <Image HorizontalAlignment="Left" Height="125" Margin="465,285,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
-        <Image HorizontalAlignment="Left" Height="125" Margin="910,435,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png">
+        <TextBox Name="txtState" Margin="10,0,0,10" TextWrapping="Wrap" Text="APAAAAADUUUUUUUUUUUUUUXXXX" ToolTip="Set state from text" HorizontalAlignment="Left" Width="250" Height="23" VerticalAlignment="Bottom"/>
+        <Button Name="btnSet" Content="Set" HorizontalAlignment="Left" Margin="265,0,0,10" Width="75" Click="btnSet_Click" Height="23" VerticalAlignment="Bottom"/>
+        <Button Name="btnStart" Content="Start" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom" Click="btnStart_Click" Grid.Column="1"/>
+        <Image x:Name="a1_pic" HorizontalAlignment="Left" Height="125" Margin="225,490,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" MouseLeftButtonDown="a1_pic_MouseLeftButtonDown"/>
+        <Image x:Name="a2_pic" HorizontalAlignment="Left" Height="125" Margin="345,490,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" MouseLeftButtonDown="a2_pic_MouseLeftButtonDown"/>
+        <Image x:Name="a3_pic" HorizontalAlignment="Left" Height="125" Margin="465,490,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" MouseLeftButtonDown="a3_pic_MouseLeftButtonDown" Grid.ColumnSpan="2"/>
+        <Image x:Name="a4_pic" HorizontalAlignment="Left" Height="125" Margin="59.8,490,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" MouseLeftButtonDown="a4_pic_MouseLeftButtonDown" Grid.Column="1"/>
+        <Image x:Name="a5_pic" HorizontalAlignment="Left" Height="125" Margin="179.8,490,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" MouseLeftButtonDown="a5_pic_MouseLeftButtonDown" Grid.Column="1"/>
+        <Image x:Name="b1_pic" HorizontalAlignment="Left" Height="125" Margin="225,130,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
+        <Image x:Name="b2_pic" HorizontalAlignment="Left" Height="125" Margin="345,130,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
+        <Image x:Name="b3_pic" HorizontalAlignment="Left" Height="125" Margin="465,130,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" Grid.ColumnSpan="2"/>
+        <Image x:Name="b4_pic" HorizontalAlignment="Left" Height="125" Margin="59.8,130,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" Grid.Column="1"/>
+        <Image x:Name="b5_pic" HorizontalAlignment="Left" Height="125" Margin="179.8,130,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" Grid.Column="1"/>
+        <Image x:Name="f_pic" HorizontalAlignment="Left" Height="125" Margin="465,285,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" MouseLeftButtonDown="f_pic_MouseLeftButtonDown" Grid.ColumnSpan="2"/>
+
+        <Image x:Name="atook_pic" HorizontalAlignment="Left" Height="125" Margin="384.8,435,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" MouseLeftButtonDown="atook_pic_MouseLeftButtonDown" Grid.Column="1">
             <Image.RenderTransform>
                 <RotateTransform Angle="30"/>
             </Image.RenderTransform>
         </Image>
-        <Image HorizontalAlignment="Left" Height="125" Margin="840,200,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png">
+        <Image x:Name="btook_pic" HorizontalAlignment="Left" Height="125" Margin="314.8,200,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" MouseLeftButtonDown="btook_pic_MouseLeftButtonDown" Grid.Column="1">
             <Image.RenderTransform>
                 <RotateTransform Angle="-30"/>
             </Image.RenderTransform>
         </Image>
-        <Image HorizontalAlignment="Left" Height="125" Margin="190,335,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png">
+        <Image x:Name="bottom_pic" HorizontalAlignment="Left" Height="125" Margin="190,335,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" MouseLeftButtonDown="bottom_pic_MouseLeftButtonDown">
             <Image.RenderTransform>
                 <RotateTransform Angle="90"/>
             </Image.RenderTransform>
         </Image>
-        <Image HorizontalAlignment="Left" Height="125" Margin="50,310,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
+        <Image x:Name="deck_pic" HorizontalAlignment="Left" Height="125" Margin="50,310,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png"/>
         <TextBlock x:Name="a1_label" HorizontalAlignment="Left" Margin="240,620,0,0" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" FontSize="24" Foreground="White" FontWeight="SemiBold"/>
         <TextBlock x:Name="a2_label" HorizontalAlignment="Left" Margin="360,620,0,0" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" FontSize="24" Foreground="White" FontWeight="SemiBold"/>
-        <TextBlock x:Name="a3_label" HorizontalAlignment="Left" Margin="480,620,0,0" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" FontSize="24" Foreground="White" FontWeight="SemiBold"/>
-        <TextBlock x:Name="a4_label" HorizontalAlignment="Left" Margin="600,620,0,0" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" FontSize="24" Foreground="White" FontWeight="SemiBold"/>
-        <TextBlock x:Name="a5_label" HorizontalAlignment="Left" Margin="720,620,0,0" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" FontSize="24" Foreground="White" FontWeight="SemiBold"/>
-        <TextBlock x:Name="progress_label" HorizontalAlignment="Left" Margin="805,620,0,0" TextWrapping="Wrap" Text="0 / 0" VerticalAlignment="Top" Height="32" Width="203" Foreground="White" FontSize="18" FontWeight="SemiBold" TextAlignment="Center"/>
+        <TextBlock x:Name="a3_label" HorizontalAlignment="Left" Margin="480,620,0,0" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" FontSize="24" Foreground="White" FontWeight="SemiBold" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="a4_label" HorizontalAlignment="Left" Margin="74.8,620,0,0" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" FontSize="24" Foreground="White" FontWeight="SemiBold" Grid.Column="1"/>
+        <TextBlock x:Name="a5_label" HorizontalAlignment="Left" Margin="194.8,620,0,0" TextWrapping="Wrap" Text="0.00" VerticalAlignment="Top" FontSize="24" Foreground="White" FontWeight="SemiBold" Grid.Column="1"/>
+        <TextBlock x:Name="progress_label" HorizontalAlignment="Left" Margin="279.8,620,0,0" TextWrapping="Wrap" Text="0 / 0" VerticalAlignment="Top" Height="32" Width="203" Foreground="White" FontSize="18" FontWeight="SemiBold" TextAlignment="Center" Grid.Column="1"/>
+        <TextBlock x:Name="error_lbl" HorizontalAlignment="Left" Height="23" Margin="345,705,0,10" TextWrapping="Wrap" VerticalAlignment="Center" Width="583" Foreground="White" FontWeight="SemiBold" FontSize="14" Grid.ColumnSpan="2"/>
+        <Button x:Name="AT20" HorizontalAlignment="Left" Height="49" Margin="50,566,0,0" VerticalAlignment="Top" Width="50" Click="AT20_Click">
+            <StackPanel>
+                <Image Name="AT20_img" Source="images/T.png" Width="40" Height="40" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            </StackPanel>
+        </Button>
+        <Button x:Name="AZ20" HorizontalAlignment="Left" Height="49" Margin="105,566,0,0" VerticalAlignment="Top" Width="50" Click="AZ20_Click">
+            <StackPanel>
+                <Image Name="AZ20_img" Source="images/Z.png" Width="40" Height="40" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            </StackPanel>
+        </Button>
+        <Button x:Name="AP20" HorizontalAlignment="Left" Height="49" Margin="105,512,0,0" VerticalAlignment="Top" Width="50" Click="AP20_Click">
+            <StackPanel>
+                <Image Name="AP20_img" Source="images/P.png" Width="35" Height="35" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            </StackPanel>
+        </Button>
+        <Button x:Name="AM20" HorizontalAlignment="Left" Height="49" Margin="50,512,0,0" VerticalAlignment="Top" Width="50" Click="AM20_Click">
+            <StackPanel>
+                <Image Name="AM20_img" Source="images/M.png" Width="50" Height="50" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Button>
+        <Button x:Name="BT20" HorizontalAlignment="Left" Height="49" Margin="50,184,0,0" VerticalAlignment="Top" Width="50" Click="BT20_Click">
+            <StackPanel>
+                <Image Name="BT20_img" Source="images/T.png" Width="40" Height="40" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            </StackPanel>
+        </Button>
+        <Button x:Name="BZ20" HorizontalAlignment="Left" Height="49" Margin="105,184,0,0" VerticalAlignment="Top" Width="50" Click="BZ20_Click">
+            <StackPanel>
+                <Image Name="BZ20_img" Source="images/Z.png" Width="40" Height="40" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            </StackPanel>
+        </Button>
+        <Button x:Name="BP20" HorizontalAlignment="Left" Height="49" Margin="105,130,0,0" VerticalAlignment="Top" Width="50" Click="BP20_Click">
+            <StackPanel>
+                <Image Name="BP20_img" Source="images/P.png" Width="35" Height="35" Stretch="Uniform" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            </StackPanel>
+        </Button>
+        <Button x:Name="BM20" HorizontalAlignment="Left" Height="49" Margin="50,130,0,0" VerticalAlignment="Top" Width="50" Click="BM20_Click">
+            <StackPanel>
+                <Image Name="BM20_img" Source="images/M.png" Width="50" Height="50" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Button>
 
     </Grid>
 </Window>

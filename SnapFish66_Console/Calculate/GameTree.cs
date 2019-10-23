@@ -151,7 +151,7 @@ namespace Calculate
             SavedNodes = new int[21];
         }
 
-        private ReturnObject GenerateReturnObject(int calculatedSubroots)
+        private ReturnObject GenerateReturnObject(int calculatedSubroots, bool isFinished)
         {
             State s = subroots.Last().state; //Can be any subroot
 
@@ -206,46 +206,9 @@ namespace Calculate
             returnObject.calculatedGames = calculatedSubroots;
             returnObject.allGames = possibleSubroots;
 
+            returnObject.isFinished = isFinished;
+
             return returnObject;
-        }
-        
-        private void WriteDataToConsole(int calculatedSubroots)
-        {
-            Console.Clear();
-            Console.Write("Card permutations: ");
-            Console.WriteLine(calculatedSubroots + "/" + possibleSubroots);
-
-            double estimatedSpeed = calculatedSubroots / (DateTime.Now - started).TotalSeconds; //permutations per second
-            double finishduration = (possibleSubroots - calculatedSubroots) / estimatedSpeed;//finish will be after x seconds
-            DateTime finishtime = DateTime.Now.AddSeconds(finishduration);
-
-            Console.WriteLine();
-            Console.WriteLine("Finish at: " + finishtime);
-
-            Console.WriteLine();
-            Console.WriteLine("Estimated values for cards:");
-            State s = subroots.Last().state; //Can be any subroot
-
-            if (s.a1 != null)
-            {
-                Console.WriteLine(s.a1.ID + " : " + Math.Round(averages[0], 2));
-            }
-            if (s.a2 != null)
-            {
-                Console.WriteLine(s.a2.ID + " : " + Math.Round(averages[1], 2));
-            }
-            if (s.a3 != null)
-            {
-                Console.WriteLine(s.a3.ID + " : " + Math.Round(averages[2], 2));
-            }
-            if (s.a4 != null)
-            {
-                Console.WriteLine(s.a4.ID + " : " + Math.Round(averages[3], 2));
-            }
-            if (s.a5 != null)
-            {
-                Console.WriteLine(s.a5.ID + " : " + Math.Round(averages[4], 2));
-            }
         }
 
         public void Calculate(object sender, DoWorkEventArgs e)
@@ -261,7 +224,7 @@ namespace Calculate
 
             ConcurrentStack<Node> partialSubroots = new ConcurrentStack<Node>();
 
-            while (subroots.Count < possibleSubroots)
+            while (subroots.Count < possibleSubroots && !worker.CancellationPending)
             {
                 for (int i = 0; i < 1000 && subroots.Count < possibleSubroots; i++)
                 {
@@ -279,69 +242,72 @@ namespace Calculate
                 DateTime last = DateTime.Now;
 
                 Parallel.ForEach(partialSubroots, (subroot) =>
-                 {
-                     if(worker.CancellationPending)
-                     {
-                         e.Cancel = true;
-                         return;
-                     }
+                {
+                    if (worker.CancellationPending)
+                    {
+                        e.Cancel = true;
+                    }
+                    else
+                    {
 
-                     calculatedSubroots++;
+                        calculatedSubroots++;
 
-                     //Add children of different actions (will be root of alphabeta)
-                     for (byte i = 0; i < 5; i++) //without cover
-                     {
-                         Node child = new Node(subroot.state.Copy(), i, (byte)(subroot.depth + 1));
-                         bool success = child.state.StepOne(child.state, i);
-                         child.SetMaximizer();
+                        //Add children of different actions (will be root of alphabeta)
+                        for (byte i = 0; i < 5; i++) //without cover
+                        {
+                            Node child = new Node(subroot.state.Copy(), i, (byte)(subroot.depth + 1));
+                            bool success = child.state.StepOne(child.state, i);
+                            child.SetMaximizer();
 
-                         if (success)
-                         {
-                             lock (lockobject)
-                             {
-                                 if (!children.ContainsKey(subroot))
-                                 {
-                                     children[subroot] = new List<Node>();
-                                 }
-                             }
-                             children[subroot].Add(child);
-                         }
-                     }
+                            if (success)
+                            {
+                                lock (lockobject)
+                                {
+                                    if (!children.ContainsKey(subroot))
+                                    {
+                                        children[subroot] = new List<Node>();
+                                    }
+                                }
+                                children[subroot].Add(child);
+                            }
+                        }
 
-                     for (int i = 0; i < children[subroot].Count; i++)
-                     {
-                         Node child = children[subroot][i];
+                        for (int i = 0; i < children[subroot].Count; i++)
+                        {
+                            Node child = children[subroot][i];
 
-                         float value = child.AlphaBeta(-3, 3);
+                            float value = child.AlphaBeta(-3, 3);
 
-                         lock (lockobject)
-                         {
-                             estimatedLists[child.actionBefore].Add(value);
-                             CalcAverages();
-                         }
+                            lock (lockobject)
+                            {
+                                estimatedLists[child.actionBefore].Add(value);
+                            }
 
-                         //We wont need the children of the subroot
-                         children[subroot].RemoveAt(i);
-                         i--;
-                     }
+                            //We wont need the children of the subroot
+                            children[subroot].RemoveAt(i);
+                            i--;
+                        }
 
-                     //Writing data to console
-                     lock (lockobject2)
-                     {
-                         if ((DateTime.Now - last).TotalMilliseconds > 1000)
-                         {
-                             //WriteDataToConsole(calculatedSubroots);
-                             worker.ReportProgress(0, GenerateReturnObject(calculatedSubroots));
-                             last = DateTime.Now;
-                         }
-                     }
+                        //Writing data to console
+                        lock (lockobject2)
+                        {
+                            if ((DateTime.Now - last).TotalMilliseconds > 1000)
+                            {
+                                //WriteDataToConsole(calculatedSubroots);
+                                CalcAverages();
+                                worker.ReportProgress(0, GenerateReturnObject(calculatedSubroots, false));
+                                last = DateTime.Now;
+                            }
+                        }
+                    }
                  }) ;
 
                 //WriteDataToConsole(subroots.Count);
-                worker.ReportProgress(100, GenerateReturnObject(calculatedSubroots));
 
                 partialSubroots.Clear();
             }
+
+            worker.ReportProgress(100, GenerateReturnObject(calculatedSubroots, true));
 
             //database.CloseDB();
         }

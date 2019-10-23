@@ -9,118 +9,161 @@ namespace GUI
     public static class Validator
     {
         //returns with the error message 
-        public static string Validate()
+        public static string Validate(string text)
         {
-            string errorMessage = "OK";
-
-            if (!Check2040())
+            bool formatOK = ValidStringFormat(text);
+            if (!formatOK)
             {
-                errorMessage = "Error: 20/40";
-                return errorMessage;
+                return "Error: invalid string format";
             }
-
-            string cimp = CardInMorePlaces();
-            if (cimp != "-")
-            {
-                errorMessage = "Error: " + cimp + " in more places!";
-                return errorMessage;
-            }
-
-            string mcsp = MoreCardInSinglePlace();
-            if (mcsp != "-")
-            {
-                errorMessage = "Error: more cards at " + mcsp;
-                return errorMessage;
-            }
-
-            string cnd = CardNumberDiff();
+            string cnd = CheckPlaces(text);
             if (cnd != "-")
             {
-                errorMessage = "Error: number of cards in " + cnd + " hand";
-                return errorMessage;
+                return "Error: " + cnd;
             }
 
             return "OK";
         }
 
-        private static bool Check2040()
+        private static string CheckPlaces(string text)
         {
-            //if (AM20 && BM20) return false;
-            //if (AP20 && BP20) return false;
-            //if (AT20 && BT20) return false;
-            //if (AZ20 && BZ20) return false;
+            int aCount = 0;
+            for (int i = 2; i < 22; i++)
+            {
+                if(text[i] == 'A')
+                {
+                    aCount++;
+                }
+            }
+            int dCount = text.Count(x => x == 'D');
+            int fCount = text.Count(x => x == 'F');
+
+            int gCount = text.Count(x => x == 'G');
+            int hCount = text.Count(x => x == 'H');
+            int takenCount = gCount + hCount;
+
+            if(fCount > 1)
+            {
+                return "F in multiple places";
+            }
+
+            if(dCount > 1)
+            {
+                return "D in multiple places";
+            }
+
+            if(gCount % 2 == 1)
+            {
+                return "odd number of cards taken by A";
+            }
+
+            if (hCount % 2 == 1)
+            {
+                return "odd number of cards taken by B";
+            }
+
+            if (dCount == 0 && takenCount<10)
+            {
+                return "D not found";
+            }
+
+            if(dCount == 1 && takenCount >= 10)
+            {
+                return "D found while in endgame";
+            }
+
+            if(aCount > 5)
+            {
+                return "A has too many cards";
+            }
+
+            if(aCount == 0)
+            {
+                return "A has no cards";
+            }
+
+            if(dCount == 1)
+            {
+                int dIndex = 0;
+                char dColor;
+                for (int i = 0; i < text.Length; i++)
+                {
+                    if(text[i] == 'D')
+                    {
+                        dIndex = i;
+                    }
+                }
+
+                if(dIndex < 7)
+                {
+                    dColor = 'M';
+                }
+                else if (dIndex < 12)
+                {
+                    dColor = 'P';
+                }
+                else if (dIndex < 17)
+                {
+                    dColor = 'T';
+                }
+                else
+                {
+                    dColor = 'Z';
+                }
+
+                if(dColor != text[1])
+                {
+                    return "trump and color of bottom card does not match";
+                }
+            }
+
+            if(takenCount <= 10 && aCount<5)
+            {
+                return "A must have 5 cards";
+            }
+
+            if (takenCount>10 && aCount > (20-takenCount)/2)
+            {
+                return "A must have " + ((20 - takenCount)/2) + " cards";
+            }
+
+            return "-";
+        }
+
+        private static bool ValidStringFormat(string text)
+        {
+            if(text.Length != 26)
+            {
+                return false;
+            }
+
+            if(text[0] != 'A')
+            {
+                return false;
+            }
+
+            if((text[1] != 'M') && (text[1] != 'P') && (text[1] != 'T') && (text[1] != 'Z'))
+            {
+                return false;
+            }
+
+            for (int i = 2; i < 22; i++)
+            {
+                if((text[i] != 'A') && (text[i] != 'B') && (text[i] != 'U') && (text[i] != 'D') && (text[i] != 'F') && (text[i] != 'G') && (text[i] != 'H'))
+                {
+                    return false;
+                }
+            }
+
+            for (int i = 22; i < 26; i++)
+            {
+                if ((text[i] != 'X') && (text[i] != 'A') && (text[i] != 'B'))
+                {
+                    return false;
+                }
+            }
+
             return true;
-        }
-
-        private static string CardInMorePlaces()
-        {
-            //foreach (string cardID in IDs)
-            //{
-            //    int count = 0;
-            //    count += CardInList(dbottom, cardID);
-            //    count += CardInList(a1, cardID);
-            //    count += CardInList(a2, cardID);
-            //    count += CardInList(a3, cardID);
-            //    count += CardInList(a4, cardID);
-            //    count += CardInList(a5, cardID);
-            //    count += CardInList(b1, cardID);
-            //    count += CardInList(b2, cardID);
-            //    count += CardInList(b3, cardID);
-            //    count += CardInList(b4, cardID);
-            //    count += CardInList(b5, cardID);
-            //    count += CardInList(atook, cardID);
-            //    count += CardInList(btook, cardID);
-            //    count += CardInList(adown, cardID);
-            //    count += CardInList(bdown, cardID);
-
-            //    if (count > 1)
-            //    {
-            //        return cardID;
-            //    }
-            //}
-
-            return "-";
-        }
-
-        private static string MoreCardInSinglePlace()
-        {
-            //if (dbottom.Count > 1)
-            //{
-            //    return "Talon alján";
-            //}
-            //if (a1.Count > 1 || a2.Count > 1 || a3.Count > 1 || a4.Count > 1 || a5.Count > 1)
-            //{
-            //    return "A kezében";
-            //}
-            //if (b1.Count > 1 || b2.Count > 1 || b3.Count > 1 || b4.Count > 1 || b5.Count > 1)
-            //{
-            //    return "B kezében";
-            //}
-            //if (adown.Count > 1)
-            //{
-            //    return "A letett lapja";
-            //}
-            //if (bdown.Count > 1)
-            //{
-            //    return "B letett lapja";
-            //}
-
-            return "-";
-        }
-
-        private static string CardNumberDiff()
-        {
-            //int Anum = a1.Count + a2.Count + a3.Count + a4.Count + a5.Count + adown.Count;
-            //int Bnum = b1.Count + b2.Count + b3.Count + b4.Count + b5.Count + bdown.Count;
-            //if (Anum < Bnum)
-            //{
-            //    return "A";
-            //}
-            //if (Bnum < Anum)
-            //{
-            //    return "B";
-            //}
-            return "-";
         }
     }
 }
