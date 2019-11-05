@@ -194,8 +194,7 @@ namespace Calculate
             //    }
             //}
 
-            //Write to transposition table
-            if (depth < maxDepth && GC.GetTotalMemory(false)<1000000000)
+            if (depth < maxDepth && GC.GetTotalMemory(false) < 1000000000)
             {
                 if(maximizer)
                 {

@@ -230,7 +230,7 @@ namespace GUI
 
             progress_label.Text = returnObject.calculatedGames + " / " + returnObject.allGames;
 
-            if(returnObject.isFinished)
+            if (returnObject.isFinished)
             {
                 btnStart.Content = "Reset";
             }

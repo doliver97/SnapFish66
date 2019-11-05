@@ -151,7 +151,7 @@ namespace Calculate
             SavedNodes = new int[21];
         }
 
-        private ReturnObject GenerateReturnObject(int calculatedSubroots, bool isFinished)
+        private ReturnObject GenerateReturnObject(int calculatedSubroots, bool finished)
         {
             State s = subroots.Last().state; //Can be any subroot
 
@@ -206,7 +206,7 @@ namespace Calculate
             returnObject.calculatedGames = calculatedSubroots;
             returnObject.allGames = possibleSubroots;
 
-            returnObject.isFinished = isFinished;
+            returnObject.isFinished = finished;
 
             return returnObject;
         }
@@ -224,7 +224,9 @@ namespace Calculate
 
             ConcurrentStack<Node> partialSubroots = new ConcurrentStack<Node>();
 
-            while (subroots.Count < possibleSubroots && !worker.CancellationPending)
+            bool stopping = false;
+
+            while (subroots.Count < possibleSubroots && !stopping)
             {
                 for (int i = 0; i < 1000 && subroots.Count < possibleSubroots; i++)
                 {
@@ -241,15 +243,16 @@ namespace Calculate
 
                 DateTime last = DateTime.Now;
 
-                Parallel.ForEach(partialSubroots, (subroot) =>
+                Parallel.ForEach(partialSubroots, (subroot, forEachState) =>
                 {
                     if (worker.CancellationPending)
                     {
                         e.Cancel = true;
+                        stopping = true;
+                        //return;
                     }
                     else
                     {
-
                         calculatedSubroots++;
 
                         //Add children of different actions (will be root of alphabeta)
@@ -281,6 +284,7 @@ namespace Calculate
                             lock (lockobject)
                             {
                                 estimatedLists[child.actionBefore].Add(value);
+                                CalcAverages();
                             }
 
                             //We wont need the children of the subroot
@@ -289,21 +293,16 @@ namespace Calculate
                         }
 
                         //Writing data to console
-                        lock (lockobject2)
+                        if ((DateTime.Now - last).TotalMilliseconds > 1000)
                         {
-                            if ((DateTime.Now - last).TotalMilliseconds > 1000)
-                            {
-                                //WriteDataToConsole(calculatedSubroots);
-                                CalcAverages();
-                                worker.ReportProgress(0, GenerateReturnObject(calculatedSubroots, false));
-                                last = DateTime.Now;
-                            }
+                            //WriteDataToConsole(calculatedSubroots);
+                            worker.ReportProgress(0, GenerateReturnObject(calculatedSubroots, false));
+                            last = DateTime.Now;
                         }
                     }
                  }) ;
 
                 //WriteDataToConsole(subroots.Count);
-
                 partialSubroots.Clear();
             }
 

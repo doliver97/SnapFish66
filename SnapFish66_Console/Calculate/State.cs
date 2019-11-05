@@ -8,7 +8,7 @@ namespace Calculate
 {
     public class State : IEquatable<State>
     {
-        Random rand = new Random();
+        private static readonly Random rand = new Random();
 
         //This enum represents the card list
         public enum CardSet : long
