@@ -279,6 +279,9 @@ namespace Calculate
 
             GameTree tree = new GameTree(state);
 
+            AllowReadDatabase = true;
+            AllowWriteDatabase = true;
+
             worker.WorkerReportsProgress = true;
             worker.WorkerSupportsCancellation = true;
             worker.DoWork += new DoWorkEventHandler(tree.Calculate);

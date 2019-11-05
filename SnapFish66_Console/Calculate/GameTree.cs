@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SnapFish66_Console;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,11 +33,10 @@ namespace Calculate
         }
 
         private readonly object lockobject = new object();
-        private readonly object lockobject2 = new object();
 
         public Node root;
 
-        //public static Database database;
+        public static Database database;
 
         public static DateTime started;
 
@@ -220,7 +220,7 @@ namespace Calculate
             int calculatedSubroots = 0;
 
             //Does not create new database, only opens it
-            //database = new Database();
+            database = new Database();
 
             ConcurrentStack<Node> partialSubroots = new ConcurrentStack<Node>();
 
@@ -308,7 +308,7 @@ namespace Calculate
 
             worker.ReportProgress(100, GenerateReturnObject(calculatedSubroots, true));
 
-            //database.CloseDB();
+            database.CloseDB();
         }
 
         private void CalcAverages()

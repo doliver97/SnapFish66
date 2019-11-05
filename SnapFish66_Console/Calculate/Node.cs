@@ -13,6 +13,8 @@ namespace Calculate
         private static readonly int maxDepth = 12;
         private static readonly int mostLikelyTreshold = 10;
 
+        public static List<string> IDs = new List<string> { "M2", "M3", "M4", "M10", "M11", "P2", "P3", "P4", "P10", "P11", "T2", "T3", "T4", "T10", "T11", "Z2", "Z3", "Z4", "Z10", "Z11" };
+
         public State state;
 
         public sbyte value;
@@ -114,17 +116,17 @@ namespace Calculate
             }
 
             GameTree.VisitedNodes[depth]++;
-            
+
             //If found in database, we can cut it here
-            //if (Calculator.AllowReadDatabase && depth%2==0 && depth<=10)
-            //{
-            //    sbyte val = (sbyte)GameTree.database.ReadFromDB(this);
-            //    if (val != -100) // -100 means not found
-            //    {
-            //        GameTree.ReadNodes[depth]++;
-            //        return val;
-            //    }
-            //}
+            if (Calculator.AllowReadDatabase && depth % 2 == 0 && depth <= 10)
+            {
+                sbyte val = (sbyte)GameTree.database.ReadFromDB(StringifyNode(oAlpha, oBeta));
+                if (val != -100) // -100 means not found
+                {
+                    GameTree.ReadNodes[depth]++;
+                    return val;
+                }
+            }
 
             sbyte retVal = 0;
             if(depth < maxDepth)
@@ -185,14 +187,15 @@ namespace Calculate
             }
 
             //Write to database
-            //if (Calculator.AllowWriteDatabase)
-            //{
-            //    if (depth <= 10 && depth % 2 == 0)
-            //    {
-            //        GameTree.database.AddToDB(this);
-            //        GameTree.SavedNodes[depth]++;
-            //    }
-            //}
+            if (Calculator.AllowWriteDatabase)
+            {
+                if (depth <= 10 && depth % 2 == 0)
+                {
+                    sbyte value = maximizer ? alpha : beta;
+                    GameTree.database.AddToDB(StringifyNode(oAlpha, oBeta), value);
+                    GameTree.SavedNodes[depth]++;
+                }
+            }
 
             if (depth < maxDepth && GC.GetTotalMemory(false) < 1000000000)
             {
@@ -275,6 +278,126 @@ namespace Calculate
             }
         }
 
+        //Helper for stringify
+        private void SetChar(ref char[] key, Card place, char val, int i)
+        {
+            if (place != null && place.ID == IDs[i])
+            {
+                key[i + 2] = val;
+            }
+        }
+
+        private string StringifyNode(sbyte alpha, sbyte beta)
+        {
+            char[] key = new char[28];
+
+            key[0] = state.trump;
+            key[1] = state.isAnext ? 'A' : 'B';
+
+            //for each card
+            for (int i = 0; i < IDs.Count; i++)
+            {
+                //deck
+                long deck = state.deck;
+                int j = 0;
+                while (deck > 0)
+                {
+                    if (Card.PopCardFromDeck(ref deck).ID == IDs[i])
+                    {
+                        key[i + 2] = Convert.ToChar(j + '0');
+                    }
+
+                    j++;
+                }
+
+                //dbottom
+                SetChar(ref key, state.dbottom, 'D', i);
+
+                //hands
+                SetChar(ref key, state.a1, 'A', i);
+                SetChar(ref key, state.a2, 'A', i);
+                SetChar(ref key, state.a3, 'A', i);
+                SetChar(ref key, state.a4, 'A', i);
+                SetChar(ref key, state.a5, 'A', i);
+                SetChar(ref key, state.b1, 'B', i);
+                SetChar(ref key, state.b2, 'B', i);
+                SetChar(ref key, state.b3, 'B', i);
+                SetChar(ref key, state.b4, 'B', i);
+                SetChar(ref key, state.b5, 'B', i);
+
+                //put down
+                SetChar(ref key, state.adown, 'E', i);
+                SetChar(ref key, state.bdown, 'F', i);
+
+                //taken
+                if (state.atook.HasFlag((State.CardSet)Card.GetCard(IDs[i]).cardSetIndex))
+                {
+                    key[i + 2] = 'G';
+                }
+                if (state.btook.HasFlag((State.CardSet)Card.GetCard(IDs[i]).cardSetIndex))
+                {
+                    key[i + 2] = 'H';
+                }
+            }
+
+            //20/40
+            if (state.AM20)
+            {
+                key[22] = 'A';
+            }
+            else if (state.BM20)
+            {
+                key[22] = 'B';
+            }
+            else
+            {
+                key[22] = 'X';
+            }
+
+            if (state.AP20)
+            {
+                key[23] = 'A';
+            }
+            else if (state.BP20)
+            {
+                key[23] = 'B';
+            }
+            else
+            {
+                key[23] = 'X';
+            }
+
+            if (state.AT20)
+            {
+                key[24] = 'A';
+            }
+            else if (state.BT20)
+            {
+                key[24] = 'B';
+            }
+            else
+            {
+                key[24] = 'X';
+            }
+
+            if (state.AZ20)
+            {
+                key[25] = 'A';
+            }
+            else if (state.BZ20)
+            {
+                key[25] = 'B';
+            }
+            else
+            {
+                key[25] = 'X';
+            }
+
+            key[26] = Convert.ToChar('0' + (alpha + 3));
+            key[27] = Convert.ToChar('0' + (beta + 3));
+
+            return new string(key);
+        }
 
     }
 }
