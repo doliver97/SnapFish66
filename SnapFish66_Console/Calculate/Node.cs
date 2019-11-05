@@ -10,7 +10,8 @@ namespace Calculate
 {
     public class Node
     {
-        private static readonly int maxDepth = 12;
+        private static readonly int maxTTableDepth = 10;
+        private static readonly int maxDBDepth = 0;
         private static readonly int mostLikelyTreshold = 10;
 
         public static List<string> IDs = new List<string> { "M2", "M3", "M4", "M10", "M11", "P2", "P3", "P4", "P10", "P11", "T2", "T3", "T4", "T10", "T11", "Z2", "Z3", "Z4", "Z10", "Z11" };
@@ -115,21 +116,21 @@ namespace Calculate
                 beta = 2;
             }
 
-            GameTree.VisitedNodes[depth]++;
+            //GameTree.VisitedNodes[depth]++;
 
             //If found in database, we can cut it here
-            if (Calculator.AllowReadDatabase && depth % 2 == 0 && depth <= 10)
+            if (Calculator.AllowReadDatabase && depth <= maxDBDepth)
             {
                 sbyte val = (sbyte)GameTree.database.ReadFromDB(StringifyNode(oAlpha, oBeta));
                 if (val != -100) // -100 means not found
                 {
-                    GameTree.ReadNodes[depth]++;
+                    //GameTree.ReadNodes[depth]++;
                     return val;
                 }
             }
 
             sbyte retVal = 0;
-            if(depth < maxDepth)
+            if(depth < maxTTableDepth)
             {
                 GameTree.TranspositionTable.TryGetValue(new Transposition(state, oAlpha, oBeta), out retVal);
             }
@@ -189,7 +190,7 @@ namespace Calculate
             //Write to database
             if (Calculator.AllowWriteDatabase)
             {
-                if (depth <= 10 && depth % 2 == 0)
+                if (depth <= maxDBDepth)
                 {
                     sbyte value = maximizer ? alpha : beta;
                     GameTree.database.AddToDB(StringifyNode(oAlpha, oBeta), value);
@@ -197,7 +198,7 @@ namespace Calculate
                 }
             }
 
-            if (depth < maxDepth && GC.GetTotalMemory(false) < 1000000000)
+            if (depth < maxTTableDepth && GC.GetTotalMemory(false) < 1000000000)
             {
                 if(maximizer)
                 {

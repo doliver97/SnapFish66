@@ -44,42 +44,42 @@ namespace GUI
 
             if(fCount > 1)
             {
-                return "F in multiple places";
+                return "F in multiple places in text";
             }
 
             if(dCount > 1)
             {
-                return "D in multiple places";
+                return "D in multiple places in text";
             }
 
             if(gCount % 2 == 1)
             {
-                return "odd number of cards taken by A";
+                return "Odd number of cards taken by player";
             }
 
             if (hCount % 2 == 1)
             {
-                return "odd number of cards taken by B";
+                return "Odd number of cards taken by the opponent";
             }
 
             if (dCount == 0 && takenCount<10)
             {
-                return "D not found";
+                return "Bottom card of deck not found";
             }
 
             if(dCount == 1 && takenCount >= 10)
             {
-                return "D found while in endgame";
+                return "Bottom card of deck found while in endgame";
             }
 
             if(aCount > 5)
             {
-                return "A has too many cards";
+                return "Player has too many cards";
             }
 
             if(aCount == 0)
             {
-                return "A has no cards";
+                return "Player has no cards";
             }
 
             if(dCount == 1)
@@ -113,18 +113,18 @@ namespace GUI
 
                 if(dColor != text[1])
                 {
-                    return "trump and color of bottom card does not match";
+                    return "Trump and color of bottom card does not match";
                 }
             }
 
             if(takenCount <= 10 && aCount<5)
             {
-                return "A must have 5 cards";
+                return "Player must have 5 cards";
             }
 
             if (takenCount>10 && aCount > (20-takenCount)/2)
             {
-                return "A must have " + ((20 - takenCount)/2) + " cards";
+                return "Player must have " + ((20 - takenCount)/2) + " cards";
             }
 
             return "-";

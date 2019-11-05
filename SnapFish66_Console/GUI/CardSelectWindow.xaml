@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="CaedSelectWindow" Height="610" Width="465" ResizeMode="NoResize">
+        Title="CardSelectWindow" Height="610" Width="465" ResizeMode="NoResize">
     <Grid>
         <Button x:Name="M2" HorizontalAlignment="Left" Height="135" VerticalAlignment="Top" Width="90" Click="M2_Click">
             <StackPanel>

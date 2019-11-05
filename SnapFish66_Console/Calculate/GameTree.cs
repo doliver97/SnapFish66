@@ -253,7 +253,7 @@ namespace Calculate
                     }
                     else
                     {
-                        calculatedSubroots++;
+                        Interlocked.Increment(ref calculatedSubroots);
 
                         //Add children of different actions (will be root of alphabeta)
                         for (byte i = 0; i < 5; i++) //without cover

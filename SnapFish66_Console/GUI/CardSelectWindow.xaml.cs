@@ -15,13 +15,13 @@ using System.Windows.Shapes;
 namespace GUI
 {
     /// <summary>
-    /// Interaction logic for CaedSelectWindow.xaml
+    /// Interaction logic for CardSelectWindow.xaml
     /// </summary>
     public partial class CardSelectWindow : Window
     {
         public List<bool> selectedCards;
 
-        private string mode;
+        private readonly string mode;
 
         public CardSelectWindow(List<bool> selectedCards, string mode)
         {
@@ -30,28 +30,29 @@ namespace GUI
             this.mode = mode;
             this.selectedCards = selectedCards;
 
-            Dictionary<Image, bool> selected = new Dictionary<Image, bool>();
-
-            selected[M2_img] = selectedCards[0];
-            selected[M3_img] = selectedCards[1];
-            selected[M4_img] = selectedCards[2];
-            selected[M10_img] = selectedCards[3];
-            selected[M11_img] = selectedCards[4];
-            selected[P2_img] = selectedCards[5];
-            selected[P3_img] = selectedCards[6];
-            selected[P4_img] = selectedCards[7];
-            selected[P10_img] = selectedCards[8];
-            selected[P11_img] = selectedCards[9];
-            selected[T2_img] = selectedCards[10];
-            selected[T3_img] = selectedCards[11];
-            selected[T4_img] = selectedCards[12];
-            selected[T10_img] = selectedCards[13];
-            selected[T11_img] = selectedCards[14];
-            selected[Z2_img] = selectedCards[15];
-            selected[Z3_img] = selectedCards[16];
-            selected[Z4_img] = selectedCards[17];
-            selected[Z10_img] = selectedCards[18];
-            selected[Z11_img] = selectedCards[19];
+            Dictionary<Image, bool> selected = new Dictionary<Image, bool>
+            {
+                [M2_img] = selectedCards[0],
+                [M3_img] = selectedCards[1],
+                [M4_img] = selectedCards[2],
+                [M10_img] = selectedCards[3],
+                [M11_img] = selectedCards[4],
+                [P2_img] = selectedCards[5],
+                [P3_img] = selectedCards[6],
+                [P4_img] = selectedCards[7],
+                [P10_img] = selectedCards[8],
+                [P11_img] = selectedCards[9],
+                [T2_img] = selectedCards[10],
+                [T3_img] = selectedCards[11],
+                [T4_img] = selectedCards[12],
+                [T10_img] = selectedCards[13],
+                [T11_img] = selectedCards[14],
+                [Z2_img] = selectedCards[15],
+                [Z3_img] = selectedCards[16],
+                [Z4_img] = selectedCards[17],
+                [Z10_img] = selectedCards[18],
+                [Z11_img] = selectedCards[19]
+            };
 
             foreach (KeyValuePair<Image, bool> entry in selected)
             {
