@@ -191,7 +191,7 @@ namespace GUI
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            if ((string)btnStart.Content == "Start")
+            if ((string)btnStart.Content == "Calculate")
             {
                 if (Validator.Validate(txtState.Text) == "OK")
                 {
@@ -214,7 +214,7 @@ namespace GUI
                 a4_label.Text = "0.00";
                 a5_label.Text = "0.00";
                 progress_label.Text = "0 / 0";
-                btnStart.Content = "Start";
+                btnStart.Content = "Calculate";
             }
         }
 

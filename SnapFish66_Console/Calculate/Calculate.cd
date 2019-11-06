@@ -18,7 +18,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Calculate.GameTree">
-    <Position X="0.5" Y="9.75" Width="2" />
+    <Position X="0.5" Y="8.25" Width="2" />
     <NestedTypes>
       <Enum Name="Calculate.GameTree.PossibleSteps" Collapsed="true">
         <TypeIdentifier>
@@ -38,7 +38,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Calculate.Node">
-    <Position X="3.5" Y="9.5" Width="1.75" />
+    <Position X="3.5" Y="8" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAACQIBAAgEIAEAAAAAAAAEAACCAkAAAgIAACAAA=</HashCode>
       <FileName>Node.cs</FileName>
@@ -46,13 +46,6 @@
     <ShowAsAssociation>
       <Field Name="state" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="Calculate.RandomStateGenerator">
-    <Position X="0.5" Y="3.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAABgEAAAAA=</HashCode>
-      <FileName>RandomStateGenerator.cs</FileName>
-    </TypeIdentifier>
   </Class>
   <Class Name="Calculate.ReturnObject">
     <Position X="5" Y="0.5" Width="1.5" />
@@ -62,7 +55,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Calculate.State" BaseTypeListCollapsed="true">
-    <Position X="6" Y="9.5" Width="1.75" />
+    <Position X="6" Y="4.25" Width="1.75" />
     <NestedTypes>
       <Enum Name="Calculate.State.CardSet" Collapsed="true">
         <TypeIdentifier>
@@ -77,14 +70,14 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="Calculate.Step">
-    <Position X="0.5" Y="5.75" Width="1.75" />
+    <Position X="0.5" Y="4" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AIIgACAAAAAAEgAAEgCAAABASAAAEAAIAAAAAAAAAAA=</HashCode>
       <FileName>Step.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Calculate.Transposition" BaseTypeListCollapsed="true">
-    <Position X="3.75" Y="14.25" Width="1.5" />
+    <Position X="3.75" Y="12.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAgAAABAAAAAAAAIAEAAAQAAAAAAA=</HashCode>
       <FileName>Transposition.cs</FileName>

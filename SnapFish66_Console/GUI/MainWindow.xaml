@@ -16,7 +16,7 @@
         </Grid.Background>
         <TextBox Name="txtState" Margin="10,0,0,10" TextWrapping="Wrap" Text="APAAAAADUUUUUUUUUUUUUUXXXX" ToolTip="Set state from text" HorizontalAlignment="Left" Width="250" Height="23" VerticalAlignment="Bottom"/>
         <Button Name="btnSet" Content="Set" HorizontalAlignment="Left" Margin="265,0,0,10" Width="75" Click="btnSet_Click" Height="23" VerticalAlignment="Bottom"/>
-        <Button Name="btnStart" Content="Start" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom" Click="btnStart_Click" Grid.Column="1"/>
+        <Button Name="btnStart" Content="Calculate" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom" Click="btnStart_Click" Grid.Column="1"/>
         <Image x:Name="a1_pic" HorizontalAlignment="Left" Height="125" Margin="225,490,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" MouseLeftButtonDown="a1_pic_MouseLeftButtonDown"/>
         <Image x:Name="a2_pic" HorizontalAlignment="Left" Height="125" Margin="345,490,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" MouseLeftButtonDown="a2_pic_MouseLeftButtonDown"/>
         <Image x:Name="a3_pic" HorizontalAlignment="Left" Height="125" Margin="465,490,0,0" VerticalAlignment="Top" Width="80" Source="images/back.png" MouseLeftButtonDown="a3_pic_MouseLeftButtonDown" Grid.ColumnSpan="2"/>
