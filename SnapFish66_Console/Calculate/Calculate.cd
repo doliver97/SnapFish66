@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Calculate.Calculator">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAIAAAAAAAAggAACAAAAAAAAAAAABAAAABAA=</HashCode>
+      <FileName>Calculator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="cards" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Calculate.Card">
+    <Position X="3" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AABAkAggAAAAgAAAIEAAESAEQCKACDCAQBBABIgAAAA=</HashCode>
+      <FileName>Card.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Calculate.GameTree">
+    <Position X="0.5" Y="9.75" Width="2" />
+    <NestedTypes>
+      <Enum Name="Calculate.GameTree.PossibleSteps" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>GameTree.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>kgAAFAAAAAACBABFAEggAogAkCBAAgAQIAEwAwAAJAA=</HashCode>
+      <FileName>GameTree.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="root" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="subroots" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Calculate.Node">
+    <Position X="3.5" Y="9.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACQIBAAgEIAEAAAAAAAAEAACCAkAAAgIAACAAA=</HashCode>
+      <FileName>Node.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="state" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Calculate.RandomStateGenerator">
+    <Position X="0.5" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAABgEAAAAA=</HashCode>
+      <FileName>RandomStateGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Calculate.ReturnObject">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ADAAQACAAACAAAAAAAAAQAAAEAIAAAEAAAAAAAQAQgE=</HashCode>
+      <FileName>ReturnObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Calculate.State" BaseTypeListCollapsed="true">
+    <Position X="6" Y="9.5" Width="1.75" />
+    <NestedTypes>
+      <Enum Name="Calculate.State.CardSet" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>State.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>kAiSDIAAAkgAAECAgkSAoCIEk1BDAuAAEEAgMwIgNGA=</HashCode>
+      <FileName>State.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Calculate.Step">
+    <Position X="0.5" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIIgACAAAAAAEgAAEgCAAABASAAAEAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Step.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Calculate.Transposition" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAABAAAAAAAAIAEAAAQAAAAAAA=</HashCode>
+      <FileName>Transposition.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="state" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

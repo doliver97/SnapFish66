@@ -64,7 +64,7 @@ namespace GUI
             if (checkString != "OK")
             {
                 error_lbl.Text = checkString;
-                return;
+                //return;
             }
             else
             {
@@ -94,7 +94,7 @@ namespace GUI
             {
                 Uri uriSource = new Uri(picturePaths[i], UriKind.Relative);
 
-                if (txtState.Text[i + 2] == 'A')
+                if (txtState.Text[i + 2] == 'A' && aCount<5)
                 {
                     aPlaces[aCount].Source = new BitmapImage(uriSource);
                     aCount++;
@@ -136,7 +136,7 @@ namespace GUI
             }
 
             // B has a card put down
-            if (txtState.Text.Contains("F") && aCount>0)
+            if (txtState.Text.Contains("F") && aCount>0 && aCount<=5)
             {
                 bPlaces[aCount - 1].Source = empty;
             }
