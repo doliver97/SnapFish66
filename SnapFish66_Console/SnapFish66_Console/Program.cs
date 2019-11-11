@@ -20,7 +20,9 @@ namespace SnapFish66_Console
             //string s = "APHHHUADAAAAHHUUUUHHUHXXXX"; // Test 8 , result must be +2 for all
             //string s = "AMHGGUHAHHGGGHGAUUHGGAXXXX"; //Test 5, result must be -1 for all
             //string s = "APHGHGADAUUUUUAUUFUAUAXXXX"; //A has 20 -> CONFIRMED: bigger card of 20 is always best option!
-            string s = "APAUAUUDUUHGHGUUAAAFUUXBXX";
+            //string s = "APAUAUUDUUHGHGUUAAAFUUXBXX";
+
+            string s = Console.ReadLine();
 
             //Setting mode
             //Calculate.Training();
